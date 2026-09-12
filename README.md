@@ -265,6 +265,23 @@ repulsion field) are each checkpointed independently; a run-dir that
 already contains completed stages is refused unless `--resume` is passed,
 so you never silently overwrite or half-mix two experiments.
 
+### Local smoke test, no download and no real training
+
+`configs/mock.yaml` uses a synthetic Gaussian-blob-mixture dataset
+(`data/mock.py`) instead of any real data, with tiny step counts throughout,
+so the entire pipeline runs to completion in a few seconds on a laptop CPU:
+
+```bash
+umaping pipeline --config configs/mock.yaml --run-dir runs/mock/main --device cpu
+```
+
+This exercises every stage end to end -- including `evaluate` and
+`analyze`, which real runs only reach after training finishes -- so it is
+the fastest way to confirm a change didn't break anything before running
+it against real data. It is a code-correctness check only: with so few
+training steps, the produced embedding/metrics/figures are not meant to be
+accurate, just non-crashing.
+
 ## 7. Project layout
 
 ```
