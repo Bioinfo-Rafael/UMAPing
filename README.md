@@ -223,6 +223,30 @@ for name in coil20 coil100 pancreas; do
 done
 ```
 
+### All experiments, in the background (detached from the terminal)
+
+Useful on a remote machine where you want download + training + evaluation +
+analysis for all three datasets to keep running after you disconnect:
+
+```bash
+cd /path/to/UMAPing && source .venv/bin/activate && mkdir -p logs && \
+nohup bash -c 'set -e; for name in coil20 coil100 pancreas; do
+  umaping download --dataset "$name"
+  umaping pipeline --config "configs/${name}.yaml" --run-dir "runs/${name}/main" --device auto --seed 0 --resume
+done' > logs/all_experiments.log 2>&1 &
+disown
+echo "Started (PID $!). Monitor with: tail -f $(pwd)/logs/all_experiments.log"
+```
+
+Check progress any time with `tail -f logs/all_experiments.log`, confirm it's
+still alive with `ps -p <PID>` (the PID the command above prints, or `pgrep -f
+"umaping pipeline"`), and find results the same way as the foreground
+commands above (`runs/<dataset>/main/{metrics,figures}`). `--resume` is
+included so this is always safe to re-run as-is if the machine reboots or the
+process is killed partway through: `download` is idempotent (skips a dataset
+already on disk), and each pipeline stage is independently checkpointed, so
+already-completed datasets/stages are skipped rather than redone.
+
 ### Resuming an interrupted run
 
 ```bash
