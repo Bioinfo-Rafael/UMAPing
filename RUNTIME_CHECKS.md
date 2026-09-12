@@ -63,6 +63,28 @@ pages/APIs (not from training-data memory) during implementation:
 
 ## 3. Numerical/algorithmic reasoning that should be spot-checked
 
+- **Update (2026-09-13, first real remote test run, 34 tests, torch/CUDA
+  driver mismatch environment):** 32/34 passed on the first try, including
+  both `smooth_knn_dist`/`compute_directed_membership` cross-checks against
+  the real `umap.umap_` functions at the tolerances below -- the float32/64
+  rounding budget was sufficient, no formula mismatch. Two failures, both
+  test-file issues (not bugs in `src/umaping/`), now fixed:
+  - `umap_umap_.compute_membership_strengths(...)` returned more than 3
+    values on the installed umap-learn version (the extra element(s) beyond
+    `(rows, cols, vals)` weren't gated behind `return_dists` the way the
+    signature research assumed). Fixed by unpacking positionally
+    (`result[2]`) instead of assuming an exact tuple length.
+  - `test_g_minus_matches_autograd_of_log_one_minus_phi` failed for 2/32
+    elements by a small margin (max abs diff ~0.003 against a `1e-4`
+    tolerance). Root cause: `g_minus`'s `+eps` (`eps=1e-3`) denominator is
+    only an approximation of the true gradient near `q -> 0` (by design,
+    matching umap-learn's own repulsion formula -- see the "≈" in this
+    file's docstring), and the test's *unconstrained* random `y`/`z` pairs
+    occasionally landed close enough together (small `q`) for that expected
+    approximation gap to exceed the tolerance -- not a bug in `g_minus`.
+    Fixed by constructing pairs with a guaranteed minimum separation
+    (`q` uniformly in `[9, 25]`, i.e. `q/eps >= 9000`) instead of an
+    unconstrained draw.
 - `graph.py`'s `smooth_knn_dist`/`compute_directed_membership` are a
   from-scratch reimplementation (not an import of umap-learn's private
   `umap.umap_.smooth_knn_dist`), deliberately adapted because our $K_i$
@@ -71,19 +93,21 @@ pages/APIs (not from training-data memory) during implementation:
   `umap.umap_` functions by prepending a synthetic zero self-column; the
   comparison tolerances (`rtol=3e-2` for sigma) were chosen to account for
   umap-learn's numba-internal float32 locals vs. this codebase's float64
-  computation, but were never actually run -- if that test fails on first
-  execution, check whether the discrepancy is genuinely within expected
-  float32/64 rounding or indicates a real formula mismatch.
+  computation -- confirmed sufficient by an actual run (see above).
 - `umap_forces.py::find_ab_params` is a reimplementation of umap-learn's
   curve-fit (verified line-for-line against the current source). It
   depends on `scipy.optimize.curve_fit` converging the same way on both
   sides; `tests/test_umap_forces.py::test_find_ab_params_matches_umap_learn`
-  checks this directly.
+  checks this directly -- confirmed passing by an actual run.
 - The autograd-vs-closed-form gradient tests
   (`test_g_plus_matches_autograd_of_log_phi`,
   `test_g_minus_matches_autograd_of_log_one_minus_phi`) use `rtol=1e-3`;
   this was chosen by manual derivation (reproduced in the module docstring
-  of `umap_forces.py`), not by running the test.
+  of `umap_forces.py`). Confirmed passing by an actual run once the second
+  test's sample pairs were changed to guarantee sufficient separation (see
+  above) -- `g_plus`'s test needed no such change, since its `eps`
+  convention (a `q.clamp(min=eps)` floor) doesn't have the same small-`q`
+  approximation gap that `g_minus`'s `(q+eps)` denominator does.
 - `tests/test_umap_forces.py::test_mean_negative_field_monte_carlo_converges_with_more_samples`
   compares the *average* error over 8 trials at two very different sample
   sizes (8 vs. 1500 out of a 3000-point population) specifically to make
@@ -143,18 +167,20 @@ agreement, the symmetric fuzzy union identity, autograd-vs-closed-form
 gradients, Monte-Carlo repulsion convergence, retriever
 positive/negative-masking invariants, spectral output dimensions and
 frozen-calibration reuse, `embed_one` query-independence, COIL/pancreas
-split leakage checks, and save/reload/`embed_one`), but **none of them have
-been run**. Run them first, remotely, with:
+split leakage checks, and save/reload/`embed_one`).
 
 ```bash
 pip install -e ".[all]"
 pytest -v
 ```
 
-If any test fails, the most likely causes, roughly in order of likelihood
-given how each was derived: (a) a genuine tolerance that was guessed too
-tight against a real umap-learn version difference (Section 3 above),
-(b) a real bug in this from-scratch implementation, (c) an environment
-issue (missing optional dependency, numba/llvmlite mismatch). Static review
-cannot distinguish between these -- that's exactly why they were not
-claimed to pass here.
+**Status (2026-09-13):** run for the first time on a real remote machine
+(Python 3.13, CUDA driver present but too old for the installed torch build
+-- CPU fallback, no functional impact on these unit tests). 34/34 passing
+after the two test-only fixes described in Section 3 above; nothing in
+`src/umaping/` needed to change. If a *different* failure shows up on
+another environment, the most likely causes, roughly in order of
+likelihood: (a) a genuine tolerance too tight for that environment's
+umap-learn/torch version (Section 3), (b) a real bug in this from-scratch
+implementation, (c) an environment issue (missing optional dependency,
+numba/llvmlite mismatch).

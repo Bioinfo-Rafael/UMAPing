@@ -60,7 +60,11 @@ def test_directed_membership_matches_umap_learn_compute_membership_strengths():
 
     mu = compute_directed_membership(knn_idx, knn_dists, sigma, rho, n_reference=x.shape[0])
 
-    _, _, vals_umap = umap_umap_.compute_membership_strengths(knn_idx, knn_dists, sigma, rho)
+    # Unpack defensively by position rather than exact tuple length: some
+    # umap-learn versions return a 4th element (dists) even with the default
+    # return_dists=False; (rows, cols, vals) are always the first three.
+    membership_result = umap_umap_.compute_membership_strengths(knn_idx, knn_dists, sigma, rho)
+    vals_umap = membership_result[2]
     rows = np.repeat(np.arange(x.shape[0]), k)
     cols = knn_idx.reshape(-1)
     vals_ours = np.asarray(mu[rows, cols]).ravel()

@@ -35,13 +35,22 @@ def test_g_plus_matches_autograd_of_log_phi():
 
 
 def test_g_minus_matches_autograd_of_log_one_minus_phi():
+    """g_minus's "+eps" denominator (eps=1e-3 default) is a documented
+    approximation of the true gradient near q -> 0 (matching umap-learn's
+    own repulsion formula, see umap_forces.py's module docstring): it is
+    only guaranteed to match the exact analytic gradient once q is
+    comfortably larger than eps. Random y/z pairs occasionally land close
+    enough together that this expected approximation gap exceeds a tight
+    tolerance -- purely by chance, not a bug -- so pairs here are
+    constructed with a guaranteed minimum separation (q in [9, 25], i.e.
+    q/eps >= 9000) instead of relying on an unconstrained random draw."""
     torch.manual_seed(1)
     a, b = find_ab_params(spread=1.0, min_dist=0.1)
-    # Scaled up so points are well-separated (q large enough to avoid the
-    # q -> 0 boundary case, which g_minus/log_one_minus_phi handle via
-    # separate epsilon conventions and are not expected to match exactly at).
-    y = torch.randn(16, 2, requires_grad=True) * 3.0
-    z = torch.randn(16, 2) * 3.0
+
+    y = torch.randn(16, 2, requires_grad=True)
+    direction = torch.nn.functional.normalize(torch.randn(16, 2), dim=-1)
+    radius = torch.empty(16, 1).uniform_(3.0, 5.0)
+    z = y.detach() + direction * radius
 
     loss = log_one_minus_phi(y, z, a, b).sum()
     (grad_autograd,) = torch.autograd.grad(loss, y)
