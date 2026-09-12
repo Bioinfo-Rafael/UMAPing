@@ -157,7 +157,14 @@ scales with what, so you know what to expect on your own hardware.
 - **Retriever / spectral / repulsion training** are standard small-MLP
   training loops (a few thousand steps by default); a GPU helps but none of
   these networks are large. `--device auto` picks CUDA when available.
-  `--device cpu` works throughout; it is simply slower.
+  `--device cpu` works throughout; it is simply slower. Repulsion field
+  training's teacher generation runs its trajectory lookups through a
+  device-resident `dynamics.TorchTrajectoryView` specifically so it doesn't
+  round-trip large position arrays through host memory every step -- for
+  small datasets/models, a GPU with high per-op dispatch overhead (or one
+  shared with other jobs) can still be slower than CPU regardless; if you
+  see that, `--device cpu` for the smaller datasets (COIL-20/100) is a
+  reasonable choice.
 - **Reference mean dynamics** (`flow.n_steps`, default 200) is a vectorized
   scatter/gather over graph edges and small Monte-Carlo negative samples --
   it never forms an `N x N` matrix and scales with edge count, not `N^2`.

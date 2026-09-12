@@ -6,10 +6,11 @@ Written to be run remotely (see RUNTIME_CHECKS.md); not executed here.
 
 from __future__ import annotations
 
+import numpy as np
 import pytest
 import torch
 
-from umaping.dynamics import mean_negative_field
+from umaping.dynamics import ReferenceTrajectory, TorchTrajectoryView, mean_negative_field
 from umaping.umap_forces import find_ab_params, g_minus, g_plus, log_one_minus_phi, log_phi
 
 
@@ -114,3 +115,26 @@ def test_g_plus_is_zero_at_zero_distance():
     z = torch.tensor([[1.0, 2.0]])
     out = g_plus(y, z, a, b, clip=None)
     torch.testing.assert_close(out, torch.zeros_like(out))
+
+
+def test_torch_trajectory_view_matches_numpy_positions_at_many():
+    """TorchTrajectoryView (used by train_repulsion_field to keep teacher
+    generation entirely on-device) must agree numerically with
+    ReferenceTrajectory's own numpy positions_at_many, including at
+    non-checkpoint (interpolated) times and at the exact endpoints t=0/t=1."""
+    rng = np.random.default_rng(0)
+    times = np.linspace(0.0, 1.0, 11)
+    positions = rng.normal(size=(11, 20, 2)).astype(np.float32)
+    trajectory = ReferenceTrajectory(times=times, positions=positions)
+    view = TorchTrajectoryView(trajectory, torch.device("cpu"))
+
+    query_times = np.concatenate([rng.uniform(0.0, 1.0, size=13), [0.0, 1.0]]).astype(np.float32)
+    query_idx = rng.integers(0, 20, size=query_times.shape[0])
+
+    expected = trajectory.positions_at_many(query_times, query_idx)
+    actual = view.positions_at_many(
+        torch.as_tensor(query_times, dtype=torch.float32),
+        torch.as_tensor(query_idx, dtype=torch.long),
+    ).numpy()
+
+    np.testing.assert_allclose(actual, expected, rtol=1e-5, atol=1e-6)

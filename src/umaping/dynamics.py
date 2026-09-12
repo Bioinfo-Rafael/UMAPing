@@ -198,3 +198,35 @@ class ReferenceTrajectory:
     def load(cls, path: str | Path) -> "ReferenceTrajectory":
         data = np.load(path)
         return cls(times=data["times"], positions=data["positions"])
+
+
+class TorchTrajectoryView:
+    """Device-resident view of a `ReferenceTrajectory`'s checkpoints, for
+    training loops that need many per-step interpolated lookups against
+    potentially large position arrays (currently: `train_repulsion_field`'s
+    teacher generation, which looks up positions for a batch plus
+    batch*teacher_negative_samples reference points every step). Built once;
+    every subsequent lookup stays entirely on `device` -- only small index
+    and time tensors ever need to already be there, never the interpolated
+    position data itself round-tripping through host memory."""
+
+    def __init__(self, trajectory: ReferenceTrajectory, device: torch.device):
+        self.times = torch.as_tensor(trajectory.times, dtype=torch.float64, device=device)
+        self.positions = torch.as_tensor(trajectory.positions, dtype=torch.float32, device=device)
+
+    def positions_at_many(self, times: torch.Tensor, indices: torch.Tensor) -> torch.Tensor:
+        """Torch analogue of `ReferenceTrajectory.positions_at_many`: paired
+        lookup, position of reference point `indices[i]` at time
+        `times[i]`, independently per i. `times`/`indices` must already be
+        on the same device as this view."""
+        t = times.to(torch.float64).clamp(min=self.times[0], max=self.times[-1])
+        idx_hi = torch.searchsorted(self.times, t, right=True)
+        idx_hi = idx_hi.clamp(min=1, max=self.times.shape[0] - 1)
+        idx_lo = idx_hi - 1
+        t_lo = self.times[idx_lo]
+        t_hi = self.times[idx_hi]
+        denom = torch.where(t_hi == t_lo, torch.ones_like(t_hi), t_hi - t_lo)
+        frac = torch.where(t_hi == t_lo, torch.zeros_like(t_hi), (t - t_lo) / denom).to(torch.float32)
+        lo = self.positions[idx_lo, indices]
+        hi = self.positions[idx_hi, indices]
+        return lo + frac.unsqueeze(-1) * (hi - lo)

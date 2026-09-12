@@ -23,7 +23,7 @@ import torch
 from tqdm import trange
 
 from umaping.config import FlowConfig, RepulsionConfig
-from umaping.dynamics import ReferenceTrajectory, simulate_reference_dynamics
+from umaping.dynamics import ReferenceTrajectory, TorchTrajectoryView, simulate_reference_dynamics
 from umaping.graph import full_edges, row_degree
 from umaping.models.repulsion import RepulsionField
 from umaping.umap_forces import g_minus
@@ -91,9 +91,19 @@ def train_repulsion_field(
     `trajectory` (see `build_reference_trajectory`): the teacher target below
     is the same `g_minus` mean field the reference dynamics were actually
     integrated with, so a mismatched clip would train B_phi to imitate a
-    field the trajectory never experienced."""
+    field the trajectory never experienced.
+
+    Position lookups happen through a device-resident `TorchTrajectoryView`
+    (dynamics.py) rather than `ReferenceTrajectory`'s own numpy
+    `positions_at_many`: this loop needs two such lookups (batch_size, and
+    batch_size * teacher_negative_samples reference points) *every* step, so
+    keeping the interpolation itself on-device avoids round-tripping large
+    position arrays through host memory on every step -- only small index
+    and time arrays (numpy, for exact reproducibility of which
+    points/times are sampled) ever cross that boundary."""
     n = trajectory.positions.shape[1]
     t_min, t_max = float(trajectory.times[0]), float(trajectory.times[-1])
+    traj_view = TorchTrajectoryView(trajectory, device)
 
     rng = np.random.default_rng(seed + (resume_state.step if resume_state else 0))
     model.to(device)
@@ -107,31 +117,29 @@ def train_repulsion_field(
     )
 
     for step in iterator:
-        b_idx = rng.integers(0, n, size=cfg.batch_size)
-        t_vals = rng.uniform(t_min, t_max, size=cfg.batch_size).astype(np.float32)
+        b_idx = torch.as_tensor(rng.integers(0, n, size=cfg.batch_size), dtype=torch.long, device=device)
+        t_vals = torch.as_tensor(rng.uniform(t_min, t_max, size=cfg.batch_size), dtype=torch.float32, device=device)
 
-        base_positions = trajectory.positions_at_many(t_vals, b_idx)
-        jitter = rng.normal(scale=cfg.jitter_sigma, size=base_positions.shape).astype(np.float32)
-        y_query = (base_positions + jitter).astype(np.float32)
+        base_positions = traj_view.positions_at_many(t_vals, b_idx)
+        y_query_t = base_positions + torch.randn_like(base_positions) * cfg.jitter_sigma
 
-        neg_idx = rng.integers(0, n, size=(cfg.batch_size, cfg.teacher_negative_samples))
-        times_repeated = np.repeat(t_vals, cfg.teacher_negative_samples)
-        neg_positions = trajectory.positions_at_many(times_repeated, neg_idx.reshape(-1))
-        neg_positions = neg_positions.reshape(cfg.batch_size, cfg.teacher_negative_samples, -1)
-
-        y_query_t = torch.as_tensor(y_query, device=device)
-        t_t = torch.as_tensor(t_vals, device=device)
-        neg_positions_t = torch.as_tensor(neg_positions, dtype=torch.float32, device=device)
+        neg_idx = torch.as_tensor(
+            rng.integers(0, n, size=cfg.batch_size * cfg.teacher_negative_samples), dtype=torch.long, device=device
+        )
+        times_repeated = t_vals.repeat_interleave(cfg.teacher_negative_samples)
+        neg_positions_t = traj_view.positions_at_many(times_repeated, neg_idx).reshape(
+            cfg.batch_size, cfg.teacher_negative_samples, -1
+        )
 
         with torch.no_grad():
             # Teacher target: fresh, independent negative sample per example,
             # never backpropagated through (stop-gradient by construction).
             target = g_minus(y_query_t.unsqueeze(1), neg_positions_t, a, b, clip=grad_clip).mean(dim=1)
 
-        pred = model(y_query_t, t_t)
+        pred = model(y_query_t, t_vals)
         residual_sq = (pred - target) ** 2
         if cfg.weight_by_row_mass:
-            w_row = row_mass_t[torch.as_tensor(b_idx, device=device)]
+            w_row = row_mass_t[b_idx]
             loss = (residual_sq.sum(-1) * w_row).mean() / w_row.mean().clamp(min=1e-12)
         else:
             loss = residual_sq.mean()
