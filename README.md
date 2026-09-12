@@ -37,7 +37,10 @@ quantity that's expensive to compute exactly at inference time -- the mean
 force from the *whole* reference set pushing a point away.
 
 See **[docs/method.md](docs/method.md)** for the full mathematical
-treatment (four algorithms, every equation, exact conventions).
+treatment (four algorithms, every equation, exact conventions), or
+**[docs/Paper.md](docs/Paper.md)** for a paper-style technical record with
+verified literature citations and an explicit exact/conditional/approximate
+correspondence to UMAP.
 
 ### Why point-wise at inference
 
