@@ -1,10 +1,11 @@
 """The `umaping` command-line interface.
 
-    umaping download  --dataset {coil20,coil100,pancreas}
-    umaping train     --config configs/X.yaml --run-dir runs/X/main
-    umaping evaluate  --run-dir runs/X/main
-    umaping analyze   --run-dir runs/X/main
-    umaping pipeline  --config configs/X.yaml --run-dir runs/X/main
+    umaping download         --dataset {coil20,coil100,pancreas}
+    umaping train            --config configs/X.yaml --run-dir runs/X/main
+    umaping evaluate         --run-dir runs/X/main
+    umaping analyze          --run-dir runs/X/main
+    umaping analyze-advanced --run-dir runs/X/main
+    umaping pipeline         --config configs/X.yaml --run-dir runs/X/main
 
 `train` runs preprocessing -> graph -> retriever -> spectral -> reference
 flow -> repulsion field (checkpointed, resumable). `pipeline` additionally
@@ -93,6 +94,15 @@ def cmd_analyze(args: argparse.Namespace) -> None:
     logger.info("Analysis complete. Figures under %s/figures", args.run_dir)
 
 
+def cmd_analyze_advanced(args: argparse.Namespace) -> None:
+    from umaping.pipeline import run_advanced_analysis
+
+    device = resolve_device(args.device)
+    logger.info("Running advanced (analysis-only) diagnostics for run at %s on device=%s", args.run_dir, device)
+    run_advanced_analysis(args.run_dir, device)
+    logger.info("Advanced analysis complete. See %s/metrics/advanced_*.{json,csv} and %s/figures", args.run_dir, args.run_dir)
+
+
 def cmd_pipeline(args: argparse.Namespace) -> None:
     from umaping.pipeline import run_analysis, run_evaluation, run_training
 
@@ -141,6 +151,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_analyze = subparsers.add_parser("analyze", help="Generate all figures for a trained/evaluated run.")
     _add_device_seed_resume(p_analyze, with_config=False)
     p_analyze.set_defaults(func=cmd_analyze)
+
+    p_analyze_adv = subparsers.add_parser(
+        "analyze-advanced",
+        help="Analysis-only diagnostics (field smoothness/denoising, per-query tail failures) for an already-trained run.",
+    )
+    _add_device_seed_resume(p_analyze_adv, with_config=False)
+    p_analyze_adv.set_defaults(func=cmd_analyze_advanced)
 
     p_pipeline = subparsers.add_parser("pipeline", help="train -> evaluate -> analyze, chained.")
     _add_device_seed_resume(p_pipeline, with_config=True)

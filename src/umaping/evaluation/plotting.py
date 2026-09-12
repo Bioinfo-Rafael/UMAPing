@@ -17,6 +17,13 @@ import torch  # noqa: E402
 from umaping.dynamics import ReferenceTrajectory, mean_negative_field  # noqa: E402
 from umaping.models.repulsion import RepulsionField  # noqa: E402
 
+_METHOD_COLORS = {
+    "b_phi": "tab:blue",
+    "low_m_teacher": "tab:orange",
+    "high_m_teacher": "tab:green",
+    "exact": "tab:red",
+}
+
 
 def plot_embedding(
     reference_embedding: np.ndarray,
@@ -187,6 +194,139 @@ def plot_repulsion_field(
     axes[2].set_title("||predicted - teacher||")
     fig.colorbar(im, ax=axes[2], fraction=0.046, pad=0.04)
 
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# Experiment A: analysis-only advanced diagnostics (evaluation/advanced.py)
+# ---------------------------------------------------------------------------
+
+
+def plot_field_smoothness_by_t(report: dict, path: str | Path) -> None:
+    """One panel per roughness metric; one line per field (b_phi vs. the
+    low-M/high-M/exact teachers) across `report["ts"]`."""
+    ts = report["ts"]
+    metric_names = ["finite_diff_roughness", "second_order_roughness", "angular_variation_degrees", "magnitude_variation"]
+    methods = list(report["overall"].keys())
+
+    fig, axes = plt.subplots(1, len(metric_names), figsize=(5.2 * len(metric_names), 4.6))
+    for ax, metric in zip(axes, metric_names):
+        for method in methods:
+            ys = [report["per_t"][f"t={t:.2f}"].get(method, {}).get(metric, float("nan")) for t in ts]
+            ax.plot(ts, ys, marker="o", label=method, color=_METHOD_COLORS.get(method))
+        ax.set_xlabel("t")
+        ax.set_title(metric)
+    axes[0].set_ylabel("value")
+    axes[-1].legend(fontsize=8, loc="best")
+    fig.suptitle("Repulsion-field smoothness by t")
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_field_denoising_error_by_t(report: dict, path: str | Path) -> None:
+    """MSE of b_phi vs. b_single (each against B_mean, the R-repeat-averaged
+    low-M estimate), across t -- lower is better; b_phi below b_single at a
+    given t means the learned field denoises better than one ordinary
+    finite-sample estimate at that t."""
+    ts = report["ts"]
+    b_phi_mse = [report["per_t"][f"t={t:.2f}"]["vs_b_mean"]["b_phi"]["mse_mean"] for t in ts]
+    single_mse = [report["per_t"][f"t={t:.2f}"]["vs_b_mean"]["single_mc_estimate"]["mse_mean"] for t in ts]
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.plot(ts, b_phi_mse, marker="o", label="B_phi vs. B_mean", color="tab:blue")
+    ax.plot(ts, single_mse, marker="o", label="single low-M MC vs. B_mean", color="tab:orange")
+    if "vs_exact" in report["per_t"][f"t={ts[0]:.2f}"]:
+        b_phi_exact = [report["per_t"][f"t={t:.2f}"]["vs_exact"]["b_phi"]["mse_mean"] for t in ts]
+        single_exact = [report["per_t"][f"t={t:.2f}"]["vs_exact"]["single_mc_estimate"]["mse_mean"] for t in ts]
+        ax.plot(ts, b_phi_exact, marker="s", linestyle="--", label="B_phi vs. exact", color="tab:blue")
+        ax.plot(ts, single_exact, marker="s", linestyle="--", label="single low-M MC vs. exact", color="tab:orange")
+    ax.set_xlabel("t")
+    ax.set_ylabel("vector MSE")
+    ax.set_title("Monte-Carlo denoising test: does B_phi beat one finite-sample estimate?")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_query_neighbor_recall_distribution(per_query_by_method: dict[str, "pd.DataFrame"], k: int, path: str | Path) -> None:
+    """Histogram of `recall_at_{k}` per method, one subplot each."""
+    methods = list(per_query_by_method.keys())
+    fig, axes = plt.subplots(1, len(methods), figsize=(4.2 * len(methods), 4), squeeze=False)
+    axes = axes[0]
+    col = f"recall_at_{k}"
+    for ax, method in zip(axes, methods):
+        df = per_query_by_method[method]
+        ax.hist(df[col].to_numpy(), bins=20, range=(0, 1), color="tab:blue", alpha=0.8)
+        ax.set_title(method, fontsize=9)
+        ax.set_xlabel(col)
+    axes[0].set_ylabel("count")
+    fig.suptitle(f"Query-to-reference Recall@{k} distribution")
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_query_fuzzy_error_distribution(per_query_by_method: dict[str, "pd.DataFrame"], path: str | Path) -> None:
+    """Overlaid histograms of `fuzzy_weighted_mse` per method."""
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for method, df in per_query_by_method.items():
+        values = df["fuzzy_weighted_mse"].dropna().to_numpy()
+        if values.size == 0:
+            continue
+        ax.hist(values, bins=30, alpha=0.5, label=method, density=True)
+    ax.set_xlabel("fuzzy-weighted MSE (query vs. true reference neighbors)")
+    ax.set_ylabel("density")
+    ax.set_title("Fuzzy neighborhood consistency error")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_query_tail_failure_comparison(tail_summaries_by_method: dict[str, dict], metric_key: str, path: str | Path) -> None:
+    """Bar chart of mean / p95 / p99 / worst-5% / worst-1% for one tail
+    metric, grouped by method -- the whole point being that a method can win
+    on the mean while losing badly in the tail."""
+    methods = list(tail_summaries_by_method.keys())
+    fields = ["mean", "p95", "p99", "worst_5pct_mean", "worst_1pct_mean"]
+    x = np.arange(len(fields))
+    width = 0.8 / max(len(methods), 1)
+
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+    for i, method in enumerate(methods):
+        values = [tail_summaries_by_method[method].get(metric_key, {}).get(f, float("nan")) for f in fields]
+        ax.bar(x + i * width, values, width=width, label=method)
+    ax.set_xticks(x + width * (len(methods) - 1) / 2)
+    ax.set_xticklabels(fields, rotation=20, ha="right")
+    ax.set_ylabel(metric_key)
+    ax.set_title(f"Tail comparison: {metric_key}")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_query_periphery_score(per_query_by_method: dict[str, "pd.DataFrame"], path: str | Path) -> None:
+    """Overlaid histograms of `repulsion_accumulation_score` per method (the
+    Islam & Fleischer-inspired periphery diagnostic; see
+    evaluation/advanced.py::repulsion_accumulation_score for the caveat that
+    this is not a verified reproduction of their exact published metric)."""
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for method, df in per_query_by_method.items():
+        if "repulsion_accumulation_score" not in df.columns:
+            continue
+        values = df["repulsion_accumulation_score"].dropna().to_numpy()
+        if values.size == 0:
+            continue
+        ax.hist(values, bins=30, alpha=0.5, label=method, range=(0, 1), density=True)
+    ax.set_xlabel("accumulation score (0 = surrounded, 1 = one-sided)")
+    ax.set_ylabel("density")
+    ax.set_title("Repulsion accumulation / periphery score")
+    ax.legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)

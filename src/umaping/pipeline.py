@@ -17,6 +17,7 @@ import logging
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 
 from umaping.baselines import (
@@ -30,11 +31,22 @@ from umaping.data.mock import prepare_mock_dataset
 from umaping.data.pancreas import prepare_pancreas_dataset
 from umaping.data.preprocessing import PreparedDataset, load_prepared_dataset, save_prepared_dataset
 from umaping.dynamics import ReferenceTrajectory
+from umaping.evaluation.advanced import (
+    compute_per_query_diagnostics,
+    denoising_report_by_t,
+    field_smoothness_report,
+)
 from umaping.evaluation.embedding import evaluate_embedding, procrustes_align
 from umaping.evaluation.field import evaluate_repulsion_field
 from umaping.evaluation.plotting import (
     plot_embedding,
+    plot_field_denoising_error_by_t,
+    plot_field_smoothness_by_t,
     plot_loss_curve,
+    plot_query_fuzzy_error_distribution,
+    plot_query_neighbor_recall_distribution,
+    plot_query_periphery_score,
+    plot_query_tail_failure_comparison,
     plot_query_trajectories,
     plot_repulsion_field,
     plot_retriever_recall,
@@ -42,7 +54,7 @@ from umaping.evaluation.plotting import (
 )
 from umaping.evaluation.retrieval import evaluate_retrieval
 from umaping.evaluation.spectral import evaluate_spectral
-from umaping.graph import build_reference_graph, row_degree
+from umaping.graph import build_reference_graph, chunked_exact_knn, query_fuzzy_weights, row_degree
 from umaping.inference import InferenceEngine
 from umaping.models.mlp import batched_forward
 from umaping.models.repulsion import RepulsionField
@@ -491,17 +503,17 @@ def run_evaluation(run_dir: str | Path, device: torch.device) -> None:
         per_query_recall_by_method[name] = per_query_recall
 
     # 4. Full method.
-    emb, _neigh, latencies, _ = embed_all_queries(engine_full, prepared.query_features)
+    emb, _neigh, _w, latencies, _ = embed_all_queries(engine_full, prepared.query_features)
     _eval_method("ours_full", emb, reference_embedding_ours, latency=float(np.mean(latencies)))
 
     # 3. Ours + ORACLE neighbors.
     engine_oracle_neighbors = InferenceEngine.load(run_dir, device, neighbor_source="oracle", seed=cfg.seed)
-    emb, _, latencies, _ = embed_all_queries(engine_oracle_neighbors, prepared.query_features)
+    emb, _, _, latencies, _ = embed_all_queries(engine_oracle_neighbors, prepared.query_features)
     _eval_method("oracle_neighbors", emb, reference_embedding_ours, latency=float(np.mean(latencies)))
 
     # 5. No-repulsion ablation.
     engine_no_repulsion = InferenceEngine.load(run_dir, device, use_repulsion=False, seed=cfg.seed)
-    emb, _, latencies, _ = embed_all_queries(engine_no_repulsion, prepared.query_features)
+    emb, _, _, latencies, _ = embed_all_queries(engine_no_repulsion, prepared.query_features)
     _eval_method("no_repulsion", emb, reference_embedding_ours, latency=float(np.mean(latencies)))
 
     # 6. Repulsion-oracle diagnostic, on a configurable query subset.
@@ -510,7 +522,7 @@ def run_evaluation(run_dir: str | Path, device: torch.device) -> None:
     engine_repulsion_oracle = InferenceEngine.load(
         run_dir, device, repulsion_mode="oracle_mc", oracle_mc_samples=cfg.eval.oracle_repulsion_samples, seed=cfg.seed
     )
-    emb_subset, _, latencies, _ = embed_all_queries(engine_repulsion_oracle, prepared.query_features[subset_idx])
+    emb_subset, _, _, latencies, _ = embed_all_queries(engine_repulsion_oracle, prepared.query_features[subset_idx])
     _eval_method(
         "repulsion_oracle_diagnostic",
         emb_subset,
@@ -566,7 +578,7 @@ def run_analysis(run_dir: str | Path, device: torch.device) -> None:
 
     engine_full = InferenceEngine.load(run_dir, device, seed=cfg.seed)
 
-    emb_full, _, _, _ = embed_all_queries(engine_full, prepared.query_features)
+    emb_full, _, _, _, _ = embed_all_queries(engine_full, prepared.query_features)
     plot_embedding(
         reference_embedding_ours,
         label_sets_ref,
@@ -588,7 +600,7 @@ def run_analysis(run_dir: str | Path, device: torch.device) -> None:
     )
 
     engine_oracle = InferenceEngine.load(run_dir, device, neighbor_source="oracle", seed=cfg.seed)
-    emb_oracle, _, _, _ = embed_all_queries(engine_oracle, prepared.query_features)
+    emb_oracle, _, _, _, _ = embed_all_queries(engine_oracle, prepared.query_features)
     plot_embedding(
         reference_embedding_ours,
         label_sets_ref,
@@ -650,7 +662,7 @@ def run_analysis(run_dir: str | Path, device: torch.device) -> None:
 
     subset = min(25, prepared.query_features.shape[0])
     idx = np.random.default_rng(cfg.seed).choice(prepared.query_features.shape[0], size=subset, replace=False)
-    _, _, _, trajectories = embed_all_queries(engine_full, prepared.query_features[idx], return_trajectories=True)
+    _, _, _, _, trajectories = embed_all_queries(engine_full, prepared.query_features[idx], return_trajectories=True)
     plot_query_trajectories(reference_embedding_ours, trajectories, layout["figures"] / "query_trajectories.png")
 
     repulsion_ckpt = torch.load(layout["checkpoints"] / "repulsion_field.pt", map_location="cpu", weights_only=False)
@@ -674,3 +686,214 @@ def run_analysis(run_dir: str | Path, device: torch.device) -> None:
             layout["figures"] / f"repulsion_field_{suffix}.png",
             seed=cfg.seed,
         )
+
+
+# ---------------------------------------------------------------------------
+# Experiment A: analysis-only diagnostics for an already-trained run
+# ---------------------------------------------------------------------------
+
+_REQUIRED_ADVANCED_ANALYSIS_ARTIFACTS = [
+    "config.yaml",
+    "cache/prepared_dataset.npz",
+    "memory/reference_features.npy",
+    "memory/retriever_keys.npy",
+    "memory/graph_symmetric.npz",
+    "memory/spectral_calibration.npz",
+    "memory/reference_trajectory.npz",
+    "checkpoints/retriever.pt",
+    "checkpoints/spectral_encoder.pt",
+    "checkpoints/repulsion_field.pt",
+]
+
+
+def _require_trained_run(run_dir: Path) -> None:
+    """`analyze-advanced` operates on an *already-trained* run and must never
+    silently retrain a missing artifact: fail loudly, listing exactly what's
+    missing, and tell the user to run `train`/`pipeline` first."""
+    missing = [rel for rel in _REQUIRED_ADVANCED_ANALYSIS_ARTIFACTS if not (run_dir / rel).exists()]
+    if missing:
+        raise FileNotFoundError(
+            f"Run directory '{run_dir}' is missing required artifacts for advanced analysis: {missing}. "
+            "Run `umaping train` or `umaping pipeline` against this run-dir first -- "
+            "`analyze-advanced` never trains or retrains anything itself."
+        )
+
+
+def run_advanced_analysis(
+    run_dir: str | Path,
+    device: torch.device,
+    ks: tuple[int, ...] = (5, 10, 15, 30),
+    field_ts: tuple[float, ...] = (0.0, 0.25, 0.5, 0.75, 1.0),
+    grid_resolution: int = 24,
+    low_m: int = 32,
+    high_m: int = 2048,
+    denoising_r_repeats: int = 16,
+    denoising_n_eval_points: int = 300,
+) -> None:
+    """Experiment A: repulsion-field smoothness/denoising diagnostics
+    (Section 2.1-2.2) plus per-query "did this land somewhere weird"
+    diagnostics (Section 2.3), for a run that has *already* completed
+    `train` (and ideally `evaluate`). Never trains anything -- see
+    `_require_trained_run` above."""
+    run_dir = Path(run_dir)
+    _require_trained_run(run_dir)
+    layout = run_layout(run_dir)
+    cfg = Config.load(layout["root"] / "config.yaml")
+    set_seed(cfg.seed)
+
+    prepared = load_prepared_dataset(layout["cache"] / "prepared_dataset.npz")
+    trajectory = ReferenceTrajectory.load(layout["memory"] / "reference_trajectory.npz")
+    reference_embedding_ours = trajectory.positions[-1]
+    a, b = find_ab_params(cfg.umap.spread, cfg.umap.min_dist)
+
+    reference_labels = _primary_label(prepared.reference_labels, cfg.dataset.name)
+    query_labels = _primary_label(prepared.query_labels, cfg.dataset.name)
+
+    # -- 2.1 / 2.2: repulsion-field smoothness + Monte-Carlo denoising -------
+    repulsion_ckpt = torch.load(layout["checkpoints"] / "repulsion_field.pt", map_location="cpu", weights_only=False)
+    repulsion_model = RepulsionField(**repulsion_ckpt["hparams"])
+    repulsion_model.load_state_dict(repulsion_ckpt["state_dict"])
+
+    logger.info("Computing repulsion-field smoothness report (grid=%dx%d, ts=%s)...", grid_resolution, grid_resolution, field_ts)
+    smoothness = field_smoothness_report(
+        repulsion_model,
+        trajectory,
+        a,
+        b,
+        reference_embedding_ours,
+        device,
+        ts=field_ts,
+        resolution=grid_resolution,
+        low_m=low_m,
+        high_m=high_m,
+        seed=cfg.seed,
+        clip=cfg.flow.grad_clip,
+    )
+    plot_field_smoothness_by_t(smoothness, layout["figures"] / "field_smoothness_by_t.png")
+
+    logger.info("Running Monte-Carlo denoising test (R=%d, low_m=%d)...", denoising_r_repeats, low_m)
+    denoising = denoising_report_by_t(
+        repulsion_model,
+        trajectory,
+        a,
+        b,
+        reference_embedding_ours,
+        device,
+        ts=field_ts,
+        n_eval_points=denoising_n_eval_points,
+        low_m=low_m,
+        r_repeats=denoising_r_repeats,
+        seed=cfg.seed,
+        clip=cfg.flow.grad_clip,
+    )
+    plot_field_denoising_error_by_t(denoising, layout["figures"] / "field_denoising_error_by_t.png")
+
+    # -- 2.3: per-query diagnostics, across the same methods `evaluate` uses --
+    n_query = prepared.query_features.shape[0]
+    true_idx, true_dist = chunked_exact_knn(prepared.query_features, prepared.reference_features, k=cfg.eval.k)
+    true_weights, _, _ = query_fuzzy_weights(
+        true_dist,
+        local_connectivity=cfg.umap.local_connectivity,
+        n_iter=cfg.umap.smooth_knn_n_iter,
+        bandwidth=cfg.umap.smooth_knn_bandwidth,
+        min_k_dist_scale=cfg.umap.smooth_knn_min_k_dist_scale,
+        eps=cfg.umap.eps,
+    )
+    neighbor_ids_common = [true_idx[i] for i in range(n_query)]
+    neighbor_weights_common = [true_weights[i] for i in range(n_query)]
+
+    per_query_by_method: dict[str, pd.DataFrame] = {}
+    tail_by_method: dict[str, dict] = {}
+
+    def _run_method(name: str, query_embedding: np.ndarray, reference_embedding: np.ndarray, idx_subset: np.ndarray | None = None):
+        if idx_subset is None:
+            q_high = prepared.query_features
+            q_labels = query_labels
+            n_ids = neighbor_ids_common
+            n_w = neighbor_weights_common
+        else:
+            q_high = prepared.query_features[idx_subset]
+            q_labels = query_labels[idx_subset] if query_labels is not None else None
+            n_ids = [neighbor_ids_common[i] for i in idx_subset]
+            n_w = [neighbor_weights_common[i] for i in idx_subset]
+        df, tails = compute_per_query_diagnostics(
+            name,
+            q_high,
+            prepared.reference_features,
+            query_embedding,
+            reference_embedding,
+            n_ids,
+            n_w,
+            a,
+            b,
+            ks=ks,
+            query_labels=q_labels,
+            reference_labels=reference_labels,
+        )
+        per_query_by_method[name] = df
+        tail_by_method[name] = tails
+
+    engine_full = InferenceEngine.load(run_dir, device, seed=cfg.seed)
+    emb, _, _, _, _ = embed_all_queries(engine_full, prepared.query_features)
+    _run_method("ours_full", emb, reference_embedding_ours)
+
+    engine_oracle_neighbors = InferenceEngine.load(run_dir, device, neighbor_source="oracle", seed=cfg.seed)
+    emb, _, _, _, _ = embed_all_queries(engine_oracle_neighbors, prepared.query_features)
+    _run_method("oracle_neighbors", emb, reference_embedding_ours)
+
+    engine_no_repulsion = InferenceEngine.load(run_dir, device, use_repulsion=False, seed=cfg.seed)
+    emb, _, _, _, _ = embed_all_queries(engine_no_repulsion, prepared.query_features)
+    _run_method("no_repulsion", emb, reference_embedding_ours)
+
+    subset_n = min(cfg.eval.repulsion_oracle_query_subset, n_query)
+    subset_idx = np.random.default_rng(cfg.seed).choice(n_query, size=subset_n, replace=False)
+    engine_repulsion_oracle = InferenceEngine.load(
+        run_dir, device, repulsion_mode="oracle_mc", oracle_mc_samples=cfg.eval.oracle_repulsion_samples, seed=cfg.seed
+    )
+    emb_subset, _, _, _, _ = embed_all_queries(engine_repulsion_oracle, prepared.query_features[subset_idx])
+    _run_method("repulsion_oracle_diagnostic", emb_subset, reference_embedding_ours, idx_subset=subset_idx)
+
+    emb_spectral_query = embed_all_queries_spectral_only(engine_full, prepared.query_features)
+    reference_embedding_spectral = engine_full.spectral_embedder.embed(prepared.reference_features)
+    _run_method("spectral_only", emb_spectral_query, reference_embedding_spectral)
+
+    ref_emb_umap, query_emb_umap = run_standard_umap(
+        prepared.reference_features,
+        prepared.query_features,
+        cfg.umap.n_neighbors,
+        cfg.umap.min_dist,
+        cfg.umap.spread,
+        cfg.umap.embedding_dim,
+        cfg.seed,
+    )
+    _run_method("standard_umap", query_emb_umap, ref_emb_umap)
+
+    # -- Figures + metrics outputs -------------------------------------------
+    plot_query_neighbor_recall_distribution(per_query_by_method, k=cfg.eval.k, path=layout["figures"] / "query_neighbor_recall_distribution.png")
+    plot_query_fuzzy_error_distribution(per_query_by_method, layout["figures"] / "query_fuzzy_error_distribution.png")
+    plot_query_tail_failure_comparison(
+        tail_by_method, metric_key=f"recall_at_{cfg.eval.k}_deficit", path=layout["figures"] / "query_tail_failure_comparison.png"
+    )
+    plot_query_periphery_score(per_query_by_method, layout["figures"] / "query_periphery_score.png")
+
+    combined_df = pd.concat(per_query_by_method.values(), ignore_index=True)
+    combined_df.to_csv(layout["metrics"] / "advanced_per_query.csv", index=False)
+
+    save_json(
+        layout["metrics"] / "advanced_analysis.json",
+        {
+            "field_smoothness": smoothness,
+            "field_denoising": denoising,
+            "per_query_tail_summaries": tail_by_method,
+            "config": {
+                "ks": list(ks),
+                "field_ts": list(field_ts),
+                "grid_resolution": grid_resolution,
+                "low_m": low_m,
+                "high_m": high_m,
+                "denoising_r_repeats": denoising_r_repeats,
+                "denoising_n_eval_points": denoising_n_eval_points,
+            },
+        },
+    )
+    logger.info("Advanced analysis complete. See %s/metrics/advanced_*.{json,csv} and %s/figures", run_dir, run_dir)

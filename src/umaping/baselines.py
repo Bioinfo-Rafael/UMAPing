@@ -28,15 +28,17 @@ def embed_all_queries(
     engine: InferenceEngine,
     query_features: np.ndarray,
     return_trajectories: bool = False,
-) -> tuple[np.ndarray, list[np.ndarray], np.ndarray, list[np.ndarray] | None]:
+) -> tuple[np.ndarray, list[np.ndarray], list[np.ndarray], np.ndarray, list[np.ndarray] | None]:
     """Runs `embed_one` independently over every query -- batching here is
     just a Python loop timing each call separately, since "batch" must never
     become a query-query interaction. Returns (embeddings, neighbor_ids per
-    query, per-query latency seconds, optional per-query trajectories)."""
+    query, neighbor_weights per query, per-query latency seconds, optional
+    per-query trajectories)."""
     n_queries = query_features.shape[0]
     embedding_dim = engine.trajectory.positions.shape[2]
     embeddings = np.empty((n_queries, embedding_dim), dtype=np.float32)
     neighbor_ids: list[np.ndarray] = []
+    neighbor_weights: list[np.ndarray] = []
     latencies = np.empty(n_queries, dtype=np.float64)
     trajectories: list[np.ndarray] | None = [] if return_trajectories else None
 
@@ -46,10 +48,11 @@ def embed_all_queries(
         latencies[i] = time.perf_counter() - start
         embeddings[i] = result.embedding
         neighbor_ids.append(result.neighbor_ids)
+        neighbor_weights.append(result.neighbor_weights)
         if return_trajectories:
             trajectories.append(result.trajectory)
 
-    return embeddings, neighbor_ids, latencies, trajectories
+    return embeddings, neighbor_ids, neighbor_weights, latencies, trajectories
 
 
 def embed_all_queries_spectral_only(engine: InferenceEngine, query_features: np.ndarray) -> np.ndarray:
