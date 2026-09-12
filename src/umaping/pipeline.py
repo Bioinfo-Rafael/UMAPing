@@ -444,15 +444,27 @@ def run_evaluation(run_dir: str | Path, device: torch.device) -> None:
     per_method_metrics: dict[str, dict] = {}
     per_query_recall_by_method: dict[str, np.ndarray] = {}
 
-    def _eval_method(name: str, query_embedding: np.ndarray, reference_embedding: np.ndarray, latency=None, extra=None):
+    def _eval_method(
+        name: str,
+        query_embedding: np.ndarray,
+        reference_embedding: np.ndarray,
+        latency=None,
+        extra=None,
+        query_high_dim: np.ndarray | None = None,
+        query_labels_override: np.ndarray | None = None,
+    ):
+        """`query_high_dim`/`query_labels_override` default to the full query
+        set; pass them explicitly when `query_embedding` only covers a
+        *subset* of queries (e.g. the repulsion-oracle diagnostic), so every
+        array `evaluate_embedding` compares stays the same length."""
         m, per_query_recall = evaluate_embedding(
-            prepared.query_features,
+            query_high_dim if query_high_dim is not None else prepared.query_features,
             prepared.reference_features,
             query_embedding,
             reference_embedding,
             k=cfg.eval.k,
             reference_labels=reference_labels,
-            query_labels=query_labels,
+            query_labels=query_labels_override if query_labels_override is not None else query_labels,
             trustworthiness_n_neighbors=cfg.eval.trustworthiness_n_neighbors,
             mean_query_latency_seconds=latency,
         )
@@ -489,6 +501,8 @@ def run_evaluation(run_dir: str | Path, device: torch.device) -> None:
         reference_embedding_ours,
         latency=float(np.mean(latencies)),
         extra={"query_subset_indices": subset_idx.tolist()},
+        query_high_dim=prepared.query_features[subset_idx],
+        query_labels_override=query_labels[subset_idx] if query_labels is not None else None,
     )
 
     # 2. Spectral-only.
