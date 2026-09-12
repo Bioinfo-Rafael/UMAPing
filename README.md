@@ -40,7 +40,9 @@ See **[docs/method.md](docs/method.md)** for the full mathematical
 treatment (four algorithms, every equation, exact conventions), or
 **[docs/Paper.md](docs/Paper.md)** for a paper-style technical record with
 verified literature citations and an explicit exact/conditional/approximate
-correspondence to UMAP.
+correspondence to UMAP (also available as a rendered, math-typeset page at
+[docs/Paper.html](docs/Paper.html) -- open it in a browser, GitHub will not
+render its LaTeX).
 
 ### Why point-wise at inference
 
