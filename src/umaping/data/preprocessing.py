@@ -76,6 +76,20 @@ def check_finite(x: np.ndarray, name: str) -> None:
         raise FloatingPointError(f"Non-finite values encountered in '{name}'")
 
 
+def _to_savable_array(value: np.ndarray) -> np.ndarray:
+    """Object-dtype arrays (e.g. pandas-derived string labels produced by
+    `.astype(str).to_numpy()`, which pandas commonly keeps as `dtype=object`
+    rather than a fixed-width numpy string type) can only round-trip through
+    `.npz` via pickling -- `np.savez` pickles them silently, but
+    `load_prepared_dataset` then can't read them back without
+    `allow_pickle=True`. Cast to a fixed-width numpy string dtype instead so
+    saving/loading never needs pickling at all."""
+    value = np.asarray(value)
+    if value.dtype == object:
+        return value.astype(str)
+    return value
+
+
 def save_prepared_dataset(path: str | Path, dataset: PreparedDataset) -> None:
     payload: dict[str, Any] = {
         "reference_features": dataset.reference_features,
@@ -83,9 +97,9 @@ def save_prepared_dataset(path: str | Path, dataset: PreparedDataset) -> None:
         "input_dim": np.asarray(dataset.input_dim),
     }
     for key, value in dataset.reference_labels.items():
-        payload[f"reference_label__{key}"] = value
+        payload[f"reference_label__{key}"] = _to_savable_array(value)
     for key, value in dataset.query_labels.items():
-        payload[f"query_label__{key}"] = value
+        payload[f"query_label__{key}"] = _to_savable_array(value)
     np.savez(path, **payload)
 
 
