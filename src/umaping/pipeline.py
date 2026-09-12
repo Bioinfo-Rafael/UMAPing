@@ -26,6 +26,7 @@ from umaping.baselines import (
 )
 from umaping.config import Config
 from umaping.data.coil import prepare_coil_dataset
+from umaping.data.mock import prepare_mock_dataset
 from umaping.data.pancreas import prepare_pancreas_dataset
 from umaping.data.preprocessing import PreparedDataset, load_prepared_dataset, save_prepared_dataset
 from umaping.dynamics import ReferenceTrajectory
@@ -128,6 +129,8 @@ def _label_sets(prepared: PreparedDataset, dataset_name: str) -> tuple[dict[str,
         ref = {"celltype": prepared.reference_labels["celltype"], "tech": prepared.reference_labels["tech"]}
         query = {"celltype": prepared.query_labels["celltype"], "tech": prepared.query_labels["tech"]}
         return ref, query
+    if dataset_name == "mock":
+        return {"cluster": prepared.reference_labels["cluster"]}, {"cluster": prepared.query_labels["cluster"]}
     return {}, {}
 
 
@@ -136,6 +139,8 @@ def _primary_label(labels: dict[str, np.ndarray], dataset_name: str) -> np.ndarr
         return labels.get("object_id")
     if dataset_name == "pancreas":
         return labels.get("celltype")
+    if dataset_name == "mock":
+        return labels.get("cluster")
     return None
 
 
@@ -170,9 +175,20 @@ def stage_preprocess(cfg: Config, layout: dict[str, Path]) -> PreparedDataset:
             seed=cfg.seed,
             query_tech=tuple(params.get("query_tech", ["smartseq2", "celseq2"])),
         )
+    elif name == "mock":
+        # Synthetic, no download: exists purely to smoke-test the whole
+        # pipeline (through evaluate/analyze) fully locally in seconds. See
+        # configs/mock.yaml and data/mock.py.
+        prepared = prepare_mock_dataset(
+            n_reference=params.get("n_reference", 200),
+            n_query=params.get("n_query", 50),
+            input_dim=cfg.dataset.input_dim,
+            n_clusters=params.get("n_clusters", 5),
+            seed=cfg.seed,
+        )
     else:
         raise ValueError(
-            f"Unknown dataset '{name}'. Expected one of coil20, coil100, pancreas. "
+            f"Unknown dataset '{name}'. Expected one of coil20, coil100, pancreas, mock. "
             f"Did you mean to add a raw dataset directory under {cfg.dataset.raw_dir}?"
         )
 

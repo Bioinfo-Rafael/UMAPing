@@ -1,0 +1,79 @@
+# Synthetic "mock" dataset -- NOT one of the three real research datasets.
+# Exists purely so the entire pipeline (preprocessing -> graph -> retriever
+# -> spectral -> flow -> repulsion -> evaluate -> analyze) can be smoke-
+# tested fully locally in seconds, with no download and no real training:
+#
+#   umaping pipeline --config configs/mock.yaml --run-dir runs/mock/main --device cpu
+#
+dataset:
+  name: mock
+  raw_dir: data/raw/mock # unused (nothing is downloaded); kept for schema consistency
+  input_dim: 16
+  params:
+    n_reference: 200
+    n_query: 50
+    n_clusters: 5
+
+umap:
+  n_neighbors: 10
+  embedding_dim: 2
+  min_dist: 0.1
+  spread: 1.0
+  negative_sample_rate: 5.0
+  local_connectivity: 1.0
+  set_op_mix_ratio: 1.0
+
+retriever:
+  hidden_dims: [32]
+  retrieval_dim: 16
+  activation: gelu
+  temperature: 0.1
+  candidate_multiplier: 4
+  min_candidates: 40
+  ann_backend: exact
+  batch_size: 32
+  n_random_negatives: 16
+  exclude_known_neighbors_from_negatives: true
+  lr: 0.001
+  steps: 60
+  log_every: 20
+
+spectral:
+  hidden_dims: [32]
+  raw_output_dim: 3 # embedding_dim + 1
+  activation: gelu
+  orthogonality_weight: 1.0
+  edge_batch_size: 256
+  lr: 0.001
+  steps: 60
+  calibration_target_scale: 10.0
+  log_every: 20
+
+flow:
+  n_steps: 20
+  initial_alpha: 1.0
+  dynamics_negative_samples: 16
+  grad_clip: 4.0
+  checkpoint_stride: 1
+
+repulsion:
+  hidden_dim: 32
+  n_residual_blocks: 2
+  time_embed_dim: 8
+  activation: gelu
+  jitter_sigma: 0.1
+  teacher_negative_samples: 16
+  weight_by_row_mass: false
+  lr: 0.001
+  steps: 60
+  batch_size: 32
+  log_every: 20
+
+eval:
+  k: 5
+  oracle_repulsion_samples: 32
+  repulsion_oracle_query_subset: 10
+  trustworthiness_n_neighbors: 5
+
+seed: 0
+float_dtype: float32
