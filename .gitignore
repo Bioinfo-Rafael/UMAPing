@@ -1,0 +1,75 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+
+# Build artifacts, always root-level for this project (anchored: an
+# unanchored `build/`/`dist/` would also match any same-named source
+# subdirectory anywhere in the tree, not just the project root).
+/build/
+/dist/
+
+# --- Virtual environments (always root-level; anchored for the same reason) ---
+/.venv/
+/venv/
+/env/
+/ENV/
+
+# --- Package managers / tooling caches ---
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# --- Project data & experiment outputs (never commit) ---
+# Anchored to the repo root with a leading slash: an unanchored `data/`
+# would also match `src/umaping/data/` (the real dataset-loading
+# subpackage) and silently exclude it from version control.
+/data/
+/datasets/
+*.h5ad
+*.zip
+*.tar
+*.tar.gz
+
+# Experiment run directories: configs are authored under configs/, but a
+# `runs/` root (or any run-dir the CLI writes to) contains large generated
+# artifacts and must never be committed. Anchored to the repo root for the
+# same reason as /data/ above.
+/runs/
+/outputs/
+/checkpoints/
+/wandb/
+/mlruns/
+
+# Model / array binary formats produced at runtime
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.npy
+*.pkl
+*.joblib
+
+# --- Logs ---
+*.log
+/logs/
