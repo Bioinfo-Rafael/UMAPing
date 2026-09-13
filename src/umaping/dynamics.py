@@ -87,6 +87,49 @@ def mean_negative_field(
     return out.squeeze(0) if single else out
 
 
+def exact_all_reference_mean_field(
+    y: torch.Tensor,
+    trajectory: "ReferenceTrajectory",
+    t: float | np.ndarray,
+    a: float,
+    b: float,
+    device: torch.device,
+    eps: float = 1e-3,
+    clip: float | None = 4.0,
+    chunk_size: int = 4096,
+) -> torch.Tensor:
+    """The *exact* all-reference mean field, ``B_X(y, t) = mean_c g_minus(y, y_c(t))``
+    over every reference point exactly once -- unlike `mean_negative_field`
+    called on a randomly-drawn subset (as `InferenceEngine`'s ``oracle_mc``
+    repulsion mode and the reference-dynamics/repulsion-training loops both
+    do, which sample *with replacement* and therefore only approximate this
+    quantity), this never samples: it is a deterministic function of the
+    trajectory and (y, t) alone. Chunked over the reference axis so an
+    ``(n_eval, N, d)`` tensor is never fully materialized for large ``N``.
+    Used by `InferenceEngine`'s ``"exact"`` repulsion mode (an O(N)-per-query
+    diagnostic baseline, not the default learned inference path) and by
+    `evaluation/advanced.py`'s field-smoothness/denoising diagnostics.
+
+    ``y``: ``(n_eval, d)``. ``t``: a single shared time, or a ``(n_eval,)``
+    array of per-point times."""
+    n = trajectory.positions.shape[1]
+    n_eval = y.shape[0]
+    t_arr = np.full(n_eval, float(t), dtype=np.float64) if np.isscalar(t) else np.asarray(t, dtype=np.float64)
+    total = torch.zeros((n_eval, y.shape[-1]), dtype=torch.float32, device=device)
+
+    for start in range(0, n, chunk_size):
+        end = min(start + chunk_size, n)
+        chunk_n = end - start
+        times_rep = np.repeat(t_arr, chunk_n)
+        idx_rep = np.tile(np.arange(start, end), n_eval)
+        chunk_positions = trajectory.positions_at_many(times_rep, idx_rep).reshape(n_eval, chunk_n, -1)
+        chunk_positions_t = torch.as_tensor(chunk_positions, dtype=torch.float32, device=device)
+        field = g_minus(y.unsqueeze(1), chunk_positions_t, a, b, eps=eps, clip=clip)  # (n_eval, chunk_n, d)
+        total = total + field.sum(dim=1)
+
+    return total / n
+
+
 def simulate_reference_dynamics(
     y0: torch.Tensor,
     row: torch.Tensor,

@@ -1,0 +1,90 @@
+# Hong et al. Emergency Department admission-prediction dataset (Experiment
+# C). See data/hong_ed.py's module docstring for the schema-detection
+# caveat: the outcome/patient-identifier column names are auto-detected, not
+# hardcoded, since the exact schema could not be confirmed without a real
+# download during implementation.
+#
+# `dataset.input_dim` below is a PLACEHOLDER: the true post-encoding feature
+# count (z-scored numeric columns + reference-only one-hot categorical
+# columns; see data/hong_ed.py::prepare_hong_ed_dataset) is only known once
+# the real file is actually loaded. Run `umaping experiment --experiment
+# hong_ed --run-dir <dir> --prepare-only` first, read the resulting error
+# message (it reports the actual produced input_dim), and update the value
+# below to match before running the full experiment.
+#
+# `subset_mode: small` is the default so the first pass (confirming the
+# schema/input_dim above) is fast; switch to `medium` or `full` once the
+# schema is confirmed.
+dataset:
+  name: hong_ed
+  raw_dir: data/raw/hong_ed
+  input_dim: 32 # PLACEHOLDER -- see comment above
+  params:
+    query_fraction: 0.2
+    subset_mode: small
+    small_n: 500
+    medium_n: 5000
+
+umap:
+  n_neighbors: 15
+  embedding_dim: 2
+  min_dist: 0.1
+  spread: 1.0
+  negative_sample_rate: 5.0
+  local_connectivity: 1.0
+  set_op_mix_ratio: 1.0
+
+retriever:
+  hidden_dims: [512, 256]
+  retrieval_dim: 128
+  activation: gelu
+  temperature: 0.1
+  candidate_multiplier: 4
+  min_candidates: 64
+  ann_backend: exact
+  batch_size: 256
+  n_random_negatives: 64
+  exclude_known_neighbors_from_negatives: true
+  lr: 0.001
+  steps: 2000
+  log_every: 50
+
+spectral:
+  hidden_dims: [512, 256]
+  raw_output_dim: 3 # embedding_dim + 1
+  activation: gelu
+  orthogonality_weight: 1.0
+  edge_batch_size: 4096
+  lr: 0.001
+  steps: 2000
+  calibration_target_scale: 10.0
+  log_every: 50
+
+flow:
+  n_steps: 200
+  initial_alpha: 1.0
+  dynamics_negative_samples: 64
+  grad_clip: 4.0
+  checkpoint_stride: 1
+
+repulsion:
+  hidden_dim: 256
+  n_residual_blocks: 4
+  time_embed_dim: 32
+  activation: gelu
+  jitter_sigma: 0.1
+  teacher_negative_samples: 64
+  weight_by_row_mass: false
+  lr: 0.001
+  steps: 4000
+  batch_size: 512
+  log_every: 100
+
+eval:
+  k: 15
+  oracle_repulsion_samples: 2048
+  repulsion_oracle_query_subset: 50
+  trustworthiness_n_neighbors: 15
+
+seed: 0
+float_dtype: float32

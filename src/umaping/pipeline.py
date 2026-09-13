@@ -143,6 +143,20 @@ def _label_sets(prepared: PreparedDataset, dataset_name: str) -> tuple[dict[str,
         return ref, query
     if dataset_name == "mock":
         return {"cluster": prepared.reference_labels["cluster"]}, {"cluster": prepared.query_labels["cluster"]}
+    if dataset_name == "fashion_mnist":
+        return {"class": prepared.reference_labels["class"]}, {"class": prepared.query_labels["class"]}
+    if dataset_name == "twenty_newsgroups":
+        return {"newsgroup": prepared.reference_labels["newsgroup"]}, {"newsgroup": prepared.query_labels["newsgroup"]}
+    if dataset_name == "mnist_oos":
+        return {"digit": prepared.reference_labels["digit"]}, {"digit": prepared.query_labels["digit"]}
+    if dataset_name == "hong_ed":
+        return {"admitted": prepared.reference_labels["admitted"]}, {"admitted": prepared.query_labels["admitted"]}
+    if dataset_name in ("organoid", "embryoid_body"):
+        # The grouping column's actual name is auto-detected per-dataset
+        # (see data/_scrna_common.py) and is whatever key `PreparedDataset`
+        # was built with; expose every label key present rather than one
+        # hardcoded name.
+        return dict(prepared.reference_labels), dict(prepared.query_labels)
     return {}, {}
 
 
@@ -153,6 +167,16 @@ def _primary_label(labels: dict[str, np.ndarray], dataset_name: str) -> np.ndarr
         return labels.get("celltype")
     if dataset_name == "mock":
         return labels.get("cluster")
+    if dataset_name == "fashion_mnist":
+        return labels.get("class")
+    if dataset_name == "twenty_newsgroups":
+        return labels.get("newsgroup")
+    if dataset_name == "mnist_oos":
+        return labels.get("digit")
+    if dataset_name == "hong_ed":
+        return labels.get("admitted")
+    if dataset_name in ("organoid", "embryoid_body"):
+        return next(iter(labels.values())) if labels else None
     return None
 
 
@@ -198,10 +222,77 @@ def stage_preprocess(cfg: Config, layout: dict[str, Path]) -> PreparedDataset:
             n_clusters=params.get("n_clusters", 5),
             seed=cfg.seed,
         )
+    elif name == "fashion_mnist":
+        from umaping.data.fashion_mnist import prepare_fashion_mnist_dataset
+
+        prepared, _ = prepare_fashion_mnist_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            use_pca=params.get("use_pca", True),
+            pca_dim=params.get("pca_dim", 100),
+            seed=cfg.seed,
+            n_reference_subsample=params.get("n_reference_subsample"),
+            n_query_subsample=params.get("n_query_subsample"),
+        )
+    elif name == "twenty_newsgroups":
+        from umaping.data.twenty_newsgroups import prepare_twenty_newsgroups_dataset
+
+        prepared, _ = prepare_twenty_newsgroups_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            n_components=params.get("n_components", 100),
+            max_features=params.get("max_features", 20000),
+            seed=cfg.seed,
+            n_reference_subsample=params.get("n_reference_subsample"),
+            n_query_subsample=params.get("n_query_subsample"),
+        )
+    elif name == "mnist_oos":
+        from umaping.data.mnist_oos import prepare_mnist_dataset
+
+        prepared, _ = prepare_mnist_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            use_pca=params.get("use_pca", True),
+            pca_dim=params.get("pca_dim", 50),
+            seed=cfg.seed,
+            n_reference_subsample=params.get("n_reference_subsample"),
+            n_query_subsample=params.get("n_query_subsample"),
+        )
+    elif name == "hong_ed":
+        from umaping.data.hong_ed import prepare_hong_ed_dataset
+
+        prepared, _ = prepare_hong_ed_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            query_fraction=params.get("query_fraction", 0.2),
+            subset_mode=params.get("subset_mode", "full"),
+            small_n=params.get("small_n", 500),
+            medium_n=params.get("medium_n", 5000),
+            seed=cfg.seed,
+        )
+    elif name == "organoid":
+        from umaping.data.organoid import prepare_organoid_dataset
+
+        query_groups = params.get("query_groups")
+        prepared, _ = prepare_organoid_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            n_hvg=params.get("n_hvg", 2000),
+            n_pcs=params.get("n_pcs", 50),
+            seed=cfg.seed,
+            query_groups=tuple(query_groups) if query_groups else None,
+        )
+    elif name == "embryoid_body":
+        from umaping.data.embryoid_body import prepare_embryoid_body_dataset
+
+        query_groups = params.get("query_groups")
+        prepared, _ = prepare_embryoid_body_dataset(
+            raw_dir=cfg.dataset.raw_dir,
+            n_hvg=params.get("n_hvg", 2000),
+            n_pcs=params.get("n_pcs", 50),
+            seed=cfg.seed,
+            query_groups=tuple(query_groups) if query_groups else None,
+        )
     else:
         raise ValueError(
-            f"Unknown dataset '{name}'. Expected one of coil20, coil100, pancreas, mock. "
-            f"Did you mean to add a raw dataset directory under {cfg.dataset.raw_dir}?"
+            f"Unknown dataset '{name}'. Expected one of coil20, coil100, pancreas, mock, fashion_mnist, "
+            f"twenty_newsgroups, mnist_oos, hong_ed, organoid, embryoid_body. Did you mean to add a raw "
+            f"dataset directory under {cfg.dataset.raw_dir}?"
         )
 
     if prepared.input_dim != cfg.dataset.input_dim:

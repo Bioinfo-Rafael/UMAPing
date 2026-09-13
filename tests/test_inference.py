@@ -138,6 +138,35 @@ def test_embed_one_oracle_mc_repulsion_is_reproducible_and_query_independent():
     np.testing.assert_allclose(result_alone.embedding, result_after_other_query.embedding, rtol=1e-6, atol=1e-7)
 
 
+def test_embed_one_exact_repulsion_matches_brute_force_and_is_deterministic():
+    """The 'exact' repulsion mode (used by the new exact/high-M repulsion
+    diagnostic baseline) must never sample -- unlike oracle_mc, two calls
+    with the same query must be bit-for-bit identical, and its result must
+    equal a direct brute-force mean over every reference point."""
+    from umaping.dynamics import exact_all_reference_mean_field
+
+    engine, features = _build_toy_engine(seed=9)
+    engine.repulsion_mode = "exact"
+
+    query = np.random.default_rng(11).normal(size=features.shape[1]).astype(np.float32)
+    result_1 = engine.embed_one(query)
+    result_2 = engine.embed_one(query)
+    np.testing.assert_array_equal(result_1.embedding, result_2.embedding)
+
+    # Brute-force cross-check at the query's *first* Euler step only (t=0,
+    # y*(0) = spectral init), since embed_one's own loop already advances
+    # state -- this reproduces just the repulsion term's exact-mode formula.
+    y0 = torch.as_tensor(engine.spectral_embedder.embed_one(query), dtype=torch.float32)
+    exact = exact_all_reference_mean_field(
+        y0.unsqueeze(0), engine.trajectory, 0.0, engine.cfg.a, engine.cfg.b, engine.device, clip=engine.cfg.grad_clip
+    ).squeeze(0)
+    all_positions = torch.as_tensor(engine.trajectory.positions_at(0.0), dtype=torch.float32)
+    from umaping.umap_forces import g_minus
+
+    brute_force = g_minus(y0.unsqueeze(0), all_positions.unsqueeze(0), engine.cfg.a, engine.cfg.b, clip=engine.cfg.grad_clip).mean(dim=1).squeeze(0)
+    torch.testing.assert_close(exact, brute_force, atol=1e-5, rtol=1e-4)
+
+
 def test_embed_one_does_not_mutate_reference_trajectory():
     engine, features = _build_toy_engine(seed=1)
     positions_before = engine.trajectory.positions.copy()

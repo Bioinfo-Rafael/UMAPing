@@ -98,6 +98,18 @@ selection (2,000 genes, batch-aware) and PCA (50 components) -- is fit on
 the reference split only and merely *applied* to the query split; there is
 no query leakage into any stage of training.
 
+### Analysis-only diagnostics and additional experiments
+
+See **[experiments/README.md](experiments/README.md)** for: `umaping
+analyze-advanced` (repulsion-field smoothness/denoising and per-query tail
+diagnostics for an already-trained run, on any dataset); `umaping
+experiment` (download/prepare/train/evaluate/analyze/baselines for six
+additional datasets -- Fashion-MNIST, 20 Newsgroups, MNIST, Hong et al.
+Emergency Department, and two continuous-structure scRNA-seq datasets); a
+common baseline registry (reduced-repulsion UMAP, weighted-kNN
+interpolation, Parametric UMAP, and graceful-unavailable stubs for
+NUMAP/ParamRepulsor); and `umaping scale-benchmark`.
+
 ## 3. Outputs and directory structure
 
 ```

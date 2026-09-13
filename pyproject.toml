@@ -41,7 +41,16 @@ dev = [
     "pytest>=7.4",
     "pytest-cov>=4.1",
 ]
-all = ["umaping[scrna,dev]"]
+# Optional datasets/baselines used by the experiments/ suite (Fashion-MNIST,
+# MNIST, Hong ED, Parametric UMAP). 20 Newsgroups needs none of these (it
+# only uses scikit-learn, already a core dependency). NUMAP/Sep-SpectralNet
+# and ParamRepulsor have no pip package -- see experiments/README.md for how
+# to run their official repositories instead.
+experiments = [
+    "torchvision>=0.16",
+    "pyreadr>=0.5",
+]
+all = ["umaping[scrna,dev,experiments]"]
 
 [project.scripts]
 umaping = "umaping.cli:main"

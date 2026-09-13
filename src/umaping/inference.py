@@ -17,7 +17,13 @@ import numpy as np
 import torch
 
 from umaping.config import Config
-from umaping.dynamics import ReferenceTrajectory, alpha_schedule, mean_negative_field, weighted_attraction
+from umaping.dynamics import (
+    ReferenceTrajectory,
+    alpha_schedule,
+    exact_all_reference_mean_field,
+    mean_negative_field,
+    weighted_attraction,
+)
 from umaping.graph import chunked_exact_knn, query_fuzzy_weights
 from umaping.models.repulsion import RepulsionField
 from umaping.models.retriever import DualEncoder, NeighborIndex, build_neighbor_index
@@ -67,7 +73,7 @@ class InferenceEngine:
         cfg: InferenceConfig,
         device: torch.device,
         neighbor_source: Literal["learned", "oracle"] = "learned",
-        repulsion_mode: Literal["learned", "oracle_mc"] = "learned",
+        repulsion_mode: Literal["learned", "oracle_mc", "exact"] = "learned",
         use_repulsion: bool = True,
         oracle_mc_samples: int = 2048,
         seed: int = 0,
@@ -133,6 +139,15 @@ class InferenceEngine:
             )
             with torch.no_grad():
                 b_phi = mean_negative_field(y_star, y_neg, self.cfg.a, self.cfg.b, clip=self.cfg.grad_clip)
+        elif self.repulsion_mode == "exact":
+            # Diagnostic only ("exact/high-M repulsion" baseline): every
+            # reference point contributes exactly once (chunked), unlike
+            # oracle_mc's with-replacement sample -- O(N) per query, so this
+            # is meant for a query subset, never the default learned path.
+            with torch.no_grad():
+                b_phi = exact_all_reference_mean_field(
+                    y_star.unsqueeze(0), self.trajectory, t, self.cfg.a, self.cfg.b, self.device, clip=self.cfg.grad_clip
+                ).squeeze(0)
         else:
             raise ValueError(f"Unknown repulsion_mode '{self.repulsion_mode}'")
 

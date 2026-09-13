@@ -330,3 +330,71 @@ def plot_query_periphery_score(per_query_by_method: dict[str, "pd.DataFrame"], p
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# Section 8: scale benchmark (experiments/scale_benchmark.py)
+# ---------------------------------------------------------------------------
+
+
+def plot_query_latency_vs_n(points: list[dict], path: str | Path) -> None:
+    """Per-query online cost, broken down into every sub-step
+    `InferenceEngine`'s public API exposes separately, vs. reference set
+    size N (log-log, since the default exact retrieval backend is O(N))."""
+    ns = [p["n_reference"] for p in points]
+    fig, ax = plt.subplots(figsize=(7.5, 5.5))
+    for key, label in [
+        ("query_encode_seconds_per_query", "query encode"),
+        ("candidate_search_seconds_per_query", "candidate search"),
+        ("retrieve_and_rerank_seconds_per_query", "retrieve + rerank (total)"),
+        ("spectral_encode_seconds_per_query", "spectral encode"),
+        ("full_embed_one_seconds_per_query", "full embed_one (total)"),
+    ]:
+        ax.plot(ns, [p[key] for p in points], marker="o", label=label)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("reference set size N")
+    ax.set_ylabel("seconds per query")
+    ax.set_title("Online query cost vs. N")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_memory_vs_n(points: list[dict], path: str | Path) -> None:
+    ns = [p["n_reference"] for p in points]
+    rss = [p["peak_rss_mb"] for p in points]
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.plot(ns, rss, marker="o", color="tab:purple")
+    ax.set_xlabel("reference set size N")
+    ax.set_ylabel("peak resident set size (MB)")
+    ax.set_title("Process peak memory vs. N (cumulative across this benchmark run)")
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def plot_offline_cost_vs_n(points: list[dict], path: str | Path) -> None:
+    """Offline (training-time) cost per stage vs. N."""
+    ns = [p["n_reference"] for p in points]
+    fig, ax = plt.subplots(figsize=(7.5, 5.5))
+    for key, label in [
+        ("preprocessing_seconds", "preprocessing"),
+        ("graph_construction_seconds", "graph construction"),
+        ("retriever_training_seconds", "retriever training"),
+        ("spectral_training_seconds", "spectral training"),
+        ("reference_dynamics_seconds", "reference dynamics"),
+        ("repulsion_training_seconds", "repulsion training"),
+        ("offline_total_seconds", "offline total"),
+    ]:
+        style = "--" if key == "offline_total_seconds" else "-"
+        ax.plot(ns, [p[key] for p in points], marker="o", linestyle=style, label=label)
+    ax.set_xscale("log")
+    ax.set_xlabel("reference set size N")
+    ax.set_ylabel("seconds")
+    ax.set_title("Offline (training) cost vs. N")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)

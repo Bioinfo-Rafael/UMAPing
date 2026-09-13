@@ -160,6 +160,33 @@ pages/APIs (not from training-data memory) during implementation:
   mid-stage will redo that whole stage from scratch on `--resume`, not
   continue from the exact step it was on.
 
+## 4a. Experiments B/C/D dataset downloads -- not verified, unlike Section 2 above
+
+Unlike COIL-20/COIL-100/pancreas (Section 2, verified live during the
+original implementation), the six new datasets added on the
+`experiments/oos-local-global-evaluation` branch were implemented under a
+stricter constraint that also forbade downloading them -- **none of their
+download paths has been exercised at all**, not even once. See
+`experiments/README.md` Section 2 for the full per-dataset caveat list; in
+short:
+
+- Fashion-MNIST, MNIST: standard `torchvision.datasets.{FashionMNIST,MNIST}`
+  calls, low risk, but genuinely never invoked.
+- 20 Newsgroups: standard `sklearn.datasets.fetch_20newsgroups`, same.
+- Hong ED: branch name (`main` vs. `master`) and column schema unconfirmed;
+  `download_hong_ed` tries both branches, and `prepare_hong_ed_dataset`
+  auto-detects the outcome/ID columns and fails loudly if it can't.
+- Organoid / Embryoid body: exact file format inside each Figshare article,
+  and the metadata column naming the state/time group, unconfirmed;
+  `data/_scrna_common.py` dispatches on whatever extension is actually
+  downloaded and fails loudly if no grouping column is detected.
+
+First real use of any of these should treat it like Section 2's original
+three: confirm the download succeeds, confirm the schema/column-detection
+assumptions hold, and update this file (and the relevant dataset module's
+docstring / `experiments/configs/*.yaml` comment) with what was actually
+found -- particularly `hong_ed.yaml`'s placeholder `dataset.input_dim`.
+
 ## 5. Tests
 
 `tests/` implements all of the required checks (fuzzy-weight/umap-learn
@@ -184,3 +211,20 @@ likelihood: (a) a genuine tolerance too tight for that environment's
 umap-learn/torch version (Section 3), (b) a real bug in this from-scratch
 implementation, (c) an environment issue (missing optional dependency,
 numba/llvmlite mismatch).
+
+**Update (`experiments/oos-local-global-evaluation` branch, 2026-09-13):**
+this branch's additions (Experiment A's advanced diagnostics, the six new
+dataset loaders, the common experiment/baseline framework, the scale
+benchmark) were, per that task's own instructions, developed with local
+Python execution explicitly permitted for mock/synthetic tests -- unlike the
+rest of this file, which documents a purely-static original implementation.
+85/85 tests passing locally (Python 3.14, CPU) at the time of writing,
+including 36 new tests across `tests/test_new_datasets.py`,
+`tests/test_experiments_framework.py`, `tests/test_scale_benchmark.py`, and
+new additions to `tests/test_advanced_analysis.py`/`test_inference.py`. One
+real bug was found this way (not by static review): a single-character
+substring-matching candidate (`"y"`) in both `data/hong_ed.py` and
+`data/_scrna_common.py`'s column auto-detection spuriously matched any
+column name merely *containing* the letter "y" (e.g. "triage_category");
+fixed by requiring substring-matched (as opposed to exact-matched)
+candidates to be at least 3 characters long.

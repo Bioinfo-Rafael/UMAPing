@@ -112,6 +112,18 @@ def load_sparse(path: str | Path) -> sp.csr_matrix:
     return sp.load_npz(path)
 
 
+def guard_run_dir(run_dir: str | Path, resume: bool) -> None:
+    """Refuse to silently reuse a run directory that already has completed
+    stages unless `resume` is explicitly set. Shared by `cli.py` (the
+    `train`/`pipeline` commands) and `experiments/runner.py`."""
+    metadata_path = Path(run_dir) / "metadata.json"
+    if metadata_path.exists() and not resume:
+        raise SystemExit(
+            f"Run directory '{run_dir}' already contains a previous run (metadata.json exists). "
+            "Pass --resume to continue it, or point --run-dir at an empty directory to start fresh."
+        )
+
+
 def mark_done(stage_dir: str | Path, stage_name: str) -> None:
     marker = Path(stage_dir) / f"{stage_name}.done"
     atomic_write_bytes(marker, b"ok")

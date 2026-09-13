@@ -29,7 +29,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from umaping.dynamics import ReferenceTrajectory, mean_negative_field
+from umaping.dynamics import ReferenceTrajectory, exact_all_reference_mean_field, mean_negative_field
 from umaping.graph import chunked_exact_knn
 from umaping.models.repulsion import RepulsionField
 from umaping.umap_forces import g_minus
@@ -58,44 +58,6 @@ def make_reference_grid(
     grid_x, grid_y = np.meshgrid(xs, ys, indexing="xy")
     grid_points = np.stack([grid_x, grid_y], axis=-1).astype(np.float32)
     return grid_points, delta
-
-
-def exact_all_reference_mean_field(
-    y: torch.Tensor,
-    trajectory: ReferenceTrajectory,
-    t: float | np.ndarray,
-    a: float,
-    b: float,
-    device: torch.device,
-    clip: float | None = 4.0,
-    chunk_size: int = 4096,
-) -> torch.Tensor:
-    """The exact all-reference mean field ``B_X(y, t) = mean_c g_minus(y, y_c(t))``,
-    using *every* reference point exactly once -- unlike `InferenceEngine`'s
-    ``oracle_mc`` repulsion mode or `dynamics.mean_negative_field` called on a
-    sampled subset, both of which sample with replacement and therefore only
-    approximate this quantity. Chunked over the reference axis so an
-    ``(n_eval, N, d)`` tensor is never fully materialized for large ``N``.
-
-    ``t`` may be a single shared time (grid diagnostics, all points share one
-    ``t``) or a ``(n_eval,)`` array of per-point times (the MC denoising test,
-    where every evaluation location has its own random time)."""
-    n = trajectory.positions.shape[1]
-    n_eval = y.shape[0]
-    t_arr = np.full(n_eval, float(t), dtype=np.float64) if np.isscalar(t) else np.asarray(t, dtype=np.float64)
-    total = torch.zeros((n_eval, y.shape[-1]), dtype=torch.float32, device=device)
-
-    for start in range(0, n, chunk_size):
-        end = min(start + chunk_size, n)
-        chunk_n = end - start
-        times_rep = np.repeat(t_arr, chunk_n)
-        idx_rep = np.tile(np.arange(start, end), n_eval)
-        chunk_positions = trajectory.positions_at_many(times_rep, idx_rep).reshape(n_eval, chunk_n, -1)
-        chunk_positions_t = torch.as_tensor(chunk_positions, dtype=torch.float32, device=device)
-        field = g_minus(y.unsqueeze(1), chunk_positions_t, a, b, clip=clip)  # (n_eval, chunk_n, d)
-        total = total + field.sum(dim=1)
-
-    return total / n
 
 
 @dataclass
