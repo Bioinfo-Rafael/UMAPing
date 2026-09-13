@@ -42,7 +42,8 @@ from umaping.evaluation.plotting import (
 )
 from umaping.evaluation.retrieval import evaluate_retrieval
 from umaping.evaluation.spectral import evaluate_spectral
-from umaping.graph import build_reference_graph, row_degree
+from umaping.evaluation.vector_field import compute_total_field, generate_umap_vector_field_figures
+from umaping.graph import build_reference_graph, full_edges, row_degree
 from umaping.inference import InferenceEngine
 from umaping.models.mlp import batched_forward
 from umaping.models.repulsion import RepulsionField
@@ -168,12 +169,28 @@ def stage_preprocess(cfg: Config, layout: dict[str, Path]) -> PreparedDataset:
             holdout_period=params.get("holdout_period", 4),
         )
     elif name == "pancreas":
+        # A MISSING `batch_correction` key (e.g. an old run's saved
+        # config.yaml, written before this parameter existed) must resolve
+        # to False -- the original preprocessing -- not True. Do not change
+        # this default; see configs/pancreas.yaml's comment and
+        # data/pancreas.py's module docstring.
+        batch_correction = bool(params.get("batch_correction", False))
+        batch_correction_method = params.get("batch_correction_method", "scvi_scarches")
+        if batch_correction and batch_correction_method != "scvi_scarches":
+            raise ValueError(
+                f"Unsupported dataset.params.batch_correction_method '{batch_correction_method}'; "
+                "only 'scvi_scarches' is currently implemented."
+            )
         prepared, _ = prepare_pancreas_dataset(
             raw_dir=cfg.dataset.raw_dir,
             n_hvg=params.get("n_hvg", 2000),
             n_pcs=params.get("n_pcs", 50),
             seed=cfg.seed,
             query_tech=tuple(params.get("query_tech", ["smartseq2", "celseq2"])),
+            batch_correction=batch_correction,
+            scvi_n_latent=params.get("scvi_n_latent", 50),
+            scvi_max_epochs=params.get("scvi_max_epochs", 400),
+            scarches_max_epochs=params.get("scarches_max_epochs", 200),
         )
     elif name == "mock":
         # Synthetic, no download: exists purely to smoke-test the whole
@@ -674,3 +691,79 @@ def run_analysis(run_dir: str | Path, device: torch.device) -> None:
             layout["figures"] / f"repulsion_field_{suffix}.png",
             seed=cfg.seed,
         )
+
+    # scVelo-style visualization of the *total* learned UMAP dynamics field
+    # (analytic attraction + learned repulsion, the same F_i(t) the reference
+    # trajectory itself was integrated with -- not a different force
+    # equation). Additive to the repulsion-field-only plots above.
+    generate_pancreas_vector_field_figures_if_applicable(
+        cfg, layout, device, prepared, trajectory, repulsion_model, a, b
+    )
+
+
+def generate_pancreas_vector_field_figures_if_applicable(
+    cfg: Config,
+    layout: dict[str, Path],
+    device: torch.device,
+    prepared: PreparedDataset,
+    trajectory: ReferenceTrajectory,
+    repulsion_model: RepulsionField,
+    a: float,
+    b: float,
+) -> list[Path] | None:
+    """The scVelo-style total-field figures are pancreas-only for now
+    (celltype/tech labels + the scVelo dependency are specific to that
+    dataset in this codebase) -- every other dataset returns immediately,
+    with no scVelo-specific assumptions. Extracted from `run_analysis` as
+    its own module-level function (rather than an inline block) specifically
+    so it can be tested in isolation without a full trained run. Loads
+    `graph_symmetric.npz` from run memory rather than rebuilding a kNN
+    graph from scratch."""
+    if cfg.dataset.name != "pancreas":
+        return None
+
+    celltype = prepared.reference_labels.get("celltype")
+    tech = prepared.reference_labels.get("tech")
+    if celltype is None or tech is None:
+        logger.warning(
+            "Pancreas run is missing reference celltype/tech labels; skipping the "
+            "scVelo-style UMAP vector-field figures."
+        )
+        return None
+
+    w = load_sparse(layout["memory"] / "graph_symmetric.npz")
+    row, col, weight = full_edges(w)
+    degree = row_degree(w)
+    row_t = torch.as_tensor(row, dtype=torch.long, device=device)
+    col_t = torch.as_tensor(col, dtype=torch.long, device=device)
+    weight_t = torch.as_tensor(weight, dtype=torch.float32, device=device)
+    degree_t = torch.as_tensor(degree, dtype=torch.float32, device=device)
+    repulsion_model = repulsion_model.to(device).eval()
+
+    coordinates_by_t: dict[str, np.ndarray] = {}
+    velocity_by_t: dict[str, np.ndarray] = {}
+    for t, suffix in [(0.0, "t000"), (0.5, "t050"), (1.0, "t100")]:
+        y_t = torch.as_tensor(trajectory.positions_at(t), dtype=torch.float32, device=device)
+        field = compute_total_field(
+            y_t,
+            row_t,
+            col_t,
+            weight_t,
+            degree_t,
+            repulsion_model,
+            a,
+            b,
+            t,
+            negative_sample_rate=cfg.umap.negative_sample_rate,
+            grad_clip=cfg.flow.grad_clip,
+        )
+        coordinates_by_t[suffix] = y_t.detach().cpu().numpy()
+        velocity_by_t[suffix] = field.detach().cpu().numpy()
+
+    return generate_umap_vector_field_figures(
+        coordinates_by_t,
+        velocity_by_t,
+        celltype,
+        tech,
+        layout["figures"],
+    )

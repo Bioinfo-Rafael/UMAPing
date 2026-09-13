@@ -2,15 +2,33 @@
 # ~16382 cells x ~19093 genes, obs['tech'] / obs['celltype'], raw counts in
 # layers['counts']. Reference/query split matches the common reference-
 # mapping example: query tech = {smartseq2, celseq2}, reference = every
-# other technology. All HVG/PCA fitting uses the reference split only.
+# other technology. All HVG/PCA fitting (or, under batch correction, HVG
+# selection + scVI/scArches model fitting) uses the reference split only.
+#
+# batch_correction: true (the default here) selects the batch-corrected
+# analysis mode -- a scVI reference model (batch_key="tech") plus scArches
+# query mapping for the held-out technologies -- in place of the legacy
+# reference-only PCA. Set batch_correction: false to restore the original
+# preprocessing exactly. IMPORTANT: this key did not exist before batch
+# correction was added; an old run's saved config.yaml that predates it is
+# treated as batch_correction: false (see src/umaping/pipeline.py::
+# stage_preprocess), so previously-generated runs remain reproducible.
+# scArches query mapping is NOT the same strict single-point reference-fit/
+# query-transform guarantee as the legacy path -- it adapts the frozen
+# reference model to the query batch unsupervised. See README.md.
 dataset:
   name: pancreas
   raw_dir: data/raw/pancreas
-  input_dim: 50 # must equal params.n_pcs
+  input_dim: 50 # must equal params.n_pcs (legacy path) or params.scvi_n_latent (batch-corrected path)
   params:
     n_hvg: 2000
     n_pcs: 50
     query_tech: [smartseq2, celseq2]
+    batch_correction: true
+    batch_correction_method: scvi_scarches
+    scvi_n_latent: 50
+    scvi_max_epochs: 400
+    scarches_max_epochs: 200
 
 umap:
   n_neighbors: 15

@@ -32,10 +32,20 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Single-cell / AnnData stack, only required for the pancreas dataset.
+# Single-cell / AnnData stack, required for the pancreas dataset. scvi-tools
+# adds the batch-corrected preprocessing path (configs/pancreas.yaml's
+# batch_correction: true, the default -- scVI + its own scArches query-
+# mapping implementation, scvi.model.SCVI's ArchesMixin, no separate
+# `scarches` package needed); scvelo adds the total-UMAP-dynamics-field
+# visualization (pancreas-only). Both are only required when those specific
+# features are actually used (batch_correction: false skips scvi-tools
+# entirely; scvelo is only imported inside the pancreas-only vector-field
+# analysis code path).
 scrna = [
     "anndata>=0.10",
     "scanpy>=1.9",
+    "scvi-tools>=1.1",
+    "scvelo>=0.2.5",
 ]
 dev = [
     "pytest>=7.4",

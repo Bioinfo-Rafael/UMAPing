@@ -93,10 +93,61 @@ The pancreas integration-benchmark dataset used in the scvi-tools /
 scArches / scIB reference-mapping tutorials (~16,382 cells x ~19,093 genes;
 `obs['tech']`, `obs['celltype']`; raw counts in `layers['counts']`). Query
 technologies: `smartseq2`, `celseq2`; reference: every other technology
-(`inDrop1-4`, `smarter`, `celseq`, `fluidigmc1`). Preprocessing -- HVG
-selection (2,000 genes, batch-aware) and PCA (50 components) -- is fit on
-the reference split only and merely *applied* to the query split; there is
-no query leakage into any stage of training.
+(`inDrop1-4`, `smarter`, `celseq`, `fluidigmc1`). HVG selection (2,000
+genes, batch-aware) is always fit on the reference split only.
+
+**Batch correction (`configs/pancreas.yaml`'s `dataset.params.batch_correction`,
+`true` by default):** the reference-selected HVG genes feed a scVI
+reference model (`batch_key="tech"`, trained on reference cells only), and
+the held-out query technologies are mapped into that same latent space via
+scvi-tools' own scArches query-adaptation implementation
+(`SCVI.prepare_query_anndata` + `SCVI.load_query_data`) -- this is the
+**batch-corrected analysis mode**. Set `batch_correction: false` to restore
+the **original preprocessing** exactly: reference-only PCA (50 components)
+fit on the HVG matrix, with the query split merely *transformed* through
+it -- no query leakage into any stage of fitting. A run directory's saved
+`config.yaml` from before this option existed has no `batch_correction`
+key at all; that is treated as `false`, so old runs keep reproducing their
+original behavior.
+
+**Scientific note:** the two modes carry different guarantees. The legacy
+(`batch_correction: false`) path never lets the query split influence any
+fitted transform. scArches query mapping (`batch_correction: true`)
+performs *unsupervised query-domain adaptation* of the frozen reference
+model -- the query technologies' own expression data are used (without
+labels) to adapt the architecture during query-model training. Treat the
+two modes as answering different questions, not as strictly comparable
+drop-in replacements for each other.
+
+Recommended run directory for the batch-corrected experiment (do not reuse
+an existing `runs/pancreas/main` from before this feature):
+
+```bash
+umaping pipeline \
+  --config configs/pancreas.yaml \
+  --run-dir runs/pancreas_batch_corrected/main \
+  --device cuda
+```
+
+### UMAP vector-field visualization (pancreas)
+
+`umaping analyze`/`pipeline` additionally renders the *total* learned UMAP
+dynamics field -- analytic attraction plus the learned repulsion field
+`B_phi`, the same `F_i(t)` the reference trajectory itself was integrated
+with -- as scVelo-style stream/arrow/grid plots, colored by `celltype`, at
+`t = 0.0, 0.5, 1.0`:
+
+```
+figures/vector_field_t000_{stream,arrow,grid}.png
+figures/vector_field_t050_{stream,arrow,grid}.png
+figures/vector_field_t100_{stream,arrow,grid}.png
+```
+
+These are additional to (never a replacement for) the existing
+`repulsion_field_t{000,050,100}.png` figures, which show only the learned
+repulsion term. Currently pancreas-only (it is the only dataset with
+`celltype`/`tech` labels and the scVelo dependency in this codebase); every
+other dataset's analysis is unaffected.
 
 ## 3. Outputs and directory structure
 
@@ -193,7 +244,7 @@ cd UMAPing
 python -m venv .venv
 source .venv/bin/activate            # Windows: .venv\Scripts\activate
 
-pip install -e ".[all]"              # editable install + scRNA extras (anndata/scanpy) + dev/test deps
+pip install -e ".[all]"              # editable install + scRNA extras (anndata/scanpy/scvi-tools/scvelo) + dev/test deps
 ```
 
 ### Full worked example: COIL-20
@@ -224,6 +275,16 @@ umaping pipeline --config configs/coil100.yaml --run-dir runs/coil100/main --dev
 ```bash
 umaping download --dataset pancreas
 umaping pipeline --config configs/pancreas.yaml --run-dir runs/pancreas/main --device auto --seed 0
+```
+
+`configs/pancreas.yaml` has `batch_correction: true` by default (see
+"Pancreas scRNA-seq" above) -- for the batch-corrected experiment
+specifically, use a fresh run directory rather than an existing
+`runs/pancreas/main`:
+
+```bash
+umaping download --dataset pancreas
+umaping pipeline --config configs/pancreas.yaml --run-dir runs/pancreas_batch_corrected/main --device cuda
 ```
 
 ### All experiments, sequentially
