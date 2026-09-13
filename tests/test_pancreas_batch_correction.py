@@ -79,9 +79,18 @@ class _FakeSCVIModel:
         )
 
     @staticmethod
-    def prepare_query_anndata(adata, reference_model):
-        _FakeSCVIModel.calls.append(("prepare_query_anndata", {"n_obs": adata.n_obs}))
-        return adata
+    def prepare_query_anndata(adata, reference_model, inplace: bool = True):
+        # Matches the real scvi-tools API exactly (verified against the
+        # installed source): with the default inplace=True, this mutates
+        # `adata` in place and returns None -- it does NOT hand back a new
+        # AnnData in that mode. A caller that (incorrectly) used the return
+        # value here would get None, exactly reproducing the real bug this
+        # fake is designed to catch.
+        _FakeSCVIModel.calls.append(("prepare_query_anndata", {"n_obs": adata.n_obs, "inplace": inplace}))
+        adata.uns["_prepare_query_anndata_called"] = True
+        if not inplace:
+            return adata
+        return None
 
     @classmethod
     def load_query_data(cls, adata, reference_model):

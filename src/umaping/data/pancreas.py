@@ -234,8 +234,14 @@ def _prepare_pancreas_scvi_scarches(
         adata_query.n_obs,
         scarches_max_epochs,
     )
-    query_adata_prepared = scvi.model.SCVI.prepare_query_anndata(adata_query, reference_model)
-    query_model = scvi.model.SCVI.load_query_data(query_adata_prepared, reference_model)
+    # prepare_query_anndata's default is `inplace=True` (verified directly
+    # against the installed scvi-tools source): it mutates `adata_query` in
+    # place (padding/reordering its genes to match the reference model) and
+    # returns None -- it does NOT return a new AnnData in this mode. Use the
+    # (now-mutated) `adata_query` itself as load_query_data's `adata`
+    # argument, never this call's return value.
+    scvi.model.SCVI.prepare_query_anndata(adata_query, reference_model)
+    query_model = scvi.model.SCVI.load_query_data(adata_query, reference_model)
     query_model.train(max_epochs=scarches_max_epochs)
 
     x_ref = np.asarray(reference_model.get_latent_representation(), dtype=np.float32)

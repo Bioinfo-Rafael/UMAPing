@@ -160,6 +160,52 @@ pages/APIs (not from training-data memory) during implementation:
   mid-stage will redo that whole stage from scratch on `--resume`, not
   continue from the exact step it was on.
 
+## 4a. Pancreas batch correction (scVI/scArches) -- real remote execution findings
+
+Unlike Section 2 above (the original three datasets' download paths,
+verified live during implementation), the `batch_correction: true` path was
+implemented under a stricter constraint that also forbade running it. First
+real remote execution (2026-09-13, NVIDIA RTX 6000 Ada, driver reporting
+CUDA 12.8) found:
+
+- **Environment**: a plain `pip install -e ".[all]"` after adding
+  `torchvision`/`scvi-tools`/`scvelo` to the `scrna` extra broke an
+  already-working CUDA `torch` install on the target machine (`undefined
+  symbol: ncclCommResume` at `import torch`) by letting pip's resolver pull
+  in a different `torch`/`nvidia-nccl-cu12` pairing. Recovered by uninstalling
+  `torch`, `torchvision`, and every `nvidia-*` package, then reinstalling
+  from `https://download.pytorch.org/whl/cu124` (the driver's CUDA 12.8
+  support covers the older CUDA 12.4 runtime; the default PyPI wheel at the
+  time pulled a CUDA 13.0 build the installed driver could not run). This
+  repository's `pyproject.toml` does not pin a specific CUDA build for
+  `torch` -- if this recurs, that is the first thing to check.
+- **Real bug, found and fixed**: `_prepare_pancreas_scvi_scarches` called
+  `scvi.model.SCVI.load_query_data(query_adata_prepared, reference_model)`
+  where `query_adata_prepared = scvi.model.SCVI.prepare_query_anndata(...)`.
+  `prepare_query_anndata`'s default is `inplace=True` (verified directly
+  against the installed scvi-tools source, `model/base/_archesmixin.py`):
+  in that mode it mutates its `adata` argument in place and returns `None`
+  -- it does **not** hand back a new AnnData. The code above therefore
+  passed `adata=None` to `load_query_data`, which failed with `ValueError:
+  Please provide either an AnnData or a registry dictionary.` on the very
+  first real run, after the reference scVI model had already finished
+  training (400/400 epochs on 11,703 reference cells). Fixed by dropping
+  the return value and passing the (now-mutated) query AnnData itself to
+  `load_query_data`. The mock test's fake `prepare_query_anndata` originally
+  returned its `adata` argument unconditionally, silently masking this
+  exact bug (it never returned `None`, so the test never independently
+  exercised the code path a real `inplace=True` call actually takes); the
+  fake was corrected to match the verified real behavior.
+- Reference scVI model training itself (400 epochs, `n_latent=50`, 11,703
+  reference cells, RTX 6000 Ada) completed in ~8 minutes with no other
+  issues (`UserWarning: adata.layers[counts] does not contain unnormalized
+  count data` is scvi-tools' own generic sanity check and was expected: this
+  codebase's counts layer is real integer counts, just stored as `float32`).
+- Not yet confirmed by an actual completed run at the time of writing: the
+  scArches query-adaptation training step itself (200 epochs) and everything
+  downstream of it (the rest of `run_training`/`run_evaluation`/
+  `run_analysis`, including the new UMAP vector-field figures).
+
 ## 5. Tests
 
 `tests/` implements all of the required checks (fuzzy-weight/umap-learn
