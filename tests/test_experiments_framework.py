@@ -17,8 +17,6 @@ from umaping.config import Config
 from umaping.experiments.baselines import (
     BaselineResult,
     BaselineUnavailable,
-    run_numap_baseline,
-    run_param_repulsor_baseline,
     run_parametric_umap_baseline,
     run_reduced_repulsion_umap_baseline,
     run_standard_umap_baseline,
@@ -119,15 +117,6 @@ def test_parametric_umap_baseline_returns_a_valid_outcome_type():
     assert isinstance(result, (BaselineResult, BaselineUnavailable))
     if isinstance(result, BaselineUnavailable):
         assert "tensorflow" in result.reason.lower()
-
-
-def test_numap_and_param_repulsor_baselines_are_always_unavailable_with_a_clear_reason():
-    prepared = _tiny_prepared_dataset(seed=4)
-    cfg = _tiny_config()
-    for fn in (run_numap_baseline, run_param_repulsor_baseline):
-        result = fn(prepared, cfg)
-        assert isinstance(result, BaselineUnavailable)
-        assert len(result.reason) > 20
 
 
 # ---------------------------------------------------------------------------

@@ -206,40 +206,177 @@ def run_parametric_umap_baseline(prepared: PreparedDataset, cfg: Config) -> Base
 
 
 # ---------------------------------------------------------------------------
-# 5-6. NUMAP/Sep-SpectralNet and ParamRepulsor -- no vendored/pip-installable
-# official implementation located during this implementation. Documented as
-# unavailable (per spec: "gracefully mark a baseline as unavailable ... do
-# not copy large third-party repos into this repository ... create
-# adapters/wrappers"), with instructions for running the official code
-# out-of-repo rather than a guessed/fabricated reimplementation.
+# 5. NUMAP / Sep-SpectralNet (Ben-Ari, Yacobi, and Shaham, 2025) --
+# official repository https://github.com/shaham-lab/NUMAP, official PyPI
+# package `numap` (pinned to 0.2.3; see pyproject.toml's `external-baselines`
+# extra). Not vendored -- this is a thin adapter around the pip-installed
+# package's own public API, imported lazily so the base install never
+# requires it. The exact constructor/fit/transform contract below was
+# verified directly against the official source at commit
+# afec4b9277d0bac3a09e89c202a319ab895af237
+# (github.com/shaham-lab/NUMAP/blob/afec4b9.../src/numap/numap.py), not
+# guessed from the README alone:
+#
+#   NUMAP.fit(X)                     -- X: torch.Tensor, reference features only, no labels.
+#   NUMAP.transform(X, is_train=...) -- is_train=True reuses the exact spectral
+#                                        embedding computed for X during fit
+#                                        (the correct call for the *reference*
+#                                        set itself); is_train=False (the
+#                                        default) routes new points through a
+#                                        kNN-regressor (or GrEASE, if
+#                                        use_grease=True) out-of-sample
+#                                        extension -- the correct call for
+#                                        *query* points. Passing the wrong
+#                                        value for either would silently
+#                                        change which extension mechanism is
+#                                        exercised, so both calls are made
+#                                        explicitly rather than relying on
+#                                        the default.
+#
+# `use_grease=True` and `use_residual_connections=True` are both optional
+# constructor flags (default False in the official package) enabling,
+# respectively, the paper's own generalizable spectral-embedding mechanism
+# (GrEASE) for the out-of-sample extension and a residual connection from
+# the spectral initialization through the trained encoder -- the
+# "generalizable NUMAP configuration" this baseline is meant to represent,
+# per this task's own instructions.
 # ---------------------------------------------------------------------------
 
 
-def run_numap_baseline(prepared: PreparedDataset, cfg: Config) -> BaselineOutcome:
-    return BaselineUnavailable(
+def run_numap_baseline(prepared: PreparedDataset, cfg: Config, device: torch.device | None = None) -> BaselineOutcome:
+    try:
+        from numap import NUMAP
+    except ImportError as exc:
+        return BaselineUnavailable(
+            name="numap_sep_spectralnet",
+            reason=(
+                "The official NUMAP/Sep-SpectralNet package is not installed in this environment "
+                f"({exc}). Repository: https://github.com/shaham-lab/NUMAP . "
+                "Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra)."
+            ),
+        )
+
+    device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    n_components = cfg.umap.embedding_dim
+    constructor_kwargs = {
+        "n_neighbors": cfg.umap.n_neighbors,
+        "min_dist": cfg.umap.min_dist,
+        "n_components": n_components,
+        "se_dim": n_components,  # matched to n_components so the residual connection adds the actual spectral coordinates
+        "se_neighbors": cfg.umap.n_neighbors,
+        "random_state": cfg.seed,
+        "use_se": True,
+        "use_grease": True,
+        "use_residual_connections": True,
+        "num_gpus": 1 if device.type == "cuda" else 0,
+    }
+    model = NUMAP(**constructor_kwargs)
+
+    x_ref = torch.as_tensor(np.ascontiguousarray(prepared.reference_features, dtype=np.float32))
+    x_query = torch.as_tensor(np.ascontiguousarray(prepared.query_features, dtype=np.float32))
+
+    start = time.perf_counter()
+    model.fit(x_ref)  # reference features only -- query is never passed here
+    fit_time = time.perf_counter() - start
+
+    reference_embedding = np.asarray(model.transform(x_ref, is_train=True), dtype=np.float32)
+    query_start = time.perf_counter()
+    query_embedding = np.asarray(model.transform(x_query, is_train=False), dtype=np.float32)
+    query_time = time.perf_counter() - query_start
+
+    return BaselineResult(
         name="numap_sep_spectralnet",
-        reason=(
-            "No official pip package located. NUMAP/Sep-SpectralNet is the method introduced in "
-            "Ben-Ari, Yacobi, and Shaham (2025), 'Generalizable Spectral Embedding with an Application "
-            "to UMAP' (TMLR; arXiv:2501.11305) -- a specific repository URL for their code was not "
-            "located/verified during this implementation. To integrate it: clone the authors' official "
-            "release once you have located it, install it in an isolated environment, and add a thin "
-            "subprocess-based adapter here following the pattern described in experiments/README.md "
-            "(never vendor a large third-party repo into this one)."
-        ),
+        reference_embedding=reference_embedding,
+        query_embedding=query_embedding,
+        fit_time_seconds=fit_time,
+        mean_query_latency_seconds=query_time / max(prepared.query_features.shape[0], 1),
+        extra={
+            "package": "numap",
+            "version_pin": "0.2.3",
+            "source_repository": "https://github.com/shaham-lab/NUMAP",
+            "source_commit": "afec4b9277d0bac3a09e89c202a319ab895af237",
+            "constructor_kwargs": dict(constructor_kwargs),
+        },
     )
 
 
+# ---------------------------------------------------------------------------
+# 6. ParamRepulsor (Huang et al.) -- official repository
+# https://github.com/hyhuang00/ParamRepulsor, official PyPI package
+# `parampacmap` (pinned to 0.1.0; requires Python <3.12 -- see
+# pyproject.toml's `external-baselines` extra). Not vendored. Verified
+# directly against the official source at commit
+# be8df72b1ac9041be3aae3d99f16f0d392b492dc
+# (github.com/hyhuang00/ParamRepulsor/blob/be8df72.../src/parampacmap/parampacmap.py):
+#
+#   ParamPaCMAP.fit(X)       -- X: plain numpy array, reference features only.
+#   ParamPaCMAP.transform(X) -- called separately for reference and query.
+#
+# `apply_pca=True` is the official default, but only actually triggers an
+# *internal* PCA when the input has more than 100 dimensions
+# (`_scale_input`); since this project's `PreparedDataset` features are
+# already a fixed, reference-only-fitted representation (e.g. 256-D for
+# COIL), leaving the official default on would silently re-derive a
+# *different* representation for this one baseline. `apply_pca=False,
+# apply_scale=None` are passed explicitly, per this task's instructions, so
+# ParamRepulsor is compared on exactly the same input representation as
+# every other baseline. Everything else -- `n_FP`, `n_MN`, `loss_weight`,
+# and critically `weight_schedule`/`const_schedule` (the ParamRepulsor-
+# specific repulsion weighting that distinguishes it from plain PaCMAP,
+# defaulting to `paramrep_weight_schedule`/`paramrep_const_schedule`),
+# `num_epochs`, `embedding_init`, and the default "ANN" backbone -- is left
+# at the official default.
+# ---------------------------------------------------------------------------
+
+
 def run_param_repulsor_baseline(prepared: PreparedDataset, cfg: Config) -> BaselineOutcome:
-    return BaselineUnavailable(
+    try:
+        import parampacmap
+    except ImportError as exc:
+        return BaselineUnavailable(
+            name="param_repulsor",
+            reason=(
+                "The official ParamRepulsor package is not installed in this environment "
+                f"({exc}). Repository: https://github.com/hyhuang00/ParamRepulsor . "
+                "Install with: pip install parampacmap==0.1.0 (requires Python <3.12; "
+                "see pyproject.toml's 'external-baselines' extra)."
+            ),
+        )
+
+    constructor_kwargs = {
+        "n_components": cfg.umap.embedding_dim,
+        "n_neighbors": cfg.umap.n_neighbors,
+        "apply_pca": False,
+        "apply_scale": None,
+        "seed": cfg.seed,
+    }
+    model = parampacmap.ParamPaCMAP(**constructor_kwargs)
+
+    x_ref = np.ascontiguousarray(prepared.reference_features, dtype=np.float32)
+    x_query = np.ascontiguousarray(prepared.query_features, dtype=np.float32)
+
+    start = time.perf_counter()
+    model.fit(x_ref)  # reference features only -- query is never passed here
+    fit_time = time.perf_counter() - start
+
+    reference_embedding = np.asarray(model.transform(x_ref), dtype=np.float32)
+    query_start = time.perf_counter()
+    query_embedding = np.asarray(model.transform(x_query), dtype=np.float32)
+    query_time = time.perf_counter() - query_start
+
+    return BaselineResult(
         name="param_repulsor",
-        reason=(
-            "No official pip package located, and this implementation could not verify a specific "
-            "source repository for 'ParamRepulsor' during development (external network access to "
-            "confirm one was not exercised, per this task's own no-download constraint). Before "
-            "enabling this baseline, locate and cite the official paper/repository, then add a thin "
-            "subprocess-based adapter here following the pattern described in experiments/README.md."
-        ),
+        reference_embedding=reference_embedding,
+        query_embedding=query_embedding,
+        fit_time_seconds=fit_time,
+        mean_query_latency_seconds=query_time / max(prepared.query_features.shape[0], 1),
+        extra={
+            "package": "parampacmap",
+            "version_pin": "0.1.0",
+            "source_repository": "https://github.com/hyhuang00/ParamRepulsor",
+            "source_commit": "be8df72b1ac9041be3aae3d99f16f0d392b492dc",
+            "constructor_kwargs": dict(constructor_kwargs),
+        },
     )
 
 

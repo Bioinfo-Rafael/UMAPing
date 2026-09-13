@@ -107,8 +107,9 @@ experiment` (download/prepare/train/evaluate/analyze/baselines for six
 additional datasets -- Fashion-MNIST, 20 Newsgroups, MNIST, Hong et al.
 Emergency Department, and two continuous-structure scRNA-seq datasets); a
 common baseline registry (reduced-repulsion UMAP, weighted-kNN
-interpolation, Parametric UMAP, and graceful-unavailable stubs for
-NUMAP/ParamRepulsor); and `umaping scale-benchmark`.
+interpolation, Parametric UMAP, and optional adapters for the official
+NUMAP/Sep-SpectralNet and ParamRepulsor packages, gracefully reporting
+unavailable if not installed); and `umaping scale-benchmark`.
 
 ## 3. Outputs and directory structure
 

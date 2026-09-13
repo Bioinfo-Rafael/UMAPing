@@ -110,16 +110,32 @@ each. Baselines already implemented for the original three datasets
    Gracefully reports unavailable if `tensorflow` isn't installed.
 5. **NUMAP / Sep-SpectralNet** -- the method introduced in Ben-Ari, Yacobi,
    and Shaham (2025), "Generalizable Spectral Embedding with an Application
-   to UMAP" (TMLR; arXiv:2501.11305). **No official pip package or verified
-   source repository was located during this implementation** -- this
-   baseline is marked unavailable with instructions to integrate the
-   authors' own code as an out-of-repo, subprocess-based adapter (Section 7
-   below) once located, rather than a guessed reimplementation.
-6. **ParamRepulsor** -- similarly, no official pip package or verified
-   source repository was located during this implementation (external
-   network access to search for one was not exercised, per this task's own
-   no-download-during-implementation constraint). Marked unavailable with
-   the same integration path as (5).
+   to UMAP" (TMLR; arXiv:2501.11305). **Official repository:**
+   https://github.com/shaham-lab/NUMAP (source verified directly at commit
+   `afec4b9277d0bac3a09e89c202a319ab895af237`). **Official PyPI package:**
+   `numap` (pinned to `numap==0.2.3`; see pyproject.toml's
+   `external-baselines` extra). `run_numap_baseline` is a thin adapter
+   around the installed package's own public API (not vendored): fits
+   `NUMAP(..., use_grease=True, use_residual_connections=True)` on the
+   reference features only, then calls `.transform(reference, is_train=True)`
+   and `.transform(query, is_train=False)` separately -- see
+   `src/umaping/experiments/baselines.py`'s docstring for exactly why
+   `is_train` must differ between the two calls (verified against the
+   source, not the README's simplified example). Gracefully reports
+   unavailable if `numap` isn't installed.
+6. **ParamRepulsor** -- **Official repository:**
+   https://github.com/hyhuang00/ParamRepulsor (source verified directly at
+   commit `be8df72b1ac9041be3aae3d99f16f0d392b492dc`). **Official PyPI
+   package:** `parampacmap` (pinned to `parampacmap==0.1.0`; requires Python
+   `<3.12` -- see pyproject.toml's `external-baselines` extra and Section 7).
+   `run_param_repulsor_baseline` fits `parampacmap.ParamPaCMAP(apply_pca=False,
+   apply_scale=None, ...)` on the reference features only (the official
+   default `apply_pca=True` would otherwise silently re-derive its own
+   100-D PCA on top of this project's already reference-fitted
+   representation -- see the source-verified explanation in
+   `baselines.py`), then calls `.transform()` separately on the reference
+   and query splits. Gracefully reports unavailable if `parampacmap` isn't
+   installed.
 7. **Ours** -- the full method (`InferenceEngine`, learned retriever +
    analytic attraction + learned repulsion).
 8. **Ours + oracle neighbors** -- `InferenceEngine(neighbor_source="oracle")`.
@@ -181,24 +197,43 @@ scale) -- see `src/umaping/experiments/scale_benchmark.py`'s module
 docstring for exactly what "offline" and "online" cost each include, and
 why this does not claim O(1) inference.
 
-## 7. Optional baseline installation / integrating NUMAP and ParamRepulsor
+## 7. Optional baseline installation
 
 - **Parametric UMAP**: `pip install umap-learn[parametric_umap]` (or
   `pip install tensorflow` directly).
-- **NUMAP/Sep-SpectralNet, ParamRepulsor**: no official pip package was
-  located during this implementation (see Section 3). To integrate either:
-  1. Locate and clone the authors' official repository into a separate
-     directory *outside* this one (never vendor a large third-party repo
-     into `umaping`).
-  2. Install its dependencies into an isolated environment (a separate
-     virtualenv/conda env, so its pins never conflict with this package's).
-  3. Add a thin subprocess-based adapter to
-     `src/umaping/experiments/baselines.py` (matching the
-     `run_parametric_umap_baseline`/`BaselineResult` contract) that shells
-     out to that isolated environment's Python with the reference/query
-     features written to a temp file and the resulting embedding read back
-     -- never a re-implementation of the method's own code inside this
-     repository.
+- **NUMAP / Sep-SpectralNet** (Ben-Ari, Yacobi, and Shaham, 2025;
+  https://github.com/shaham-lab/NUMAP):
+
+  ```bash
+  pip install numap==0.2.3
+  ```
+
+  No separate `grease` install step is needed -- `numap`'s own PyPI
+  metadata declares `grease-embeddings` as a transitive dependency, so it
+  installs automatically. Works on the same Python version as the rest of
+  this project (`>=3.10`).
+
+- **ParamRepulsor** (Huang et al.; https://github.com/hyhuang00/ParamRepulsor):
+
+  ```bash
+  pip install parampacmap==0.1.0
+  ```
+
+  **Requires Python `<3.12`** (its `annoy` dependency does not support
+  3.12+, per the official package's own `pyproject.toml`). If your
+  environment is on a newer Python, ParamRepulsor is unavailable (the
+  adapter reports this gracefully) but every other baseline, including
+  NUMAP, is unaffected. **Python 3.10 or 3.11 is recommended for the
+  complete baseline suite** (this repository's own base `requires-python`
+  is `>=3.10`, so either works for everything else too).
+
+- **Both at once**: `pip install -e ".[external-baselines]"` (see
+  pyproject.toml; deliberately not folded into the `all` extra, for the
+  Python-version reason above).
+
+Both adapters (`src/umaping/experiments/baselines.py::run_numap_baseline`,
+`run_param_repulsor_baseline`) call the installed packages' own public API
+directly -- neither repository is vendored into this one.
 
 ## 8. Expected output files
 

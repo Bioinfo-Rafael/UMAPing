@@ -137,7 +137,10 @@ def run_experiment_baselines(run_dir: str | Path, device: torch.device, cfg: Con
     logger.info("Running baseline: parametric_umap")
     outcomes.append(run_parametric_umap_baseline(prepared, cfg))
 
-    outcomes.append(run_numap_baseline(prepared, cfg))
+    logger.info("Running baseline: numap_sep_spectralnet")
+    outcomes.append(run_numap_baseline(prepared, cfg, device=device))
+
+    logger.info("Running baseline: param_repulsor")
     outcomes.append(run_param_repulsor_baseline(prepared, cfg))
 
     logger.info("Running baselines: ours / ours_oracle_neighbors / no_repulsion")

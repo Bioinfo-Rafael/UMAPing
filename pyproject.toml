@@ -41,14 +41,25 @@ dev = [
     "pytest>=7.4",
     "pytest-cov>=4.1",
 ]
-# Optional datasets/baselines used by the experiments/ suite (Fashion-MNIST,
-# MNIST, Hong ED, Parametric UMAP). 20 Newsgroups needs none of these (it
-# only uses scikit-learn, already a core dependency). NUMAP/Sep-SpectralNet
-# and ParamRepulsor have no pip package -- see experiments/README.md for how
-# to run their official repositories instead.
+# Optional datasets used by the experiments/ suite (Fashion-MNIST, MNIST,
+# Hong ED). 20 Newsgroups needs none of these (it only uses scikit-learn,
+# already a core dependency).
 experiments = [
     "torchvision>=0.16",
     "pyreadr>=0.5",
+]
+# Official external baseline implementations (experiments/baselines.py):
+#   NUMAP / Sep-SpectralNet -- https://github.com/shaham-lab/NUMAP
+#   ParamRepulsor           -- https://github.com/hyhuang00/ParamRepulsor
+# Deliberately NOT folded into `all`: `parampacmap` (ParamRepulsor's package)
+# requires Python <3.12 (its `annoy` dependency does not support 3.12+), so
+# adding it to `all` would break `pip install -e ".[all]"` outright on newer
+# Python versions. Install explicitly (`pip install -e ".[external-baselines]"`,
+# combinable with the other extras) on Python 3.10/3.11 to get the complete
+# baseline suite; on 3.12+, NUMAP alone still installs and works.
+external-baselines = [
+    "numap==0.2.3",
+    "parampacmap==0.1.0",
 ]
 all = ["umaping[scrna,dev,experiments]"]
 

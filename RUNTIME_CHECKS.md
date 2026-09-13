@@ -218,13 +218,27 @@ dataset loaders, the common experiment/baseline framework, the scale
 benchmark) were, per that task's own instructions, developed with local
 Python execution explicitly permitted for mock/synthetic tests -- unlike the
 rest of this file, which documents a purely-static original implementation.
-85/85 tests passing locally (Python 3.14, CPU) at the time of writing,
-including 36 new tests across `tests/test_new_datasets.py`,
-`tests/test_experiments_framework.py`, `tests/test_scale_benchmark.py`, and
-new additions to `tests/test_advanced_analysis.py`/`test_inference.py`. One
-real bug was found this way (not by static review): a single-character
+95/95 tests passing locally (Python 3.14, CPU) at the time of writing,
+including 46 new tests across `tests/test_new_datasets.py`,
+`tests/test_experiments_framework.py`, `tests/test_scale_benchmark.py`,
+`tests/test_external_baselines.py` (the NUMAP/ParamRepulsor adapters, added
+in a follow-up fix -- see below), and new additions to
+`tests/test_advanced_analysis.py`/`test_inference.py`. One real bug was
+found this way (not by static review): a single-character
 substring-matching candidate (`"y"`) in both `data/hong_ed.py` and
 `data/_scrna_common.py`'s column auto-detection spuriously matched any
 column name merely *containing* the letter "y" (e.g. "triage_category");
 fixed by requiring substring-matched (as opposed to exact-matched)
 candidates to be at least 3 characters long.
+
+**Correction (same branch, immediate follow-up):** the initial version of
+this branch's `experiments/baselines.py` claimed no official pip package or
+source repository could be located for the NUMAP/Sep-SpectralNet and
+ParamRepulsor baselines. That claim was incorrect -- both have official
+repositories and PyPI packages (`numap`, `parampacmap`; see
+`experiments/README.md` Sections 3 and 7 for exact versions/commits/install
+commands). Real adapters were added, their exact constructor/fit/transform
+contracts verified by reading the official source at pinned commits (not
+guessed) -- again without installing either package locally, per this
+task's own constraint; validated instead with `unittest.mock`-style fake
+modules injected via `sys.modules` (`tests/test_external_baselines.py`).
