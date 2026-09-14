@@ -187,6 +187,7 @@ def run_parametric_umap_baseline(prepared: PreparedDataset, cfg: Config) -> Base
     reducer = ParametricUMAP(
         n_neighbors=cfg.umap.n_neighbors,
         min_dist=cfg.umap.min_dist,
+        spread=cfg.umap.spread,
         n_components=cfg.umap.embedding_dim,
         random_state=cfg.seed,
     )
@@ -202,6 +203,11 @@ def run_parametric_umap_baseline(prepared: PreparedDataset, cfg: Config) -> Base
         query_embedding=query_emb,
         fit_time_seconds=fit_time,
         mean_query_latency_seconds=query_time / max(prepared.query_features.shape[0], 1),
+        extra={"package": "umap-learn", "version_pin": "0.5.12",
+               "constructor_kwargs": {"n_neighbors": cfg.umap.n_neighbors,
+                                      "min_dist": cfg.umap.min_dist, "spread": cfg.umap.spread,
+                                      "n_components": cfg.umap.embedding_dim, "random_state": cfg.seed},
+               "fit_timing_includes_reference_embedding": True},
     )
 
 
@@ -279,7 +285,9 @@ def run_numap_baseline(prepared: PreparedDataset, cfg: Config, device: torch.dev
     model.fit(x_ref)  # reference features only -- query is never passed here
     fit_time = time.perf_counter() - start
 
+    reference_start = time.perf_counter()
     reference_embedding = np.asarray(model.transform(x_ref, is_train=True), dtype=np.float32)
+    reference_time = time.perf_counter() - reference_start
     query_start = time.perf_counter()
     query_embedding = np.asarray(model.transform(x_query, is_train=False), dtype=np.float32)
     query_time = time.perf_counter() - query_start
@@ -292,9 +300,10 @@ def run_numap_baseline(prepared: PreparedDataset, cfg: Config, device: torch.dev
         mean_query_latency_seconds=query_time / max(prepared.query_features.shape[0], 1),
         extra={
             "package": "numap",
+            "reference_transform_time_seconds": reference_time,
             "version_pin": "0.2.3",
             "source_repository": "https://github.com/shaham-lab/NUMAP",
-            "source_commit": "afec4b9277d0bac3a09e89c202a319ab895af237",
+            "inspected_source_commit": "afec4b9277d0bac3a09e89c202a319ab895af237",
             "constructor_kwargs": dict(constructor_kwargs),
         },
     )
@@ -359,7 +368,9 @@ def run_param_repulsor_baseline(prepared: PreparedDataset, cfg: Config) -> Basel
     model.fit(x_ref)  # reference features only -- query is never passed here
     fit_time = time.perf_counter() - start
 
+    reference_start = time.perf_counter()
     reference_embedding = np.asarray(model.transform(x_ref), dtype=np.float32)
+    reference_time = time.perf_counter() - reference_start
     query_start = time.perf_counter()
     query_embedding = np.asarray(model.transform(x_query), dtype=np.float32)
     query_time = time.perf_counter() - query_start
@@ -372,9 +383,10 @@ def run_param_repulsor_baseline(prepared: PreparedDataset, cfg: Config) -> Basel
         mean_query_latency_seconds=query_time / max(prepared.query_features.shape[0], 1),
         extra={
             "package": "parampacmap",
+            "reference_transform_time_seconds": reference_time,
             "version_pin": "0.1.0",
             "source_repository": "https://github.com/hyhuang00/ParamRepulsor",
-            "source_commit": "be8df72b1ac9041be3aae3d99f16f0d392b492dc",
+            "inspected_source_commit": "be8df72b1ac9041be3aae3d99f16f0d392b492dc",
             "constructor_kwargs": dict(constructor_kwargs),
         },
     )

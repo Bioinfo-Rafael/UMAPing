@@ -1,0 +1,4 @@
+-r common.txt
+# TensorFlowのCUDA依存はこの環境だけ。torchは評価用CPU版を別途固定。
+tensorflow[and-cuda]==2.18.1
+keras==3.8.0

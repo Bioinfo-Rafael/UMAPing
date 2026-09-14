@@ -37,6 +37,7 @@ from umaping.evaluation.advanced import (
     field_smoothness_report,
 )
 from umaping.evaluation.embedding import evaluate_embedding, procrustes_align
+from umaping.evaluation.labels import primary_label as _primary_label
 from umaping.evaluation.field import evaluate_repulsion_field
 from umaping.evaluation.plotting import (
     plot_embedding,
@@ -158,26 +159,6 @@ def _label_sets(prepared: PreparedDataset, dataset_name: str) -> tuple[dict[str,
         # hardcoded name.
         return dict(prepared.reference_labels), dict(prepared.query_labels)
     return {}, {}
-
-
-def _primary_label(labels: dict[str, np.ndarray], dataset_name: str) -> np.ndarray | None:
-    if dataset_name in ("coil20", "coil100"):
-        return labels.get("object_id")
-    if dataset_name == "pancreas":
-        return labels.get("celltype")
-    if dataset_name == "mock":
-        return labels.get("cluster")
-    if dataset_name == "fashion_mnist":
-        return labels.get("class")
-    if dataset_name == "twenty_newsgroups":
-        return labels.get("newsgroup")
-    if dataset_name == "mnist_oos":
-        return labels.get("digit")
-    if dataset_name == "hong_ed":
-        return labels.get("admitted")
-    if dataset_name in ("organoid", "embryoid_body"):
-        return next(iter(labels.values())) if labels else None
-    return None
 
 
 # ---------------------------------------------------------------------------

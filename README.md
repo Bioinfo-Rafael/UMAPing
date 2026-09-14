@@ -1,5 +1,13 @@
 # UMAPing
 
+## 完了済み実験への外部比較の追加
+
+既存の結果を使った外部手法の比較は、[日本語の実行ガイド](docs/external_baselines.md)を参照してください。
+Parametric UMAP・NUMAP・ParamRepulsorを、それぞれリポジトリ外のPython 3.11環境で実行します。
+対象は完了済みの8データセットに限定し、失敗した20 NewsgroupsとHong EDは対象に含めません。
+既存の`runs/`は読み取り専用とし、新しい図・評価値・実行記録は`runs_external_baselines/`へ保存します。
+OOS-UMAPは公式公開コードの不足を確認したため、理由付きの利用不可として記録します。
+
 An **inductive, single-query approximation of UMAP**: given a fixed
 reference dataset, embed one previously unseen point at a time, without
 ever building a graph over query points or letting query points interact
