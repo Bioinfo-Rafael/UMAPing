@@ -75,3 +75,4 @@ Thumbs.db
 /logs/
 # 外部比較の生成物。既存runsのアーカイブとは別に管理する。
 /runs_external_baselines/
+/runs_comparison_analysis/

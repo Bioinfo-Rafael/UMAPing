@@ -1,5 +1,11 @@
 # UMAPing
 
+## 保存済み結果の統合解析
+
+内部実験と外部baselineの比較表・統計検定・論文用の図は、[統合解析ガイド](docs/combined_comparison.md)を参照してください。
+`scripts/compare_results.py`は既存の通常UMAPing環境で動き、学習・再推論・外部環境の再構築は行いません。
+`runs/`と`runs_external_baselines/`から読み取り、新しい`runs_comparison_analysis/`に日本語レポートとCSV・PNG・SVGを保存します。
+
 ## 完了済み実験への外部比較の追加
 
 既存の結果を使った外部手法の比較は、[日本語の実行ガイド](docs/external_baselines.md)を参照してください。
