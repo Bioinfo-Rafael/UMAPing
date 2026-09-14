@@ -1,0 +1,10 @@
+{
+  "recall_at_k": 0.9977777777777779,
+  "candidate_recall_at_m": 0.9977777777777779,
+  "fuzzy_weighted_recall": 0.9991157867467148,
+  "ndcg_at_k": 0.9996073158520014,
+  "mean_query_latency_seconds": 0.0009457750582239694,
+  "n_queries": 360,
+  "k": 15,
+  "m": 64
+}

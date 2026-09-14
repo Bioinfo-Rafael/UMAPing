@@ -1,0 +1,11 @@
+method,available,neighborhood_recall_at_k,reference_trustworthiness,label_knn_accuracy,mean_query_latency_seconds,n_queries,k,reason
+standard_umap,True,0.07737673219465034,0.9512758790299839,0.6704801804705124,,6206.0,15.0,
+reduced_repulsion_umap,True,0.07556128477817166,0.9512758790299839,0.6735417338059942,,6206.0,15.0,
+weighted_knn,True,0.06084434418304867,0.9512758790299839,0.6461488881727361,0.0003890335282819274,6206.0,15.0,
+parametric_umap,False,,,,,,,"umap.parametric_umap.ParametricUMAP requires the optional 'tensorflow' dependency, not installed in this environment (umap.parametric_umap requires Tensorflow >= 2.0). Install with: pip install tensorflow"
+numap_sep_spectralnet,False,,,,,,,The official NUMAP/Sep-SpectralNet package is not installed in this environment (No module named 'numap'). Repository: https://github.com/shaham-lab/NUMAP . Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra).
+param_repulsor,False,,,,,,,The official ParamRepulsor package is not installed in this environment (No module named 'parampacmap'). Repository: https://github.com/hyhuang00/ParamRepulsor . Install with: pip install parampacmap==0.1.0 (requires Python <3.12; see pyproject.toml's 'external-baselines' extra).
+ours,True,0.09058975185304545,0.9545034600888267,0.6851434096036094,0.08636873875811571,6206.0,15.0,
+ours_oracle_neighbors,True,0.08956923407455149,0.9545034600888267,0.6828875281985176,0.1999910014943837,6206.0,15.0,
+no_repulsion,True,0.0867332688795789,0.9545034600888267,0.6745085401224621,0.03189975036250543,6206.0,15.0,
+exact_repulsion_diagnostic,True,0.10133333333333333,0.9545034600888267,0.66,0.42928112283349035,50.0,15.0,

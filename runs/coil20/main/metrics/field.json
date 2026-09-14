@@ -1,0 +1,8 @@
+{
+  "vector_mse": 0.003845695173367858,
+  "vector_rmse": 0.062013670802116394,
+  "mean_cosine_similarity": 0.39294329285621643,
+  "mean_magnitude_error": 0.03568422421813011,
+  "n_eval_points": 2000,
+  "teacher_negative_samples": 64
+}

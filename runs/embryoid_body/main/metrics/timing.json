@@ -1,0 +1,30 @@
+{
+  "standard_umap": {
+    "fit_time_seconds": 19.634349490515888,
+    "mean_query_latency_seconds": null
+  },
+  "reduced_repulsion_umap": {
+    "fit_time_seconds": 18.48510859813541,
+    "mean_query_latency_seconds": null
+  },
+  "weighted_knn": {
+    "fit_time_seconds": null,
+    "mean_query_latency_seconds": 0.0003890335282819274
+  },
+  "ours": {
+    "fit_time_seconds": null,
+    "mean_query_latency_seconds": 0.08636873875811571
+  },
+  "ours_oracle_neighbors": {
+    "fit_time_seconds": null,
+    "mean_query_latency_seconds": 0.1999910014943837
+  },
+  "no_repulsion": {
+    "fit_time_seconds": null,
+    "mean_query_latency_seconds": 0.03189975036250543
+  },
+  "exact_repulsion_diagnostic": {
+    "fit_time_seconds": null,
+    "mean_query_latency_seconds": 0.42928112283349035
+  }
+}

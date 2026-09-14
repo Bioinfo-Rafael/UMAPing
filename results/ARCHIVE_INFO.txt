@@ -1,0 +1,9 @@
+Recorded at: 2026-09-14T05:55:32Z
+Branch: experiments/oos-local-global-evaluation
+HEAD at archive time: 3b5fd5178e752a575cf563df9a941dc0fe96a011
+
+Completed jobs: coil20, coil100, pancreas, pancreas_batch_corrected
+Completed experiments: fashion_mnist, mnist_oos, organoid, embryoid_body
+Failed experiments excluded: twenty_newsgroups, hong_ed
+Job completion does not imply every optional baseline succeeded.
+Runs were produced across multiple commits; consult per-run metadata.
