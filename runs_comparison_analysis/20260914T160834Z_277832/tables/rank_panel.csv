@@ -1,0 +1,10 @@
+method,fashion_mnist,mnist_oos,organoid,embryoid_body
+no_repulsion,3.0,3.0,3.0,3.0
+numap,9.0,9.0,9.0,9.0
+ours,2.0,1.0,2.0,1.0
+ours_oracle_neighbors,1.0,2.0,1.0,2.0
+paramrepulsor,7.0,7.0,7.0,7.0
+reduced_repulsion_umap,4.0,4.0,4.0,5.0
+spectral_only,8.0,8.0,8.0,8.0
+standard_umap,5.0,5.0,5.0,4.0
+weighted_knn,6.0,6.0,6.0,6.0

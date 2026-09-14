@@ -1,0 +1,980 @@
+{
+  "timestamp": "2026-09-14T16:09:27.969729+00:00",
+  "git_commit": "8f7c31f37269a39565d3655f90a1d1a9bf4260d9",
+  "seed": 0,
+  "resamples": 10000,
+  "included_datasets": [
+    "coil20",
+    "coil100",
+    "pancreas",
+    "pancreas_batch_corrected",
+    "fashion_mnist",
+    "mnist_oos",
+    "organoid",
+    "embryoid_body"
+  ],
+  "excluded_datasets": [
+    "twenty_newsgroups",
+    "hong_ed"
+  ],
+  "aliases": {
+    "ours_full": "ours",
+    "oracle_neighbors": "ours_oracle_neighbors",
+    "numap_sep_spectralnet": "numap",
+    "param_repulsor": "paramrepulsor"
+  },
+  "internal_runs_root": "/home/suzuki/Learn/UMAPing/runs",
+  "external_run_dir": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762",
+  "sources": [
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil20/main/config.yaml",
+      "sha256": "3b9d2de657096957c8e47fd237c83bbc1c1370222ef52458c009ea7644172465",
+      "bytes": 1450
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil20/main/metadata.json",
+      "sha256": "8af3cde562cbbdd7fbc9e3bf995c198476cfed7c28274f6f4d2717c243877d63",
+      "bytes": 821
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json",
+      "sha256": "f3e3836dc7496dbc9222a7ee1f8b68c4da765a0132f78f7a2f11581006ee48bb",
+      "bytes": 2150
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/advanced_per_query.csv",
+      "sha256": "943fdc279a43435605e48562a0399cc9ceffe775bee19630c661a882ae744e66",
+      "bytes": 316383
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil100/main/config.yaml",
+      "sha256": "27ed60fe4c715983c4b4c5147e36a839e4440d0e65bc2672f0c9b6df183175d5",
+      "bytes": 1452
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil100/main/metadata.json",
+      "sha256": "126965cc643eb86d272baaeff33c03d7fd6c035530f85220d1261b95a318483c",
+      "bytes": 768
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json",
+      "sha256": "85d51558236025a8e77c91b3533cd012618642c9069e4d453a27e766b0f2c18e",
+      "bytes": 2204
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/advanced_per_query.csv",
+      "sha256": "58394802fa5c679e987e03dac9264516a53157056f2849de3c66d5aa3a8f5a03",
+      "bytes": 1567607
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas/main/config.yaml",
+      "sha256": "d1d91991c36a4965f3102d54128a417453cc5d699a75adf8ebd0b8f00a1a108d",
+      "bytes": 1472
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas/main/metadata.json",
+      "sha256": "c8be609e6d7c043b75009494b37be66d1fa88dd57d3aec67eea3f5fa9f7160af",
+      "bytes": 823
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json",
+      "sha256": "4ee6d704a9dc9928838e0475ffb35751557cad59e54e84c003dfc2c99cf2191b",
+      "bytes": 2239
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/advanced_per_query.csv",
+      "sha256": "627dea6bf3be05fdc237d9ce6d8da11977f886578be146b9da25ba14ef5a2dd4",
+      "bytes": 4101107
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/config.yaml",
+      "sha256": "e3a92f021f6a28d41f1f86071f9fc10d6c80b9340b56caefe5b94794f24d112e",
+      "bytes": 1618
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metadata.json",
+      "sha256": "8f8d109e4a653eaa8c6ba257362d7fa0a458d0254efb96300046fa01326286c3",
+      "bytes": 823
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json",
+      "sha256": "0f2899b8e76cbe066932e8aa090c4625ec4727b0bbb15a0b3d3c9c640986077e",
+      "bytes": 2228
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/advanced_per_query.csv",
+      "sha256": "83a5f0fa18d0d671da715ab67eec45d9e76c91bcad14bed1485d7d85fef1cdb4",
+      "bytes": 3975466
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/config.yaml",
+      "sha256": "e6e48e4f36ea92a6d496bc76bb213ba4f2c3154e4bb2d2a7482a3dec53dcb669",
+      "bytes": 1503
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metadata.json",
+      "sha256": "2ea9077465d413cfc4d50185ff545bcac7c062f656fda4fa511f674c33298c40",
+      "bytes": 774
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json",
+      "sha256": "5b9460bc08ac9dde8df89dff611bfb4b843e330c7606d47c48c4a4d9a285c58c",
+      "bytes": 2146
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv",
+      "sha256": "23d9b07498d8dd107a52babe7cc59e505e3f72a4969f0907623a5ac90aae6564",
+      "bytes": 1574
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json",
+      "sha256": "588b11cb1305d09fa73c291c96ed61b51dbd74f4e4ad1fd950c667cf308ccfe5",
+      "bytes": 791
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/advanced_per_query.csv",
+      "sha256": "845cc3637247569f4047603b1ebcf1e89c160602368899a807b46b116de86404",
+      "bytes": 1728909
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/config.yaml",
+      "sha256": "d4276357d15709e8991fcdcd94b9a5bf35d0b1f8bd78ba8565e535723f117e46",
+      "bytes": 1493
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metadata.json",
+      "sha256": "f034aed757d32e939ec5770ce6d3b2c0bc10f4d3f46e5a5a8e9ef09e5db0aaf7",
+      "bytes": 770
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json",
+      "sha256": "6990e9e2081e5fe844c087a99c7b9f450e9efd70d249437e0d2b73d22015972c",
+      "bytes": 2149
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv",
+      "sha256": "1fae87f26571a3c500805a1eb8e98abc3cd7450a066ba2edba34e369e8527c58",
+      "bytes": 1614
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json",
+      "sha256": "5900dfb062de9b7e0efba08134870f2eea0e00d63ba071322214d5910c87a1ce",
+      "bytes": 788
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/advanced_per_query.csv",
+      "sha256": "212eca8dbba7aafa51e4638ca4f4d8a02aa0ac1c4e2b8aa38f62e1fb572761ca",
+      "bytes": 1717491
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/config.yaml",
+      "sha256": "9868b9c0f520d2bc1bbf1eaa003bab3b51de72fadd9b675846f4e78a5a9b6dcc",
+      "bytes": 1449
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/metadata.json",
+      "sha256": "7af51465cbbc54b2280e5d97e37179d31b20e6dc3afffd1d70ae0218d1ce5fed",
+      "bytes": 769
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json",
+      "sha256": "d1f2fae5e425e990a0fc18e37a0a395aa6049a9f4af1b8c4ed41bfb9dd8c74d0",
+      "bytes": 2187
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv",
+      "sha256": "ad1f105cd48fb51412080ad48cae3c7c4e7e35a2fd784a5b78d88d0bbfa8d369",
+      "bytes": 1682
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json",
+      "sha256": "c38b669cb10b8bc29f4bbfa3e66ef68812059ea1cc780a42eb6020e3649c7824",
+      "bytes": 788
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/advanced_per_query.csv",
+      "sha256": "3b9ae7192b6955daa34ab52971808c95de632ea5827560f0eac46ae7183a5152",
+      "bytes": 661978
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/config.yaml",
+      "sha256": "5d470422289bf1632dcc53035f8fd507688239cf24071b8eb3c3d0983327d75c",
+      "bytes": 1459
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metadata.json",
+      "sha256": "b20e210ef8736e7fe03a7ae2fd290fccda077120a445f0814a4664546d084ade",
+      "bytes": 774
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json",
+      "sha256": "c34a97b4748b5b7454a3eaf3c613dee7bf734c2e74d3896048f779b8029e0419",
+      "bytes": 2242
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv",
+      "sha256": "a7e8935b8af517b47933f5d1ac8d08ba49f85d93ef3b271e73b3843f327d9f51",
+      "bytes": 1692
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json",
+      "sha256": "843c5ef968ecdb063411b3067e06d18c7441d56326f814bbc1a364e6228d9105",
+      "bytes": 789
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/advanced_per_query.csv",
+      "sha256": "22ea5ca4cce008275302565b78094d74f98cfb5903f25427fce2f30300ce44a9",
+      "bytes": 5227436
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv",
+      "sha256": "efb562f34a63c9a31eeae524fdbcdb7abdc91ef6a0e674a8af3c1d46d39a62e3",
+      "bytes": 21180
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/numap/result.json",
+      "sha256": "1cc48cf759683a5643b3f5eeae7eba0d9a10a4a3d1c14f0fb56812ae163afeb8",
+      "bytes": 7374
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/paramrepulsor/result.json",
+      "sha256": "c6dae2406a0e1ed25a218330d3ccf680cbba6ecbf6b1c443f0e3570aca5264c8",
+      "bytes": 6900
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/oos_umap/result.json",
+      "sha256": "ef0fa5e01f5ce0e3effff5e0028b372aea29210308ec838bd27301b8efe0f4cc",
+      "bytes": 7154
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/parametric_umap/result.json",
+      "sha256": "88b46b5e86bcfdd3838dec9162fece0ab289f82a7d7b97cf54ceaa6555383e46",
+      "bytes": 7401
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil20/main/cache/prepared_dataset.npz",
+      "sha256": "a10395439166a666b98e9d5a56b571e0efe82b5d1820d55edd3bcce33626010f",
+      "bytes": 1499528
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/numap/advanced_per_query.csv",
+      "sha256": "2faffc85b91f11f9e7675195a7c68ef8814d9e5ad6e9b56161a8db8b6a59d525",
+      "bytes": 19470
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/paramrepulsor/advanced_per_query.csv",
+      "sha256": "a467d8f07b74b14ff303884f3e6a465f612fb6fd996154b34a8801ddeef8d428",
+      "bytes": 24744
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/numap/result.json",
+      "sha256": "a9449711310a270868611a82ee7c5c924f61542e1e66e3f08a41eb6993ae301a",
+      "bytes": 7327
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/paramrepulsor/result.json",
+      "sha256": "0bc2c5cca884c09d02797d4c4d1d40a394dee7b9813e3924d8a6f342af0c1d16",
+      "bytes": 6866
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/oos_umap/result.json",
+      "sha256": "912e06a702056cb2b622484f66917323036fbbd4e0668d98d998ae1a9d9a727f",
+      "bytes": 7104
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/parametric_umap/result.json",
+      "sha256": "68411b55c484295e9510a0c038476bfe0574ab7839e452d224e040b88359333e",
+      "bytes": 7352
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/coil100/main/cache/prepared_dataset.npz",
+      "sha256": "f573a2206ba5fe94db1c6393430ee505853596b8260fbb5476fcbb5182b17f05",
+      "bytes": 7489928
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/numap/advanced_per_query.csv",
+      "sha256": "238cac5a36919c5c26bee5c309841eaabeb99f9a22673e5e63def79b725e20bc",
+      "bytes": 89951
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/paramrepulsor/advanced_per_query.csv",
+      "sha256": "baf678d1222da846cbfe5638327c51fa526d5f37672f6196ee453c612e227fab",
+      "bytes": 126893
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/numap/result.json",
+      "sha256": "3bd8356b25a487abcbb8773657f80b10998435153ddf1a0fe0d8d85b2e6383dd",
+      "bytes": 7435
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/paramrepulsor/result.json",
+      "sha256": "06bacd95a257d16220f2dad5824de49a8a0d3f043f496caf141ad262653f4bec",
+      "bytes": 6972
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/oos_umap/result.json",
+      "sha256": "74e474d5d172c7dbfa48875cb4270196f8896eeb3606e47da11a1b9441d3c9c8",
+      "bytes": 7207
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/parametric_umap/result.json",
+      "sha256": "73597a3e7015d86015de6e38a24a6d0771576a87786c2a91b3c92ce8d9f23e8f",
+      "bytes": 7455
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas/main/cache/prepared_dataset.npz",
+      "sha256": "7ac271214c62b95aa7dd2a0b876c944d60187acddf9ea83ea7fae08262a4ba87",
+      "bytes": 5094372
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/numap/advanced_per_query.csv",
+      "sha256": "f8f8644c981ac4d604e73ca03299e31e1b4d8aae52ddcaacdf52500e1c19fa34",
+      "bytes": 204287
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/paramrepulsor/advanced_per_query.csv",
+      "sha256": "4ebb9728e9042127b3ca07c9aeb7252cf9de36337bad11f3563a08cda2d7d6af",
+      "bytes": 286279
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/numap/result.json",
+      "sha256": "64087ad28a5e819c69785331a1162d847a8979edc2cf9022bbb3b7be435c4e3d",
+      "bytes": 7741
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/paramrepulsor/result.json",
+      "sha256": "64d16cdfc9cf4b51bc762645bf2dd63d9835c146f3c1c53791aa7aa8b4c3946e",
+      "bytes": 7276
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/oos_umap/result.json",
+      "sha256": "68140a530209d6927f9e2a3ff5788741cef7f476e756623097df379adfb10c28",
+      "bytes": 7514
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/parametric_umap/result.json",
+      "sha256": "99d990e975f36543350b1773a3e882f6796a9b29b2bc74764c28df4357d47021",
+      "bytes": 7762
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/cache/prepared_dataset.npz",
+      "sha256": "cf5cadac5b148e94fd414163098366c2b4fe1ba19894710571376dca4be859de",
+      "bytes": 5094372
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/numap/advanced_per_query.csv",
+      "sha256": "663d0c352fb35641560a237b18ae6c126a8916cd11255509cbea6ddf88907584",
+      "bytes": 202037
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/paramrepulsor/advanced_per_query.csv",
+      "sha256": "0c5fd22187fd373c1fafa153c9887e09c8b4304a9b9f9c983c79668c5fb5325d",
+      "bytes": 258582
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/numap/result.json",
+      "sha256": "dab383e8c0eccf88539253090b39d186ad961d34f5a66e3d332cf173924355c4",
+      "bytes": 7383
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/paramrepulsor/result.json",
+      "sha256": "8248d19b72e52d8d46aa484eb270085e8997588790ed627f1547efca981c559f",
+      "bytes": 6883
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/oos_umap/result.json",
+      "sha256": "935da7d99cecb397d724dee962b9a85a29c792383575d96074f29fc640b515fa",
+      "bytes": 7181
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/parametric_umap/result.json",
+      "sha256": "f3b319f8ba482e9de07bdb30fa9760bf009578251eb6da201d97c060d4d20cb3",
+      "bytes": 7430
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/cache/prepared_dataset.npz",
+      "sha256": "34fd61478327d3996a31416b5f5d1bf969c7461e3bbe0b266c8483ad16e93cf1",
+      "bytes": 4897352
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/numap/advanced_per_query.csv",
+      "sha256": "58b9249dab514497ec7b5f7c5eadc3e2e17c95f41abe807d84b1ff10a867951d",
+      "bytes": 96535
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/paramrepulsor/advanced_per_query.csv",
+      "sha256": "c507f616a89e2ed047bd31a322c682b523e89ccd0452564052eccd2f035db6be",
+      "bytes": 140826
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/numap/result.json",
+      "sha256": "f42b801e074301f003c1dc3a00bc6cc2b166bbc5b573cc6a405af08aa0f1c13d",
+      "bytes": 7344
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/paramrepulsor/result.json",
+      "sha256": "cc4abb7160fbd34424ea884962e72e9284096b6da50491f1ec99019aa2457a5f",
+      "bytes": 6859
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/oos_umap/result.json",
+      "sha256": "7fff7456b2eb66aa0019a396dc88b9cad4bde8b3f08c18db49e31fe553c1687e",
+      "bytes": 7157
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/parametric_umap/result.json",
+      "sha256": "3b9726df832dfcce534bdab618290aaf0ac21311a68e2aff9ed66aaadf923d8d",
+      "bytes": 7407
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/cache/prepared_dataset.npz",
+      "sha256": "fff513fc7cf105674db612aada8c7feeeefcde423d71acd6c67f2947a623e631",
+      "bytes": 2497352
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/numap/advanced_per_query.csv",
+      "sha256": "679132d95378c1b3a09838510d1c6d4f084c614392d193e7001b5a6aaee0bcad",
+      "bytes": 112261
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/paramrepulsor/advanced_per_query.csv",
+      "sha256": "8da6b02a269ff586faf76215a06dc73c8203fbeb11c7bde1cf26ada749f44cc2",
+      "bytes": 134456
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/numap/result.json",
+      "sha256": "4d86aaf2e618642cfb7d62648b8557130925724ed4fe2620c918d108f182b401",
+      "bytes": 7325
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/paramrepulsor/result.json",
+      "sha256": "8b78c2c445f429685ce76962bc3ba341a809e207e7b7bc852cbf64f3a62b8858",
+      "bytes": 6867
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/oos_umap/result.json",
+      "sha256": "c2ce1045334716563828023bb77f9da6162abd37b78572d22bb5ec7a3b51abbd",
+      "bytes": 7102
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/parametric_umap/result.json",
+      "sha256": "dbeea699085d2a108ce725ffeb2a7b32b16785dd090f58391550f8c52edef894",
+      "bytes": 7349
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/organoid/main/cache/prepared_dataset.npz",
+      "sha256": "4bc40e687d358b7821e0f1fae0de4ac1fa7ead7ed9f8440fa534287525a1f7aa",
+      "bytes": 828880
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/numap/advanced_per_query.csv",
+      "sha256": "f58408b1272b8f5808da4f4c06ba5175503fe81a2a1662e1a78dfdd8fb6c5b9d",
+      "bytes": 31186
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/paramrepulsor/advanced_per_query.csv",
+      "sha256": "4b78fd853b030799ca79fdc177a87f50d941687fdea201b9a73a6480f17e9f0c",
+      "bytes": 48367
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/numap/result.json",
+      "sha256": "df47e6fad1690225adb6495dd24eea286b13be0736c5ca09f4a0fb600246baa6",
+      "bytes": 7357
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/paramrepulsor/result.json",
+      "sha256": "3dd7831544def063e92e9cfe29004ba3945e58497077978330ed04bd71b37cc6",
+      "bytes": 6895
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/oos_umap/result.json",
+      "sha256": "dcc0a361ffc5978dcd396303e6650d24866b2249494b2fa2fe005f745c1d2c67",
+      "bytes": 7129
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/parametric_umap/result.json",
+      "sha256": "fa49d1882add4e523e7d95cf3d5ae955753612799b96d630c358233c224f8839",
+      "bytes": 7375
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/cache/prepared_dataset.npz",
+      "sha256": "56edbc2e62a5c79a3a7bbadfae942f25ed241788bbeda0808fb8fdfc14d1f8c3",
+      "bytes": 6579500
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/numap/advanced_per_query.csv",
+      "sha256": "2809f08e8fde0950a6edd63bed9d1e9be28552ea8323025bdfdc98bb18d79c21",
+      "bytes": 232473
+    },
+    {
+      "path": "/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/paramrepulsor/advanced_per_query.csv",
+      "sha256": "5ae1e832e27eac8423482819e231053b3f26d014aba43acec59791bbe7b5459c",
+      "bytes": 400380
+    }
+  ],
+  "rank_panel": {
+    "metric": "recall_at_15",
+    "cohort": [
+      "no_repulsion",
+      "numap",
+      "ours",
+      "ours_oracle_neighbors",
+      "paramrepulsor",
+      "reduced_repulsion_umap",
+      "spectral_only",
+      "standard_umap",
+      "weighted_knn"
+    ],
+    "datasets": [
+      "fashion_mnist",
+      "mnist_oos",
+      "organoid",
+      "embryoid_body"
+    ],
+    "rule": "全手法が共通して測定されたデータセット",
+    "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+  },
+  "secondary_rank_panels": [
+    {
+      "metric": "recall_at_5",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "recall_at_10",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "recall_at_15",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "reduced_repulsion_umap",
+        "spectral_only",
+        "standard_umap",
+        "weighted_knn"
+      ],
+      "datasets": [
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "recall_at_30",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "ndcg",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "reference_trustworthiness",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "reduced_repulsion_umap",
+        "spectral_only",
+        "standard_umap",
+        "weighted_knn"
+      ],
+      "datasets": [
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "label_knn_accuracy",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "reduced_repulsion_umap",
+        "spectral_only",
+        "standard_umap",
+        "weighted_knn"
+      ],
+      "datasets": [
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "fit_time_seconds",
+      "cohort": [
+        "numap",
+        "paramrepulsor",
+        "reduced_repulsion_umap",
+        "standard_umap"
+      ],
+      "datasets": [
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "mean_query_latency_seconds",
+      "cohort": [
+        "no_repulsion",
+        "numap",
+        "ours",
+        "ours_oracle_neighbors",
+        "paramrepulsor",
+        "weighted_knn"
+      ],
+      "datasets": [
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "local_displacement",
+      "cohort": [
+        "no_repulsion",
+        "ours",
+        "ours_oracle_neighbors",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "fuzzy_weighted_mse",
+      "cohort": [
+        "no_repulsion",
+        "ours",
+        "ours_oracle_neighbors",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "fuzzy_weighted_bce",
+      "cohort": [
+        "no_repulsion",
+        "ours",
+        "ours_oracle_neighbors",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "repulsion_accumulation_score",
+      "cohort": [
+        "no_repulsion",
+        "ours",
+        "ours_oracle_neighbors",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    },
+    {
+      "metric": "periphery_percentile",
+      "cohort": [
+        "no_repulsion",
+        "ours",
+        "ours_oracle_neighbors",
+        "spectral_only",
+        "standard_umap"
+      ],
+      "datasets": [
+        "coil20",
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "rule": "全手法が共通して測定されたデータセット",
+      "ties": "順位算出時のみ小数12桁に丸めて平均順位。wins/top2は同順位を含む最小順位。原測定値は変更しない。"
+    }
+  ],
+  "multi_k_panel": [
+    "coil20",
+    "coil100",
+    "pancreas",
+    "pancreas_batch_corrected",
+    "fashion_mnist",
+    "mnist_oos",
+    "organoid",
+    "embryoid_body"
+  ],
+  "gain_summary": {
+    "n_datasets": 8,
+    "wins": 8,
+    "losses": 0,
+    "ties": 0,
+    "mean_absolute_gain": 0.020129218661770636,
+    "median_absolute_gain": 0.016952306353350752,
+    "n_relative": 8,
+    "mean_relative_gain": 0.11759598369872612,
+    "median_relative_gain": 0.1201224900197952,
+    "min_relative_gain": 0.01678832116788336,
+    "max_relative_gain": 0.29515696482094933,
+    "sign_test_n": 8,
+    "sign_test_p": 0.00390625
+  },
+  "ablations": {
+    "retriever": {
+      "n_datasets": 8,
+      "mean_absolute_gap": 0.0004310060333096357,
+      "max_absolute_gap": 0.0011314186248912173
+    },
+    "repulsion": {
+      "ours_better": [
+        "coil100",
+        "pancreas",
+        "pancreas_batch_corrected",
+        "fashion_mnist",
+        "mnist_oos",
+        "organoid",
+        "embryoid_body"
+      ],
+      "no_repulsion_better": [
+        "coil20"
+      ],
+      "tied": [],
+      "mean_ours_minus_no_repulsion": 0.0034266232991005414
+    }
+  },
+  "friedman": {
+    "status": "skipped",
+    "reason": "共通panelが3手法・5データセット未満、または独立性の制約。"
+  },
+  "figures": [
+    "recall15_by_dataset.png",
+    "relative_gain_vs_umap.png",
+    "mean_rank.png",
+    "recall_multi_k.png",
+    "tail_recall15.png",
+    "periphery_comparison.png",
+    "latency_quality_tradeoff.png",
+    "recall15_paired_distribution_coil20.png",
+    "local_displacement_coil20.png",
+    "recall15_paired_distribution_coil100.png",
+    "local_displacement_coil100.png",
+    "recall15_paired_distribution_pancreas.png",
+    "local_displacement_pancreas.png",
+    "recall15_paired_distribution_pancreas_batch_corrected.png",
+    "local_displacement_pancreas_batch_corrected.png",
+    "recall15_paired_distribution_fashion_mnist.png",
+    "local_displacement_fashion_mnist.png",
+    "recall15_paired_distribution_mnist_oos.png",
+    "local_displacement_mnist_oos.png",
+    "recall15_paired_distribution_organoid.png",
+    "local_displacement_organoid.png",
+    "recall15_paired_distribution_embryoid_body.png",
+    "local_displacement_embryoid_body.png"
+  ],
+  "notes": [
+    "coil20/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "coil100/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "coil100/standard_umap: 集約Recall15=0.67737037037、追加解析段階の平均=0.676888888889。主表は集約値、対応検定は追加解析段階の値を使用。",
+    "pancreas/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "pancreas_batch_corrected/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "fashion_mnist/ours/mean_query_latency_seconds: 別実行段階の時間 0.6809891144321301 / 0.08465528387669474。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "fashion_mnist/ours_oracle_neighbors/mean_query_latency_seconds: 別実行段階の時間 0.7750841031540185 / 0.20447841995302588。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "fashion_mnist/no_repulsion/mean_query_latency_seconds: 別実行段階の時間 0.32613500954210756 / 0.031256744207348676。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "fashion_mnist/exact診断: 既存runnerのseedとchoice規則から評価subsetを復元。",
+    "fashion_mnist/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "mnist_oos/ours/mean_query_latency_seconds: 別実行段階の時間 0.14008680943399668 / 0.3566884375717491。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "mnist_oos/ours_oracle_neighbors/mean_query_latency_seconds: 別実行段階の時間 0.20924273075163363 / 0.4021591167668812。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "mnist_oos/no_repulsion/mean_query_latency_seconds: 別実行段階の時間 0.05802798091573641 / 0.1516205161730759。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "mnist_oos/exact診断: 既存runnerのseedとchoice規則から評価subsetを復元。",
+    "mnist_oos/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "organoid/ours/mean_query_latency_seconds: 別実行段階の時間 0.3016973642921732 / 0.35323837182822565。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "organoid/ours_oracle_neighbors/mean_query_latency_seconds: 別実行段階の時間 0.29539677845897744 / 0.34539415482212804。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "organoid/no_repulsion/mean_query_latency_seconds: 別実行段階の時間 0.1458372361629754 / 0.14814032241580496。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "organoid/exact診断: 既存runnerのseedとchoice規則から評価subsetを復元。",
+    "organoid/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "embryoid_body/ours/mean_query_latency_seconds: 別実行段階の時間 0.3476030239373172 / 0.08636873875811571。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "embryoid_body/ours_oracle_neighbors/mean_query_latency_seconds: 別実行段階の時間 0.38411674982049665 / 0.1999910014943837。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "embryoid_body/no_repulsion/mean_query_latency_seconds: 別実行段階の時間 0.1652685813104558 / 0.03189975036250543。baseline比較・timing段階を優先し、原値はraw_metric_recordsに保存。",
+    "embryoid_body/exact診断: 既存runnerのseedとchoice規則から評価subsetを復元。",
+    "embryoid_body/MC斥力診断: 保存されたsubset内連番をquery_subset_indicesで元query IDへ復元。",
+    "coil100/numap: direct k=15 Recall=0.0685555555556、multi-k Recall15=0.0685925925926。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "coil100/numap: direct k=15 Recall=0.0685555555556、multi-k Recall15=0.0685925925926。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas/numap: direct k=15 Recall=0.0133646790625、multi-k Recall15=0.0133789271212。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas/numap: direct k=15 Recall=0.0133646790625、multi-k Recall15=0.0133789271212。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas/paramrepulsor: direct k=15 Recall=0.093809218494、multi-k Recall15=0.0937949704353。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas/paramrepulsor: direct k=15 Recall=0.093809218494、multi-k Recall15=0.0937949704353。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas_batch_corrected/paramrepulsor: direct k=15 Recall=0.0408349362399、multi-k Recall15=0.0408206881812。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "pancreas_batch_corrected/paramrepulsor: direct k=15 Recall=0.0408349362399、multi-k Recall15=0.0408206881812。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "embryoid_body/numap: direct k=15 Recall=0.00652057148996、multi-k Recall15=0.00654205607477。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "embryoid_body/numap: direct k=15 Recall=0.00652057148996、multi-k Recall15=0.00654205607477。保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。",
+    "coil20/numap/local_displacement: 対応値なし",
+    "coil20/paramrepulsor/local_displacement: 対応値なし",
+    "coil100/numap/local_displacement: 対応値なし",
+    "coil100/paramrepulsor/local_displacement: 対応値なし",
+    "pancreas/numap/local_displacement: 対応値なし",
+    "pancreas/paramrepulsor/local_displacement: 対応値なし",
+    "pancreas_batch_corrected/numap/local_displacement: 対応値なし",
+    "pancreas_batch_corrected/paramrepulsor/local_displacement: 対応値なし",
+    "fashion_mnist/numap/local_displacement: 対応値なし",
+    "fashion_mnist/paramrepulsor/local_displacement: 対応値なし",
+    "mnist_oos/numap/local_displacement: 対応値なし",
+    "mnist_oos/paramrepulsor/local_displacement: 対応値なし",
+    "organoid/numap/local_displacement: 対応値なし",
+    "organoid/paramrepulsor/local_displacement: 対応値なし",
+    "embryoid_body/numap/local_displacement: 対応値なし",
+    "embryoid_body/paramrepulsor/local_displacement: 対応値なし",
+    "organoid: 保存grouping列='labeling_time'。loaderが順序を保証しないため連続構造解析を省略。",
+    "embryoid_body: 保存grouping列='stage'。loaderが順序を保証しないため連続構造解析を省略。"
+  ],
+  "validation": "保存ファイルを読み取って集計。学習・再推論・元結果への書込みなし。"
+}

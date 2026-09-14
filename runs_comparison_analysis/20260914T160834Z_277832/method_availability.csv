@@ -1,0 +1,181 @@
+dataset,method,phase,success,status,reason,source,selected_success
+coil20,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil20,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil20,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil20,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil20,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil20,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil20/main/metrics/embedding.json,True
+coil100,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+coil100,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+coil100,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+coil100,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+coil100,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+coil100,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/coil100/main/metrics/embedding.json,True
+pancreas,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas/main/metrics/embedding.json,True
+pancreas_batch_corrected,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+pancreas_batch_corrected,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+pancreas_batch_corrected,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+pancreas_batch_corrected,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+pancreas_batch_corrected,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+pancreas_batch_corrected,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,True
+fashion_mnist,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/embedding.json,True
+fashion_mnist,standard_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,reduced_repulsion_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,weighted_knn,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,parametric_umap,internal_baselines,False,unavailable,"umap.parametric_umap.ParametricUMAP requires the optional 'tensorflow' dependency, not installed in this environment (umap.parametric_umap requires Tensorflow >= 2.0). Install with: pip install tensorflow",/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,False
+fashion_mnist,numap,internal_baselines,False,unavailable,The official NUMAP/Sep-SpectralNet package is not installed in this environment (No module named 'numap'). Repository: https://github.com/shaham-lab/NUMAP . Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,paramrepulsor,internal_baselines,False,unavailable,The official ParamRepulsor package is not installed in this environment (No module named 'parampacmap'). Repository: https://github.com/hyhuang00/ParamRepulsor . Install with: pip install parampacmap==0.1.0 (requires Python <3.12; see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,ours,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,ours_oracle_neighbors,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,no_repulsion,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,exact_repulsion_diagnostic,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/baseline_comparison.csv,True
+fashion_mnist,standard_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,reduced_repulsion_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,weighted_knn,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,ours,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,ours_oracle_neighbors,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,no_repulsion,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+fashion_mnist,exact_repulsion_diagnostic,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/fashion_mnist/main/metrics/timing.json,True
+mnist_oos,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/embedding.json,True
+mnist_oos,standard_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,reduced_repulsion_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,weighted_knn,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,parametric_umap,internal_baselines,False,unavailable,"umap.parametric_umap.ParametricUMAP requires the optional 'tensorflow' dependency, not installed in this environment (umap.parametric_umap requires Tensorflow >= 2.0). Install with: pip install tensorflow",/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,False
+mnist_oos,numap,internal_baselines,False,unavailable,The official NUMAP/Sep-SpectralNet package is not installed in this environment (No module named 'numap'). Repository: https://github.com/shaham-lab/NUMAP . Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,paramrepulsor,internal_baselines,False,unavailable,The official ParamRepulsor package is not installed in this environment (No module named 'parampacmap'). Repository: https://github.com/hyhuang00/ParamRepulsor . Install with: pip install parampacmap==0.1.0 (requires Python <3.12; see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,ours,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,ours_oracle_neighbors,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,no_repulsion,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,exact_repulsion_diagnostic,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/baseline_comparison.csv,True
+mnist_oos,standard_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,reduced_repulsion_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,weighted_knn,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,ours,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,ours_oracle_neighbors,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,no_repulsion,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+mnist_oos,exact_repulsion_diagnostic,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/mnist_oos/main/metrics/timing.json,True
+organoid,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/embedding.json,True
+organoid,standard_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,reduced_repulsion_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,weighted_knn,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,parametric_umap,internal_baselines,False,unavailable,"umap.parametric_umap.ParametricUMAP requires the optional 'tensorflow' dependency, not installed in this environment (umap.parametric_umap requires Tensorflow >= 2.0). Install with: pip install tensorflow",/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,False
+organoid,numap,internal_baselines,False,unavailable,The official NUMAP/Sep-SpectralNet package is not installed in this environment (No module named 'numap'). Repository: https://github.com/shaham-lab/NUMAP . Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,paramrepulsor,internal_baselines,False,unavailable,The official ParamRepulsor package is not installed in this environment (No module named 'parampacmap'). Repository: https://github.com/hyhuang00/ParamRepulsor . Install with: pip install parampacmap==0.1.0 (requires Python <3.12; see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,ours,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,ours_oracle_neighbors,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,no_repulsion,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,exact_repulsion_diagnostic,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/baseline_comparison.csv,True
+organoid,standard_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,reduced_repulsion_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,weighted_knn,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,ours,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,ours_oracle_neighbors,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,no_repulsion,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+organoid,exact_repulsion_diagnostic,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/organoid/main/metrics/timing.json,True
+embryoid_body,ours,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,ours_oracle_neighbors,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,no_repulsion,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,repulsion_oracle_diagnostic,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,spectral_only,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,standard_umap,internal_evaluate,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/embedding.json,True
+embryoid_body,standard_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,reduced_repulsion_umap,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,weighted_knn,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,parametric_umap,internal_baselines,False,unavailable,"umap.parametric_umap.ParametricUMAP requires the optional 'tensorflow' dependency, not installed in this environment (umap.parametric_umap requires Tensorflow >= 2.0). Install with: pip install tensorflow",/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,False
+embryoid_body,numap,internal_baselines,False,unavailable,The official NUMAP/Sep-SpectralNet package is not installed in this environment (No module named 'numap'). Repository: https://github.com/shaham-lab/NUMAP . Install with: pip install numap==0.2.3 (see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,paramrepulsor,internal_baselines,False,unavailable,The official ParamRepulsor package is not installed in this environment (No module named 'parampacmap'). Repository: https://github.com/hyhuang00/ParamRepulsor . Install with: pip install parampacmap==0.1.0 (requires Python <3.12; see pyproject.toml's 'external-baselines' extra).,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,ours,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,ours_oracle_neighbors,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,no_repulsion,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,exact_repulsion_diagnostic,internal_baselines,True,success,NaN,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/baseline_comparison.csv,True
+embryoid_body,standard_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,reduced_repulsion_umap,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,weighted_knn,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,ours,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,ours_oracle_neighbors,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,no_repulsion,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+embryoid_body,exact_repulsion_diagnostic,internal_timing,True,success,,/home/suzuki/Learn/UMAPing/runs/embryoid_body/main/metrics/timing.json,True
+coil20,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+coil20,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/parametric_umap/result.json,False
+coil20,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+coil20,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/numap/result.json,True
+coil20,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+coil20,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/paramrepulsor/result.json,True
+coil20,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+coil20,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil20/oos_umap/result.json,False
+coil100,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+coil100,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/parametric_umap/result.json,False
+coil100,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+coil100,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/numap/result.json,True
+coil100,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+coil100,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/paramrepulsor/result.json,True
+coil100,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+coil100,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/coil100/oos_umap/result.json,False
+pancreas,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+pancreas,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/parametric_umap/result.json,False
+pancreas,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+pancreas,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/numap/result.json,True
+pancreas,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+pancreas,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/paramrepulsor/result.json,True
+pancreas,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+pancreas,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas/oos_umap/result.json,False
+pancreas_batch_corrected,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+pancreas_batch_corrected,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/parametric_umap/result.json,False
+pancreas_batch_corrected,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+pancreas_batch_corrected,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/numap/result.json,True
+pancreas_batch_corrected,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+pancreas_batch_corrected,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/paramrepulsor/result.json,True
+pancreas_batch_corrected,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+pancreas_batch_corrected,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/pancreas_batch_corrected/oos_umap/result.json,False
+fashion_mnist,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+fashion_mnist,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/parametric_umap/result.json,False
+fashion_mnist,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+fashion_mnist,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/numap/result.json,True
+fashion_mnist,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+fashion_mnist,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/paramrepulsor/result.json,True
+fashion_mnist,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+fashion_mnist,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/fashion_mnist/oos_umap/result.json,False
+mnist_oos,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+mnist_oos,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/parametric_umap/result.json,False
+mnist_oos,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+mnist_oos,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/numap/result.json,True
+mnist_oos,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+mnist_oos,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/paramrepulsor/result.json,True
+mnist_oos,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+mnist_oos,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/mnist_oos/oos_umap/result.json,False
+organoid,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+organoid,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/parametric_umap/result.json,False
+organoid,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+organoid,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/numap/result.json,True
+organoid,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+organoid,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/paramrepulsor/result.json,True
+organoid,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+organoid,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/organoid/oos_umap/result.json,False
+embryoid_body,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+embryoid_body,parametric_umap,external,False,failed,ValueError: reference埋め込みのshapeまたは有限性が不正です,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/parametric_umap/result.json,False
+embryoid_body,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+embryoid_body,numap,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/numap/result.json,True
+embryoid_body,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,True
+embryoid_body,paramrepulsor,external,True,success,NaN,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/paramrepulsor/result.json,True
+embryoid_body,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/summary.csv,False
+embryoid_body,oos_umap,external,False,unavailable,公式OOS_UMAPの確認済みコミットにはnetwork_sig.py等のネットワーク定義はあるが、論文のCE/MSE/CEMSE学習・OOS最適化の実行コードと汎用fit/transform APIがない。公式手法を独自再実装せず、今回の比較では利用不可とする。,/home/suzuki/Learn/UMAPing/runs_external_baselines/20260914T070151Z_3800762/embryoid_body/oos_umap/result.json,False
