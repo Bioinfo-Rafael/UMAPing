@@ -36,6 +36,7 @@ def build_report(result, metadata):
              "詳細: [利用可否](method_availability.csv)、[全測定値](combined_long.csv)。", "",
              "## 2. 主結果：Neighborhood Recall@15", "",
              "高次元と2次元の双方で、各queryから固定reference集合に対する15近傍を比較します。高いほど良い指標です。",
+             "主表は保存済みのdirect k=15評価を優先します。外部結果のmulti-k版Recall15は最大k近傍の先頭15件を使う別計算で、同距離近傍の選択により差が生じ得ます。両方の値は全測定値のrecall15_direct・recall15_multi_k列に保持します。",
              "[主表](tables/main_recall15.md)にはdataset別Recall、利用可能dataset上の平均・中央値、固定panelの順位を示します。", "",
              markdown_table(result["main"][[c for c in ("method", "mean_recall15", "median_recall15", "mean_rank", "n_datasets", "n_rank_datasets", "wins", "top2") if c in result["main"]]]), "",
              f"順位panel: {', '.join(result['rank_info']['datasets']) or '構成不可'}。{result['rank_info']['rule']}。",
@@ -49,6 +50,7 @@ def build_report(result, metadata):
              markdown_table(gains[gains.method.eq("ours")]), "",
              "## 4. query単位の対応統計", "",
              "同じquery IDと由来を確認できる比較だけを使用します。Recall・NDCGはours−baseline、local displacementはbaseline−oursとし、正ならoursが良い方向です。",
+             "対応解析・tail・multi-k図のRecall15は、内部・外部とも保存されたmulti-kのper-query値を使います。主表のdirect k=15評価と計算経路が異なるため、主表の差と完全には一致しない場合があります。",
              f"対応bootstrapは{metadata['resamples']}回、両側符号反転検定も原則同数です。非ゼロ差が16件以下なら全符号の正確検定を行います。",
              "CIは平均差のpercentile 95%区間です。主仮説はours vs standard UMAPのRecall@15で、dataset間のp値にHolm補正を適用します。他は指標別の探索的ファミリーとして補正します。", ""]
     paired = result["paired"]

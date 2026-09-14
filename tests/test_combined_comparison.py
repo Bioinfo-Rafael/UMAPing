@@ -50,14 +50,18 @@ def saved(tmp_path):
         folder = external / dataset / "numap"
         folder.mkdir(parents=True)
         recall = np.arange(8) / 30 + .35
-        metrics = {"neighborhood_recall_at_k": float(recall.mean()), "recall_at_15": float(recall.mean()),
+        # 別々の近傍取得で境界の同距離点の選択が異なる保存schemaを再現する。
+        direct = recall.copy()
+        direct[0] += 1 / 15
+        metrics = {"neighborhood_recall_at_k": float(direct.mean()), "recall_at_15": float(recall.mean()),
                    "n_queries": 8, "k": 15, "ndcg": float(recall.mean()), "mean_query_latency_seconds": .001}
         detail = dict(dataset=dataset, method="numap_sep_spectralnet", baseline="numap", success=True,
                       available=True, status="success", n_query=8, k=15, metrics=metrics,
                       prepared_dataset_sha256=digest(run / "cache/prepared_dataset.npz"),
                       config_sha256=digest(run / "config.yaml"))
         write_json(folder / "result.json", detail)
-        pd.DataFrame({"query_index": np.arange(8)[::-1], "recall_at_15": recall[::-1], "ndcg": recall[::-1],
+        pd.DataFrame({"query_index": np.arange(8)[::-1], "recall_at_15": recall[::-1],
+                      "neighborhood_recall_at_k": direct[::-1], "ndcg": recall[::-1],
                       "recall_at_5": recall[::-1] / 2, "recall_at_10": recall[::-1] * .8, "recall_at_30": recall[::-1] * 1.1}).to_csv(folder / "advanced_per_query.csv", index=False)
         summary.append({**{k:v for k,v in detail.items() if k != "metrics"}, **metrics})
         summary.append(dict(dataset=dataset, method="oos_umap", available=False, success=False, status="unavailable", reason="official executable missing", recall_at_15=999))
@@ -92,6 +96,30 @@ def test_gain_and_zero_baseline_and_sign_test(saved):
     frame = data.frame()
     frame.loc[frame.method == "standard_umap", "recall_at_15"] = 0
     assert gains_vs_standard(frame).relative_gain.isna().all()
+
+
+def test_direct_and_multi_k_recall_are_preserved_and_paired_separately(saved):
+    data = load_results(*saved)
+    row = data.rows["coil20", "numap"]
+    assert row["recall_at_15"] == row["recall15_direct"]
+    assert row["recall15_direct"] - row["recall15_multi_k"] == pytest.approx(1 / 120)
+    assert row["per_query_phase_recall15_mean"] == pytest.approx(row["recall15_multi_k"])
+    pairs, _ = paired_comparisons(data, seed=0, resamples=100)
+    pair = pairs[(pairs.dataset == "coil20") & (pairs.baseline == "numap") & (pairs.metric == "recall_at_15")].iloc[0]
+    assert pair.baseline_mean == pytest.approx(row["recall15_multi_k"])
+    assert any("同距離近傍" in note for note in data.notes)
+
+
+def test_existing_metric_implementations_can_differ_on_tied_neighbors():
+    from umaping.evaluation.embedding import query_to_reference_neighborhood_recall
+    from umaping.evaluation.advanced import multi_k_recall_and_ndcg
+    rng = np.random.default_rng(0)
+    ref = rng.integers(-2, 3, size=(40, 3)).astype(float)
+    query = rng.integers(-2, 3, size=(8, 3)).astype(float)
+    ref2d, query2d = np.zeros((40, 2)), np.zeros((8, 2))
+    direct, _ = query_to_reference_neighborhood_recall(query, ref, query2d, ref2d, k=15)
+    multi, _ = multi_k_recall_and_ndcg(query, ref, query2d, ref2d)
+    assert not np.isclose(direct, multi[15].mean())
 
 
 def test_paired_bootstrap_and_exact_permutation_direction():
@@ -264,7 +292,7 @@ def test_aggregate_only_external_has_no_invented_query_values(saved):
     assert any("per-query保存なし" in n for n in data.notes)
 
 
-@pytest.mark.parametrize("metric", ["recall_at_15", "ndcg"])
+@pytest.mark.parametrize("metric", ["recall_at_15", "ndcg", "neighborhood_recall_at_k"])
 def test_external_perquery_conflict_fails_loudly(saved, metric):
     internal, external = saved
     path = external / "coil20/numap/advanced_per_query.csv"
@@ -272,6 +300,17 @@ def test_external_perquery_conflict_fails_loudly(saved, metric):
     frame[metric] += .1
     frame.to_csv(path, index=False)
     with pytest.raises(ValueError, match="per-query値が矛盾"):
+        load_results(internal, external)
+
+
+@pytest.mark.parametrize("metric", ["recall_at_15", "neighborhood_recall_at_k"])
+def test_same_recall_variant_conflict_between_summary_and_json_rejected(saved, metric):
+    internal, external = saved
+    path = external / "summary.csv"
+    frame = pd.read_csv(path)
+    frame.loc[frame.method == "numap_sep_spectralnet", metric] += .1
+    frame.to_csv(path, index=False)
+    with pytest.raises(ValueError, match="集約結果が矛盾"):
         load_results(internal, external)
 
 
@@ -302,6 +341,11 @@ def test_full_synthetic_report_and_figures_preserve_sources(saved, tmp_path, mon
     main = pd.read_csv(output / "tables/main_recall15.csv")
     assert "oos_umap" not in set(main.method)
     assert main.pancreas.isna().all()
+    long = pd.read_csv(output / "combined_long.csv")
+    numap = long[long.method == "numap"].iloc[0]
+    assert numap.recall_at_15 == numap.recall15_direct
+    assert numap.recall15_direct != numap.recall15_multi_k
+    assert "計算経路が異なる" in text
     assert (output / "figures/recall15_by_dataset.png").stat().st_size > 1000
     assert (output / "figures/latency_quality_tradeoff.svg").is_file()
     assert json.loads((output / "metadata.json").read_text())["seed"] == 7

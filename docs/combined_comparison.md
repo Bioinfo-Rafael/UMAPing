@@ -61,7 +61,7 @@ BASH
 
 外部runでは`summary.csv`を必須とし、`<dataset>/<baseline>/result.json`と
 `advanced_per_query.csv`を発見して照合します。前のrunnerはこのquery別CSVと`embeddings.npz`を保存しています。
-JSONの`metrics`とsummaryの同じ値は一致を検査します。外部per-query平均も集約値と矛盾すればエラーにします。
+JSONの`metrics`とsummaryの同じ列は一致を検査します。外部per-query平均も同じ計算経路の集約値と照合します。
 同じファイル内のdataset/methodの重複や、同一測定を表す集約値の競合は黙って選ばずエラーにします。
 
 method名は`ours_full→ours`、`oracle_neighbors→ours_oracle_neighbors`、
@@ -81,7 +81,18 @@ method名は`ours_full→ours`、`oracle_neighbors→ours_oracle_neighbors`、
 主表では集約値を保ち、対応検定では追加解析段階の同じqueryの値を使います。
 差は`per_query_phase_recall15_mean`、metadata、レポートに明記します。
 不足している副指標だけはper-query平均で補い、各列の出典を記録します。
-外部結果は同一実行段階なので、この例外で矛盾を許しません。
+外部結果は同一実行段階ですが、Recall15には次の2つの計算経路があります。
+
+- `neighborhood_recall_at_k`（k=15）：15近傍を直接取得して計算する主評価。
+- `recall_at_15`：multi-k評価で最大k（通常30）の近傍を取得し、その先頭15件で計算する値。
+
+元の近傍探索は同距離点の選択順を固定していないため、この2値は一致を保証しません。
+同距離点のある合成データで差を再現していますが、実データの差の個別原因は再計算していません。
+主表の`recall_at_15`には内部と同じdirect k=15の主評価を優先し、外部の両方の値を
+`combined_long.csv`の`recall15_direct`・`recall15_multi_k`に保持します。
+対応検定・tail・multi-k図は内部と同じmulti-k経路のper-query値を使います。
+summaryとresult JSON、さらに外部per-query平均は、それぞれ同じ計算経路同士で一致を検査し、
+本当に矛盾する値はエラーにします。2経路の差はmetadataと日本語レポートにも記録します。
 
 内部の主評価と追加baselineでは時間測定も別実行です。利用できればbaseline/timing段階の時間を優先します。
 別測定の元値は`raw_metric_records.json`にすべて保持し、どの値を選んだかを記録します。
@@ -171,7 +182,8 @@ Recall主表、相対改善率、平均順位、複数kのRecall、worst-5% Reca
 `tests/test_combined_comparison.py`は合成の内部・外部schemaを用いて、読み込み、別名統一、欠測、
 重複・矛盾拒否、hash照合、query IDの整列、正確/Monte Carlo検定、bootstrap、Holm、方向性、
 tail、subset、連続構造、部分欠測でのレポートと図を検証します。
-追加20テストと既存のadvanced解析14テスト、計34件が通過しています。
+追加テストではdirect/multi-kの異なる保存値の保持、同距離近傍での差の再現、同じ計算経路内の矛盾拒否も検証します。
+統合解析25件と既存のadvanced解析14件、計39テストが通過しています。
 リモート用コマンドのbash構文と、CLIの引数表示も確認しました。
 実際にGitへ保存済みの内部8datasetはschemaの読み取り確認にのみ使用しました。
 ローカルにない外部実測値の結論は作っていません。実データ学習・推論は実行していません。

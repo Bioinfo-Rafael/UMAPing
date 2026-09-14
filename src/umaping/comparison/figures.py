@@ -106,7 +106,11 @@ def draw_figures(result, data, output):
                     if entry and all(c in entry["frame"] for c in cols):
                         curves.append(entry["frame"][cols].mean().to_numpy())
                     else:
-                        curves.append(good[(good.method == method) & (good.dataset == d)][cols].iloc[0].to_numpy())
+                        aggregate = good[(good.method == method) & (good.dataset == d)].iloc[0]
+                        curve = aggregate[cols].to_numpy(dtype=float)
+                        if np.isfinite(aggregate.get("recall15_multi_k", np.nan)):
+                            curve[2] = aggregate.recall15_multi_k
+                        curves.append(curve)
                 ax.plot([5, 10, 15, 30], np.mean(curves, axis=0), marker="o", label=LABELS.get(method, method), color=colors[method])
             ax.set(xlabel="k", ylabel="Mean neighborhood Recall@k", xticks=[5, 10, 15, 30], ylim=(0, 1))
             ax.set_title(f"Multi-k recall · same {len(common)} datasets for all curves", loc="left")

@@ -21,6 +21,9 @@ METRICS = ("recall_at_5", "recall_at_10", "recall_at_15", "recall_at_30", "ndcg"
            "mean_query_latency_seconds", "local_displacement", "fuzzy_weighted_mse",
            "fuzzy_weighted_bce", "repulsion_accumulation_score", "periphery_percentile")
 TIMES = {"fit_time_seconds", "mean_query_latency_seconds"}
+# 外部runnerはdirect k=15とmax-kのprefixを別々に計算して保存する。
+# 同距離近傍の選択は一致を保証しないため、同じ列へ潰さない。
+RECORD_METRICS = (*METRICS, "recall15_direct", "recall15_multi_k")
 
 
 def canonical(name):
@@ -110,19 +113,28 @@ class Loaded:
                        scope="subset" if method in DIAGNOSTICS or has_subset else "full",
                        n_queries=finite(row.get("n_queries", row.get("n_query"))), k=k,
                        phase=phase, priority=priority, source=str(path),
-                       metric_sources={}, **{m: finite(row.get(m)) if success else np.nan for m in METRICS})
+                       metric_sources={}, **{m: finite(row.get(m)) if success else np.nan for m in RECORD_METRICS})
+        if success and phase == "external":
+            current["recall15_multi_k"] = finite(row.get("recall_at_15"))
         if success and k == 15 and np.isfinite(finite(row.get("neighborhood_recall_at_k"))):
             primary = finite(row["neighborhood_recall_at_k"])
-            if np.isfinite(current["recall_at_15"]) and not np.isclose(current["recall_at_15"], primary):
-                raise ValueError(f"Recall@15の列同士が矛盾しています: {path}")
+            current["recall15_direct"] = primary
+            if np.isfinite(current["recall_at_15"]) and not np.isclose(current["recall_at_15"], primary, rtol=1e-9, atol=1e-12):
+                if phase != "external":
+                    raise ValueError(f"Recall@15の列同士が矛盾しています: {path}")
+                self.notes.append(
+                    f"{dataset}/{method}: direct k=15 Recall={primary:.12g}、multi-k Recall15={current['recall_at_15']:.12g}。"
+                    "保存実装は15近傍の直接取得と最大k近傍の先頭15件を別々に計算するため、同距離近傍の選択で差が生じ得る。"
+                    "主表はdirect、対応・multi-k解析は保存multi-k値を使用。実データで差が生じた個別原因は再計算していない。"
+                )
             current["recall_at_15"] = primary
-        current["metric_sources"] = {m: str(path) for m in METRICS if np.isfinite(current[m])}
+        current["metric_sources"] = {m: str(path) for m in RECORD_METRICS if np.isfinite(current[m])}
         key = dataset, method
         old = self.rows.get(key)
         if old is None or (success and not old["success"]):
             self.rows[key] = current
         elif success and old["success"]:
-            for name in (*METRICS, "k", "n_queries"):
+            for name in (*RECORD_METRICS, "k", "n_queries"):
                 x, y = old[name], current[name]
                 if np.isfinite(x) and np.isfinite(y) and not np.isclose(x, y, rtol=1e-9, atol=1e-12):
                     if name not in TIMES or (phase == "external" and old["phase"] == "external"):
@@ -161,16 +173,24 @@ class Loaded:
             return
         if np.isfinite(row["n_queries"]) and len(frame) != int(row["n_queries"]):
             raise ValueError(f"集約結果とquery件数が違います: {key}")
+        external = Path(source).resolve().is_relative_to(self.external_root)
+        if external and row["k"] == 15 and "neighborhood_recall_at_k" in frame:
+            direct = pd.to_numeric(frame["neighborhood_recall_at_k"], errors="coerce").replace([np.inf, -np.inf], np.nan).mean()
+            expected = row["recall15_direct"]
+            if np.isfinite(direct) and np.isfinite(expected) and not np.isclose(direct, expected, rtol=1e-9, atol=1e-12):
+                raise ValueError(f"外部の集約値とper-query値が矛盾しています: {key}/neighborhood_recall_at_k")
         for m in METRICS:
             if m in frame:
                 frame[m] = pd.to_numeric(frame[m], errors="coerce").replace([np.inf, -np.inf], np.nan)
                 avg = frame[m].mean()
                 differs = np.isfinite(avg) and np.isfinite(row[m]) and not np.isclose(avg, row[m], rtol=1e-9, atol=1e-12)
-                if differs and Path(source).resolve().is_relative_to(self.external_root):
+                expected = row["recall15_multi_k"] if m == "recall_at_15" and external else row[m]
+                conflicts = np.isfinite(avg) and np.isfinite(expected) and not np.isclose(avg, expected, rtol=1e-9, atol=1e-12)
+                if conflicts and external:
                     raise ValueError(f"外部の集約値とper-query値が矛盾しています: {key}/{m}")
                 if m == "recall_at_15":
                     row["per_query_phase_recall15_mean"] = avg
-                    if differs:
+                    if differs and not external:
                         # analyze-advancedは当時別途埋め込みを生成した段階。primaryを置換しない。
                         self.notes.append(f"{dataset}/{key[1]}: 集約Recall15={row[m]:.12g}、追加解析段階の平均={avg:.12g}。主表は集約値、対応検定は追加解析段階の値を使用。")
                 if not np.isfinite(row[m]) and np.isfinite(avg):
