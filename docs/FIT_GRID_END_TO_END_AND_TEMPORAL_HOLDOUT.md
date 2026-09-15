@@ -275,3 +275,53 @@ git diff --check
 最終結果: **176 passed / 1 skipped / 41 warnings、57.51秒**。新規テスト17件を含む。
 skipはCUDA非搭載によるもの。警告は既存UMAPの固定seed・未導入TensorFlow・Matplotlib非推奨API。
 [検証記録](fit_grid_audit/validation.json) を保存した。
+
+## remoteで4段階をまとめて実行するsh
+
+`scripts/run_fit_grid_all.sh` が移植→通常suite付き比較→raw監査→temporal（seed 0,1,2）を順番に実行する。
+実行コマンド、開始/完了時刻、失敗段階・終了コードを標準出力/標準エラーに出す。
+途中で失敗したら後続段階は実行しない。既存結果の上書きや自動削除はしない。
+raw省略時は `data/raw/embryoid_body/` 配下のh5ad/loomが**ちょうど1個**の場合だけ選択する。
+rawファイルの存在と出力先の衝突・CUDA利用可否を長時間の比較に入る前に検査する。
+時間ラベルの全体監査は比較の後、temporal学習の直前に行う。
+
+```bash
+(
+  set -e
+  cd /home/suzuki/Learn/UMAPing
+  git fetch origin
+  git switch experiments/fit-grid-end-to-end-temporal-holdout
+  git pull --ff-only
+  mkdir -p logs
+  LOG_FILE="$(mktemp "logs/fit_grid_all_$(date -u +%Y%m%dT%H%M%SZ).log.XXXXXX")"
+  nohup bash scripts/run_fit_grid_all.sh > "$LOG_FILE" 2>&1 &
+  JOB_PID=$!
+  printf '%s\n' "$JOB_PID" > "${LOG_FILE}.pid"
+  printf 'PID: %s\nLOG: %s\n' "$JOB_PID" "$LOG_FILE"
+  tail -f "$LOG_FILE"
+)
+```
+
+`Ctrl+C` はログ閲覧を止めるだけで、nohupの実験は継続する。SSH切断後も実行を継続する。
+rawが複数ある場合は、`nohup` 行を次のように変更する（対象rawの実パスを指定）。
+
+```bash
+nohup bash scripts/run_fit_grid_all.sh \
+  --raw-file '/実在する対象raw.h5ad' \
+  > "$LOG_FILE" 2>&1 &
+```
+
+時間列や順序が曖昧なら `--group-column 実列名` を指定し、順序は
+`--group-order '最初の実ラベル' --group-order '次の実ラベル' ...` と一つずつ指定する。
+scriptはauditとtemporalの両方に同じ列・順序を渡す。
+`--cell-type-column` はtemporalにだけ渡す。
+
+既存splitの比較まで完了済みなら `--start-stage 3`、移植だけ完了なら `--start-stage 2` で
+その前の段階を明示的に飛ばせる。`--start-stage 4` でもraw監査は省略しない。
+これは失敗した学習のcheckpoint再開ではなく、完了段階を飛ばす指定。
+失敗段階の出力が残っていれば保護のため停止するので、別出力名を使う。
+`RUN_ROOT` 環境変数で出力root、`PYTHON_BIN` で実行Python（既定 `.venv/bin/python`）を変更できる。
+
+launcher追加時の検証: `bash -n scripts/run_fit_grid_all.sh` と
+`.venv/bin/python -m pytest tests/test_fit_grid_launcher.py -q`。
+重い実験を起動せず、実行順序・空白入り引数の保持・失敗時停止・temporal前の監査を検証する。

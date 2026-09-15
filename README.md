@@ -384,3 +384,8 @@ HVG/PCAから軌道までreferenceだけで一度学習し、両teacherでB_phi�
 主評価は最終Recall@15のpaired差とCI。場のexact評価、実時間ラベルごとの補間/外挿・horizon、
 複数seed、図、Japanese reportも保存する。CIが0を含む場合は改善不確定。
 このローカルにはmainの上流バイナリとrawがなく、実データ評価は未実行。必要なファイル一覧は詳細報告に記載した。
+
+4段階を一括で実行する場合は `bash scripts/run_fit_grid_all.sh` を使える。
+`.venv/bin/python` / CUDA / seed 0,1,2を既定とし、既存出力と失敗を検出すると停止する。
+rawは対象ディレクトリ内にh5ad/loomが1個だけなら自動検出し、それ以外は `--raw-file` で指定する。
+[remoteでpull→nohup実行→ログ閲覧するコマンド](docs/FIT_GRID_END_TO_END_AND_TEMPORAL_HOLDOUT.md#remoteで4段階をまとめて実行するsh)を掲載した。
