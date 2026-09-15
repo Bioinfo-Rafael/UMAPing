@@ -16,6 +16,7 @@ pipeline.py for checkpointing):
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Callable
 
 import numpy as np
 import scipy.sparse as sp
@@ -28,6 +29,9 @@ from umaping.graph import full_edges, row_degree
 from umaping.models.repulsion import RepulsionField
 from umaping.umap_forces import g_minus
 from umaping.utils.seed import make_generator
+
+if TYPE_CHECKING:
+    from umaping.repulsion_estimators.base import Teacher
 
 
 def build_reference_trajectory(
@@ -86,12 +90,18 @@ def train_repulsion_field(
     resume_state: RepulsionTrainState | None = None,
     progress: bool = True,
     grad_clip: float | None = 4.0,
+    teacher: Teacher | None = None,
+    query_sampler: Callable[[int], tuple[torch.Tensor, torch.Tensor, torch.Tensor]] | None = None,
+    callback: Callable[[int, float, RepulsionField], None] | None = None,
 ) -> RepulsionTrainState:
     """`grad_clip` should match the `flow.grad_clip` used to build
     `trajectory` (see `build_reference_trajectory`): the teacher target below
     is the same `g_minus` mean field the reference dynamics were actually
     integrated with, so a mismatched clip would train B_phi to imitate a
-    field the trajectory never experienced.
+    field the trajectory never experienced. Optional ``teacher`` replaces
+    only the target estimator; ``query_sampler(step)`` supplies a shared
+    (anchor, time, jittered position) sequence and ``callback`` observes
+    updates. With all three omitted, the original uniform RNG/order is kept.
 
     Position lookups happen through a device-resident `TorchTrajectoryView`
     (dynamics.py) rather than `ReferenceTrajectory`'s own numpy
@@ -117,24 +127,30 @@ def train_repulsion_field(
     )
 
     for step in iterator:
-        b_idx = torch.as_tensor(rng.integers(0, n, size=cfg.batch_size), dtype=torch.long, device=device)
-        t_vals = torch.as_tensor(rng.uniform(t_min, t_max, size=cfg.batch_size), dtype=torch.float32, device=device)
-
-        base_positions = traj_view.positions_at_many(t_vals, b_idx)
-        y_query_t = base_positions + torch.randn_like(base_positions) * cfg.jitter_sigma
-
-        neg_idx = torch.as_tensor(
-            rng.integers(0, n, size=cfg.batch_size * cfg.teacher_negative_samples), dtype=torch.long, device=device
-        )
-        times_repeated = t_vals.repeat_interleave(cfg.teacher_negative_samples)
-        neg_positions_t = traj_view.positions_at_many(times_repeated, neg_idx).reshape(
-            cfg.batch_size, cfg.teacher_negative_samples, -1
-        )
+        if query_sampler is None:
+            b_idx = torch.as_tensor(rng.integers(0, n, size=cfg.batch_size), dtype=torch.long, device=device)
+            t_vals = torch.as_tensor(rng.uniform(t_min, t_max, size=cfg.batch_size), dtype=torch.float32, device=device)
+            base_positions = traj_view.positions_at_many(t_vals, b_idx)
+            y_query_t = base_positions + torch.randn_like(base_positions) * cfg.jitter_sigma
+        else:
+            b_idx, t_vals, y_query_t = query_sampler(step)
 
         with torch.no_grad():
             # Teacher target: fresh, independent negative sample per example,
             # never backpropagated through (stop-gradient by construction).
-            target = g_minus(y_query_t.unsqueeze(1), neg_positions_t, a, b, clip=grad_clip).mean(dim=1)
+            if teacher is None:
+                neg_idx = torch.as_tensor(
+                    rng.integers(0, n, size=cfg.batch_size * cfg.teacher_negative_samples), dtype=torch.long, device=device
+                )
+                times_repeated = t_vals.repeat_interleave(cfg.teacher_negative_samples)
+                neg_positions_t = traj_view.positions_at_many(times_repeated, neg_idx).reshape(
+                    cfg.batch_size, cfg.teacher_negative_samples, -1
+                )
+                target = g_minus(y_query_t.unsqueeze(1), neg_positions_t, a, b, clip=grad_clip).mean(dim=1)
+            else:
+                target = teacher.estimate(y_query_t, t_vals, b_idx).detach()
+                if target.shape != y_query_t.shape or not torch.isfinite(target).all():
+                    raise FloatingPointError('Invalid repulsion teacher target')
 
         pred = model(y_query_t, t_vals)
         residual_sq = (pred - target) ** 2
@@ -143,6 +159,8 @@ def train_repulsion_field(
             loss = (residual_sq.sum(-1) * w_row).mean() / w_row.mean().clamp(min=1e-12)
         else:
             loss = residual_sq.mean()
+        if teacher is not None and not torch.isfinite(loss):
+            raise FloatingPointError('Non-finite repulsion training loss')
 
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
@@ -150,6 +168,8 @@ def train_repulsion_field(
 
         state.step = step + 1
         state.losses.append(float(loss.item()))
+        if callback is not None:
+            callback(state.step, float(loss.item()), model)
         if progress and (step % cfg.log_every == 0 or step == cfg.steps - 1):
             iterator.set_postfix(loss=float(loss.item()))
 

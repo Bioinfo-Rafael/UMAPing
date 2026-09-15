@@ -1,5 +1,10 @@
 # UMAPing
 
+## Embryoのrepulsion teacher比較
+
+凍結したreference trajectoryを共通に使い、B_phiの学習teacherだけを比較する実験を追加しました。
+実装・必要な保存ファイル・実行手順・実測状況は[日本語ベンチマーク文書](docs/EMBRYO_REPULSION_ESTIMATOR_BENCHMARK.md)を参照してください。
+
 ## 保存済み結果の統合解析
 
 内部実験と外部baselineの比較表・統計検定・論文用の図は、[統合解析ガイド](docs/combined_comparison.md)を参照してください。
