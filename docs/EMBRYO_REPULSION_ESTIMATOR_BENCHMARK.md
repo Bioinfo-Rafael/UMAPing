@@ -255,5 +255,69 @@ fieldの改善だけで最終UMAP品質の改善を断定しません。
 合成fixtureではPhase A→検査→6モデル学習→exact評価→全図生成、およびPhase Aからの分離実行・保存値からの再描画を検証します。
 実Embryoへの実行コマンドはローカルで不足artifactを列挙して停止することを確認しました。実データの学習・trajectory生成は実行していません。
 CUDAのテストは対応deviceがある場合だけ実行します。CPU-only環境で通過したテストをCUDA検証済みとは表記しません。
-上記は**48 passed / 1 skipped（CUDAなし）**でした。既存UMAPのseed/n_jobs警告2件があり、失敗はありません。
+復旧テスト追加後の上記コマンドは**51 passed / 1 skipped（CUDAなし）**でした。既存UMAPのseed/n_jobs警告2件があり、失敗はありません。
 合成図のPareto・validation曲線を目視し、凡例・軸目盛も確認しました。
+
+## I. リモート中断runの復旧（2026-09-15）
+
+ユーザーが共有した`20260915T080951Z_377563/metrics/trained_fields.csv`では、次の4手法が正常終了し、checkpointも保存されています。
+これは共有されたリモートの測定値です。ローカルで実データを再実行した結果ではありません。
+
+| 完了手法 | 最終exact RMSE | 学習秒 | 後半loss CV |
+|---|---:|---:|---:|
+| Uniform-64 | 0.0120995 | 43.06 | 0.0833 |
+| Raw Dual IS | 0.0135135 | 177.59 | 3.1052 |
+| Hub-corrected IS | 0.0137751 | 179.94 | 2.2711 |
+| Top-L + tail | 0.0125532 | 271.61 | 0.1078 |
+
+完了分ではUniformが最小のfinal RMSEです。Raw/Hubは平均ESSが約7.2/7.1、最大importance weightが約1096/2442と記録されました。
+Barnes–Hutはstep=3400、RMSE=0.0105394の表示後にプロセスが終了しており、これは最終checkpointの評価値ではありません。
+Gridの学習は未着手です。kernel logは権限不足で読めず、終了原因は未確定です。旧コードではKeyboardInterrupt後にもmanifestのstatusがrunningのまま残る場合がありました。
+
+### 復旧方針
+
+`--stage train --from-run OLD_RUN --reuse-completed`を指定し、必ず新しいoutput-dirを使用します。
+
+- Phase AのQ/K/hubness/validationを保存hashで検証して再利用します。旧runのstatusがrunningでも、Phase A review・選択・入力hashが一致する場合だけ復旧を許可します。
+- 初期state_dictと共通学習設定を照合し、完了した手法はcheckpointの再推論と保存予測・exact評価値の一致を確認してからコピーします。再学習しません。
+- 未完了の手法だけ学習します。今回の旧runにはBarnes–Hutの途中checkpointがないため、Barnes–Hutはstep=0から、gridもstep=0から実行します。
+- 修正後は評価間隔（既定100step）ごとに`checkpoints/step_XXXXXXXX.pt`を新規保存します。モデル、Adam state、teacherのNumPy/Torch乱数、Torch乱数、step、loss・validation履歴を含みます。
+- 次回は同じ復旧指定で最新の確定snapshotから続行できます。`.pt.tmp`は未確定として無視します。設定・validation hashが違うsnapshotは拒否します。
+- manifestをPhase B開始前とsnapshot保存時にも更新し、KeyboardInterruptをinterruptedとして記録します。旧入力と旧成果物は変更しません。
+
+`train_seconds`は前回snapshotまでの学習時間と今回の継続時間を合算し、validationとcheckpoint I/Oを除外します。
+途中保存によるディスク費用は`checkpoint_seconds`に別記します（再開時は最後のsnapshot自身の書込み時間を含められないため、この列は近似的な記録です）。
+
+### 今回のリモート用コマンド
+
+SSH切断に備え`nohup`で起動し、PIDとログを表示します。OOMやコンテナ自体の終了を防止する機能ではありません。
+
+```bash
+cd /home/suzuki/Learn/UMAPing && bash <<'BASH'
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+git fetch origin
+git switch experiments/embryo-repulsion-estimator-benchmark
+git pull --ff-only origin experiments/embryo-repulsion-estimator-benchmark
+PREVIOUS="$REPO_ROOT/results/embryo_repulsion_estimators/20260915T080951Z_377563"
+test -f "$PREVIOUS/metrics/phase_a_review.json"
+RUN_ID="recovery_$(date -u '+%Y%m%dT%H%M%SZ')_$$"
+OUTPUT_DIR="$REPO_ROOT/results/embryo_repulsion_estimators/$RUN_ID"
+LOGFILE="$(mktemp "$REPO_ROOT/results/embryo_repulsion_estimators/${RUN_ID}.log.XXXXXX")"
+nohup "$REPO_ROOT/.venv/bin/python" -u scripts/benchmark_repulsion_estimators.py \
+  --frozen-run "$REPO_ROOT/runs/embryoid_body/main" \
+  --dataset embryoid_body --output-dir "$OUTPUT_DIR" \
+  --stage train --from-run "$PREVIOUS" --reuse-completed \
+  --device auto --seed 0 --validation-queries 1000 --repetitions 50 \
+  > "$LOGFILE" 2>&1 < /dev/null &
+PID=$!
+echo "PID: $PID"
+echo "出力: $OUTPUT_DIR"
+echo "ログ: $LOGFILE"
+echo "監視: tail -n 30 -f $LOGFILE"
+BASH
+```
+
+復旧テストは、旧形式のrunning状態から4手法を再学習せず引き継ぐケースと、Uniform/Raw ISをsnapshot直後に中断して再開するケースを含みます。
+CPUでは中断なしの学習と最終parameter・loss列がbit単位で一致することを確認します。CUDAはdeviceがないため未検証です。

@@ -118,6 +118,7 @@ def render(run, metadata, estimator_rows, trained_rows, destination=None):
              '## Learned B_phi', '', markdown_table(trained[[c for c in ('method','status','rmse','cosine','magnitude_error','best_validation_rmse','reason') if c in trained]]), '',
              '学習安定性・収束・費用:', '', markdown_table(trained[[c for c in ('method','train_seconds','rolling_std_mean','late_loss_cv','first_step_half_initial_rmse','seconds_to_half_initial_rmse') if c in trained]]), '',
              '同一モデル初期値、stepごとに再現可能なanchor・連続t・Gaussian jitter、同一optimizer/settingsを使用。exact oracleは評価とteacher variant選択だけに使用。学習targetには使用していない。',
+             '完了成果物を再学習せず引き継いだ手法: '+(', '.join(metadata.get('reused_methods',[])) or 'なし')+'。個別のreused_from / resumed_from_stepは学習結果CSVに記録。新しい学習時間はcheckpoint I/Oを除外し、checkpoint_secondsへ別記。',
              'lossは既存どおり座標平均MSE（row-mass有効時は元の重み付き和）。報告のexact MSEはベクトル誤差ノルム二乗の平均であり、2Dでは座標平均MSEの2倍。',
              '## 解釈', '']
     reference = good[good.method == 'uniform_mc'] if len(good) else good

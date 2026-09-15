@@ -17,11 +17,13 @@ from umaping.config import Config
 from umaping.dynamics import ReferenceTrajectory
 from umaping.models.repulsion import RepulsionField
 from umaping.models.retriever import DualEncoder
-from umaping.training.flow import train_repulsion_field
+from umaping.training.flow import train_repulsion_field, RepulsionTrainState
 from umaping.umap_forces import find_ab_params
 from . import UniformMC, DualImportance, DualTopL, BarnesHut, GridField, TrainingQueries, exact_field, hubness_vector
 from .base import synchronize
 from .benchmark import evaluate_teacher, field_metrics, write_json
+from .recovery import (atomic_json, save_snapshot, training_signature, verify_initial,
+                       completed_results, load_snapshot)
 
 METHODS = ('uniform_mc', 'dual_raw_is', 'dual_hub_is', 'dual_topl', 'barnes_hut', 'fit_grid')
 
@@ -133,17 +135,30 @@ def model_hparams(cfg):
                 time_embed_dim=cfg.repulsion.time_embed_dim, activation=cfg.repulsion.activation)
 
 
-def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, args, validation, selected, row_mass):
+def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, args, validation, selected, row_mass, metadata):
     anchor, t, y, exact = validation
     hp = model_hparams(cfg)
     torch.manual_seed(args.seed)
     initial = RepulsionField(**hp).state_dict()
+    reused = {}
+    if args.reuse_completed:
+        verify_initial(args.from_run, initial, hp)
+        reused = completed_results(args.from_run, cfg, hp, selected, args, y, t, exact)
     torch.save({'hparams': hp, 'state_dict': initial}, output/'artifacts/initial_repulsion_field.pt')
+    metadata['artifact_hashes']['initial_repulsion_field.pt'] = sha(output/'artifacts/initial_repulsion_field.pt')
+    metadata['reused_methods'] = list(reused)
+    atomic_json(output/'config/manifest.json', metadata)
     sampler = TrainingQueries(trajectory, args.device, cfg.repulsion.batch_size, cfg.repulsion.jitter_sigma, args.seed+2000)
     rows = []
     for method in METHODS:
         print(f'Phase B {method}', flush=True)
         folder = output/'repulsion_training'/method
+        if method in reused:
+            shutil.copytree(args.from_run/'repulsion_training'/method, folder)
+            rows.append(reused[method])
+            pd.DataFrame(rows).to_csv(output/'metrics/trained_fields.csv', index=False)
+            print(f'  REUSED completed {method}; no training', flush=True)
+            continue
         folder.mkdir()
         if method not in selected:
             rows.append(dict(method=method, status='skipped', reason='Phase A failed; see estimator metrics'))
@@ -155,10 +170,29 @@ def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, arg
             model = RepulsionField(**hp)
             model.load_state_dict(copy.deepcopy(initial))
             model.to(args.device)
+            signature = training_signature(cfg, hp, selected[method], args)
+            snapshot, snapshot_path = (load_snapshot(args.from_run, method, signature)
+                                       if args.reuse_completed else (None, None))
+            resume_state, optimizer_state = None, None
+            prior_train_seconds, prior_checkpoint_seconds = 0., 0.
+            if snapshot is not None:
+                model.load_state_dict(snapshot['state_dict'])
+                optimizer_state = snapshot['optimizer_state']
+                resume_state = RepulsionTrainState(step=snapshot['step'], losses=snapshot['training_losses'])
+                teacher.rng.bit_generator.state = snapshot['teacher_numpy_rng']
+                teacher.generator.set_state(snapshot['teacher_torch_rng'])
+                torch.set_rng_state(snapshot['torch_rng'])
+                if args.device == 'cuda':
+                    torch.cuda.set_rng_state_all(snapshot['cuda_rng'])
+                losses, validations, diagnostics = snapshot['losses'], snapshot['validations'], snapshot['diagnostics']
+                prior_train_seconds = snapshot['train_seconds']
+                prior_checkpoint_seconds = snapshot.get('checkpoint_seconds', 0.)
+                print(f'  RESUME {method} from step={resume_state.step}: {snapshot_path}', flush=True)
             synchronize(args.device)
             teacher_build_seconds = time.perf_counter()-begin
             training_begin = time.perf_counter()
             validation_seconds = 0.
+            checkpoint_seconds = 0.
             def callback(step, loss, current):
                 nonlocal validation_seconds
                 losses.append(dict(step=step, loss=loss))
@@ -171,7 +205,7 @@ def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, arg
                     if not torch.isfinite(prediction).all():
                         raise FloatingPointError('Non-finite learned field on exact validation queries')
                     synchronize(args.device)
-                    elapsed = time.perf_counter()-training_begin-validation_seconds
+                    elapsed = prior_train_seconds+time.perf_counter()-training_begin-validation_seconds-checkpoint_seconds
                     metric = field_metrics(prediction.cpu().numpy(), exact.cpu().numpy())
                     validations.append(dict(step=step, elapsed_training_seconds=elapsed, **metric))
                     if step > 0:
@@ -180,13 +214,41 @@ def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, arg
                     current.train()
                     validation_seconds += time.perf_counter()-evaluation_begin
                     print(f'  {method} step={step} exact RMSE={metric["rmse"]:.6g}', flush=True)
-            callback(0, np.nan, model)
-            losses.clear()
+            def checkpoint_callback(state, current, optimizer):
+                nonlocal checkpoint_seconds
+                if state.step % args.eval_every and state.step != cfg.repulsion.steps:
+                    return
+                synchronize(args.device)
+                begin_checkpoint = time.perf_counter()
+                elapsed = prior_train_seconds+begin_checkpoint-training_begin-validation_seconds-checkpoint_seconds
+                path = folder/'checkpoints'/f'step_{state.step:08d}.pt'
+                save_snapshot(path, dict(signature=signature, step=state.step,
+                    state_dict=current.state_dict(), optimizer_state=optimizer.state_dict(),
+                    training_losses=state.losses, losses=losses, validations=validations, diagnostics=diagnostics,
+                    teacher_numpy_rng=teacher.rng.bit_generator.state, teacher_torch_rng=teacher.generator.get_state(),
+                    torch_rng=torch.get_rng_state(), cuda_rng=torch.cuda.get_rng_state_all() if args.device == 'cuda' else [],
+                    train_seconds=elapsed, checkpoint_seconds=prior_checkpoint_seconds+checkpoint_seconds,
+                    validation_sha256=metadata['artifact_hashes']['validation.npz']))
+                pd.DataFrame(losses).to_csv(folder/'losses.csv', index=False)
+                pd.DataFrame(validations).to_csv(folder/'validation.csv', index=False)
+                metadata['progress'] = dict(method=method, step=state.step, checkpoint=str(path))
+                atomic_json(output/'config/manifest.json', metadata)
+                checkpoint_seconds += time.perf_counter()-begin_checkpoint
+                print(f'  CHECKPOINT {method} step={state.step}', flush=True)
+            if resume_state is None:
+                callback(0, np.nan, model)
+                losses.clear()
+            elif snapshot['validation_sha256'] != metadata['artifact_hashes']['validation.npz']:
+                raise ValueError('Snapshot validation hash mismatch')
+            else:
+                (folder/'checkpoints').mkdir(exist_ok=True)
+                shutil.copy2(snapshot_path, folder/'checkpoints'/snapshot_path.name)
             train_repulsion_field(model, trajectory, common['a'], common['b'], cfg.repulsion, row_mass,
                                   torch.device(args.device), seed=args.seed, progress=False, grad_clip=cfg.flow.grad_clip,
-                                  teacher=teacher, query_sampler=sampler, callback=callback)
+                                  teacher=teacher, query_sampler=sampler, callback=callback, resume_state=resume_state,
+                                  optimizer_state=optimizer_state, checkpoint_callback=checkpoint_callback)
             synchronize(args.device)
-            train_seconds = time.perf_counter()-training_begin-validation_seconds
+            train_seconds = prior_train_seconds+time.perf_counter()-training_begin-validation_seconds-checkpoint_seconds
             model.eval()
             with torch.no_grad():
                 prediction = torch.cat([model(y[s:s+256], t[s:s+256]) for s in range(0, len(y), 256)])
@@ -209,6 +271,8 @@ def train_models(output, cfg, trajectory, common, q, keys, hub, temperature, arg
             threshold = .5 * validations[0]['rmse']
             reached = next((v for v in validations if v['step'] > 0 and v['rmse'] <= threshold), None)
             row = dict(method=method, status='success', teacher_variant=selected[method]['name'],
+                       resumed_from_step=snapshot['step'] if snapshot else 0,
+                       checkpoint_seconds=prior_checkpoint_seconds+checkpoint_seconds,
                        teacher_build_seconds=teacher_build_seconds, train_seconds=train_seconds,
                        inference_seconds_per_query=forward_seconds, rolling_std_mean=float(rolling.mean()),
                        late_loss_cv=float(late.std()/max(abs(late.mean()), 1e-12)),
@@ -262,7 +326,10 @@ def run(args):
             if args.from_run is None:
                 raise ValueError('--stage train requires --from-run (completed Phase A)')
             prior = json.loads((args.from_run/'config/manifest.json').read_text())
-            if prior['sources'] != manifest or prior['status'] not in ('estimators_complete','complete','completed_with_failures'):
+            allowed = ('estimators_complete','complete','completed_with_failures')
+            if args.reuse_completed:
+                allowed += ('running','interrupted','failed')
+            if prior['sources'] != manifest or prior['status'] not in allowed:
                 raise ValueError('Phase A source hashes/status mismatch')
             for key in ('proposal_temperature', 'beta', 'hubness_k', 'seed', 'jitter_sigma', 'thetas', 'grid_sizes', 'mixture_ablation', 'mixture_lambda'):
                 if prior['args'][key] != vars(args)[key]:
@@ -352,12 +419,19 @@ def run(args):
         write_json(output/'metrics/phase_a_review.json', dict(uniform_rmse=uniform['rmse'], selected=selected, issues=issues,
                     note='低ESSや有限な大誤差は隠さず学習比較に残す。NaN/support喪失したteacherだけskip。'))
         print('Phase A reviewed:', json.dumps(issues, ensure_ascii=False), flush=True)
+        if args.reuse_completed:
+            review = json.loads((args.from_run/'metrics/phase_a_review.json').read_text())
+            if review['selected'] != selected:
+                raise ValueError('Interrupted Phase A review/selection mismatch')
+        metadata['artifact_hashes'] = {p.name: sha(p) for p in (output/'artifacts').iterdir() if p.is_file()}
+        metadata['phase_a_complete'] = True
+        atomic_json(output/'config/manifest.json', metadata)
         trained = []
         if args.stage != 'estimators':
             row_mass = np.ones(len(x), dtype=np.float32)
             if cfg.repulsion.weight_by_row_mass:
                 row_mass = np.asarray(sp.load_npz(run_dir/'memory/graph_symmetric.npz').sum(1)).ravel()
-            trained = train_models(output, cfg, trajectory, common, q, keys, hub, temperature, args, (anchor,t,y,exact), selected, row_mass)
+            trained = train_models(output, cfg, trajectory, common, q, keys, hub, temperature, args, (anchor,t,y,exact), selected, row_mass, metadata)
         metadata['status'] = 'estimators_complete' if args.stage == 'estimators' else 'complete'
         metadata['all_six_training_succeeded'] = len(trained) == 6 and all(r['status'] == 'success' for r in trained)
         if args.stage != 'estimators' and not metadata['all_six_training_succeeded']:
@@ -365,13 +439,16 @@ def run(args):
         write_json(output/'metrics/trained_fields.json', trained)
         from .report import render
         render(output, metadata, rows, trained)
+    except KeyboardInterrupt:
+        metadata.update(status='interrupted', reason='KeyboardInterrupt')
+        raise
     except Exception as exc:
         metadata.update(status='failed', reason=f'{type(exc).__name__}: {exc}')
         raise
     finally:
         metadata['source_hashes_unchanged'] = all(sha(p) == h for p,h in manifest.items())
         metadata['artifact_hashes'] = {p.name: sha(p) for p in (output/'artifacts').iterdir() if p.is_file()}
-        write_json(output/'config/manifest.json', metadata)
+        atomic_json(output/'config/manifest.json', metadata)
         if not metadata['source_hashes_unchanged']:
             raise RuntimeError('Frozen source changed during experiment')
     print(f'実行終了 ({metadata["status"]}): {output}\nレポート: {output / "report.md"}', flush=True)
@@ -385,6 +462,7 @@ def main(argv=None):
     p.add_argument('--output-dir', type=Path, required=True)
     p.add_argument('--stage', choices=['all','estimators','train'], default='all')
     p.add_argument('--from-run', type=Path)
+    p.add_argument('--reuse-completed', action='store_true', help='中断runの完了手法を検証してコピーし、未完了手法だけ実行')
     p.add_argument('--device', default='auto', choices=['auto','cpu','cuda'])
     p.add_argument('--seed', type=int, default=0)
     p.add_argument('--validation-queries', type=int, default=1000)
@@ -402,6 +480,8 @@ def main(argv=None):
     p.add_argument('--thetas', nargs='+', type=float, default=[.2,.5,.8])
     p.add_argument('--grid-sizes', nargs='+', type=int, default=[64,128,256])
     args = p.parse_args(argv)
+    if args.reuse_completed and (args.stage != 'train' or args.from_run is None):
+        p.error('--reuse-completed requires --stage train --from-run')
     for key in ('validation_queries','repetitions','eval_batch_size','score_batch','eval_every','steps','batch_size'):
         value = getattr(args, key)
         if value is not None and value < 1:

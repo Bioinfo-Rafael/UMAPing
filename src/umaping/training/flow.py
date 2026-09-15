@@ -93,6 +93,8 @@ def train_repulsion_field(
     teacher: Teacher | None = None,
     query_sampler: Callable[[int], tuple[torch.Tensor, torch.Tensor, torch.Tensor]] | None = None,
     callback: Callable[[int, float, RepulsionField], None] | None = None,
+    optimizer_state: dict | None = None,
+    checkpoint_callback: Callable | None = None,
 ) -> RepulsionTrainState:
     """`grad_clip` should match the `flow.grad_clip` used to build
     `trajectory` (see `build_reference_trajectory`): the teacher target below
@@ -119,6 +121,8 @@ def train_repulsion_field(
     model.to(device)
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    if optimizer_state is not None:
+        optimizer.load_state_dict(optimizer_state)
     row_mass_t = torch.as_tensor(np.asarray(row_mass, dtype=np.float32), device=device)
 
     state = resume_state or RepulsionTrainState()
@@ -170,6 +174,8 @@ def train_repulsion_field(
         state.losses.append(float(loss.item()))
         if callback is not None:
             callback(state.step, float(loss.item()), model)
+        if checkpoint_callback is not None:
+            checkpoint_callback(state, model, optimizer)
         if progress and (step % cfg.log_every == 0 or step == cfg.steps - 1):
             iterator.set_postfix(loss=float(loss.item()))
 

@@ -302,3 +302,73 @@ def test_failed_teacher_preserves_partial_predictions_and_reason(tmp_path,small)
         evaluate_teacher('collapsed',teacher,anchor,t,y,truth,tmp_path,repetitions=2)
     assert np.isnan(np.load(tmp_path/'collapsed_predictions.npy')).all()
     assert 'support' in (tmp_path/'collapsed_failure.json').read_text()
+
+
+def test_recover_old_interrupted_run_reuses_four_completed_methods(tmp_path, monkeypatch):
+    import shutil
+    import umaping.repulsion_estimators.runner as runner
+    run=make_frozen_fixture(tmp_path)
+    old,new=tmp_path/'old',tmp_path/'recovered'
+    common=['--frozen-run',str(run),'--dataset','embryoid_body','--device','cpu',
+            '--validation-queries','8','--repetitions','2','--eval-every','1','--thetas','.5','--grid-sizes','16']
+    main(common+['--output-dir',str(old)])
+    for method in ('barnes_hut','fit_grid'):
+        shutil.rmtree(old/'repulsion_training'/method)
+    rows=pd.read_csv(old/'metrics/trained_fields.csv',float_precision='round_trip').iloc[:4]
+    rows.to_csv(old/'metrics/trained_fields.csv',index=False)
+    meta=json.loads((old/'config/manifest.json').read_text())
+    meta['status']='running'  # v1でKeyboardInterrupt後もrunningだった保存物。
+    (old/'config/manifest.json').write_text(json.dumps(meta))
+    before={str(p):sha(p) for p in old.rglob('*') if p.is_file()}
+    original_factory=runner.create_teacher
+    created=[]
+    def only_remaining(spec,*args,**kwargs):
+        created.append(spec['family'])
+        assert spec['family'] in ('barnes_hut','fit_grid')
+        return original_factory(spec,*args,**kwargs)
+    monkeypatch.setattr(runner,'create_teacher',only_remaining)
+    main(common+['--stage','train','--from-run',str(old),'--reuse-completed','--output-dir',str(new)])
+    assert created==['barnes_hut','fit_grid']
+    assert before=={str(p):sha(p) for p in old.rglob('*') if p.is_file()}
+    final=pd.read_csv(new/'metrics/trained_fields.csv')
+    assert len(final)==6 and final.status.eq('success').all()
+    for method in rows.method:
+        assert sha(old/'repulsion_training'/method/'repulsion_field.pt')==sha(new/'repulsion_training'/method/'repulsion_field.pt')
+
+
+@pytest.mark.parametrize('interrupted_method', ['uniform_mc','dual_raw_is'])
+def test_optimizer_and_teacher_rng_snapshot_resume_matches_uninterrupted(tmp_path,monkeypatch,interrupted_method):
+    import umaping.repulsion_estimators.runner as runner
+    run=make_frozen_fixture(tmp_path)
+    full,interrupted,recovered=tmp_path/'full',tmp_path/'interrupted',tmp_path/'resumed'
+    common=['--frozen-run',str(run),'--dataset','embryoid_body','--device','cpu',
+            '--validation-queries','8','--repetitions','2','--eval-every','1','--thetas','.5','--grid-sizes','16']
+    main(common+['--output-dir',str(full)])
+    original_train=runner.train_repulsion_field
+    def interrupt(*args,**kwargs):
+        checkpoint=kwargs['checkpoint_callback']
+        def stop_after_checkpoint(state,model,optimizer):
+            checkpoint(state,model,optimizer)
+            teacher=kwargs['teacher']
+            target=(isinstance(teacher,UniformMC) if interrupted_method=='uniform_mc'
+                    else isinstance(teacher,DualImportance) and teacher.h is None)
+            if target and state.step==1:
+                raise KeyboardInterrupt()
+        kwargs['checkpoint_callback']=stop_after_checkpoint
+        return original_train(*args,**kwargs)
+    monkeypatch.setattr(runner,'train_repulsion_field',interrupt)
+    with pytest.raises(KeyboardInterrupt):
+        main(common+['--stage','train','--from-run',str(full),'--output-dir',str(interrupted)])
+    assert json.loads((interrupted/'config/manifest.json').read_text())['status']=='interrupted'
+    assert (interrupted/'repulsion_training'/interrupted_method/'checkpoints/step_00000001.pt').is_file()
+    monkeypatch.setattr(runner,'train_repulsion_field',original_train)
+    main(common+['--stage','train','--from-run',str(interrupted),'--reuse-completed','--output-dir',str(recovered)])
+    a=torch.load(full/'repulsion_training'/interrupted_method/'repulsion_field.pt',weights_only=False)
+    b=torch.load(recovered/'repulsion_training'/interrupted_method/'repulsion_field.pt',weights_only=False)
+    for key in a['state_dict']:
+        torch.testing.assert_close(a['state_dict'][key],b['state_dict'][key],rtol=0,atol=0)
+    x=pd.read_csv(full/'repulsion_training'/interrupted_method/'losses.csv')
+    y=pd.read_csv(recovered/'repulsion_training'/interrupted_method/'losses.csv')
+    np.testing.assert_array_equal(x.loss,y.loss)
+    final=pd.read_csv(recovered/'metrics/trained_fields.csv')
+    assert final[final.method==interrupted_method].iloc[0].resumed_from_step==1
