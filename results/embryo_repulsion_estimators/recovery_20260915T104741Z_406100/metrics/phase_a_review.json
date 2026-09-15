@@ -1,0 +1,36 @@
+{
+  "uniform_rmse": 0.04745298435144113,
+  "selected": {
+    "uniform_mc": {
+      "name": "uniform_mc",
+      "family": "uniform_mc"
+    },
+    "dual_raw_is": {
+      "name": "dual_raw_is",
+      "family": "dual_raw_is"
+    },
+    "dual_hub_is": {
+      "name": "dual_hub_is",
+      "family": "dual_hub_is"
+    },
+    "dual_topl": {
+      "name": "dual_topl",
+      "family": "dual_topl"
+    },
+    "barnes_hut": {
+      "name": "barnes_hut_0.8",
+      "family": "barnes_hut",
+      "theta": 0.8
+    },
+    "fit_grid": {
+      "name": "fit_grid_256",
+      "family": "fit_grid",
+      "grid_size": 256
+    }
+  },
+  "issues": [
+    "dual_raw_is: low ESS / weight explosion: ESS=7.197679954493236, max=1096.196145115137",
+    "dual_hub_is: low ESS / weight explosion: ESS=7.133952887954814, max=2441.641400291404"
+  ],
+  "note": "低ESSや有限な大誤差は隠さず学習比較に残す。NaN/support喪失したteacherだけskip。"
+}
