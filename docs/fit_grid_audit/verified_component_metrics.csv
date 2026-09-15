@@ -1,0 +1,3 @@
+method,teacher_rmse,learned_field_rmse,learned_field_cosine,learned_field_magnitude_error,train_seconds,teacher_build_seconds,final_oos_recall,scope
+uniform_mc,0.0474529843514411,0.0120994647793074,0.7175078909642422,0.006352781713002,43.06074187159538,0.370449161157012,,saved repulsion benchmark; NOT main end-to-end evaluation
+fit_grid,0.0073248900138974,0.0101932642301256,0.8082793190974039,0.0054577903541057,36.48106214404106,4.838813284412026,,saved repulsion benchmark; NOT main end-to-end evaluation

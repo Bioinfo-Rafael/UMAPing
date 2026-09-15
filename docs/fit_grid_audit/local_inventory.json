@@ -1,0 +1,57 @@
+{
+  "grouping_column": "unknown: archived generic label column only",
+  "cells_per_timepoint": {
+    "0-1": 915,
+    "2-3": 1474,
+    "4-5": 1248,
+    "6-7": 1309,
+    "8-9": 1260
+  },
+  "ordered_timepoints": [
+    "0-1",
+    "2-3",
+    "4-5",
+    "6-7",
+    "8-9"
+  ],
+  "n_timepoints": 5,
+  "valid_temporal_split": true,
+  "reason": null,
+  "chronology_evidence": "numeric_window",
+  "scope": "existing easy-split query cells only; not the entire raw dataset",
+  "raw_grouping_column": null,
+  "sufficient_for_actual_training": false,
+  "n_reference_from_benchmark": 24823,
+  "n_query_from_archive": 6206,
+  "raw_or_prepared_available": false,
+  "missing_files": [
+    "runs/embryoid_body/main/memory/reference_features.npy",
+    "runs/embryoid_body/main/memory/reference_trajectory.npz",
+    "runs/embryoid_body/main/memory/retriever_keys.npy",
+    "runs/embryoid_body/main/checkpoints/retriever.pt",
+    "runs/embryoid_body/main/cache/prepared_dataset.npz",
+    "runs/embryoid_body/main/memory/graph_directed.npz",
+    "runs/embryoid_body/main/memory/graph_symmetric.npz",
+    "runs/embryoid_body/main/checkpoints/spectral_encoder.pt",
+    "runs/embryoid_body/main/memory/spectral_calibration.npz",
+    "runs/embryoid_body/main/cache/reference_spectral_embedding.npy"
+  ],
+  "main_config_matches_benchmark": true,
+  "trajectory_shape_from_manifest": [
+    201,
+    24823,
+    2
+  ],
+  "optional_installed": {
+    "tensorflow": false,
+    "numap": false,
+    "parampacmap": false
+  },
+  "source_sha256": {
+    "runs/embryoid_body/main/metrics/advanced_per_query.csv": "22ea5ca4cce008275302565b78094d74f98cfb5903f25427fce2f30300ce44a9",
+    "runs/embryoid_body/main/config.yaml": "5d470422289bf1632dcc53035f8fd507688239cf24071b8eb3c3d0983327d75c",
+    "results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100/config/manifest.json": "075a863b4fefdedb8b0ca32dc30622589dbd7b1e003d99f2ef2a68b66620d61c",
+    "results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100/metrics/estimator_metrics.csv": "35f08a6211a0ce3b94a0f24a87c2e38b8fbbb3212ecc4c791a0c75bd9c8fe4d8",
+    "results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100/metrics/trained_fields.csv": "ab7ec83ae108b7f0bf0420292be9283f7bbf128e337df1ab3d5d2973b87593c9"
+  }
+}

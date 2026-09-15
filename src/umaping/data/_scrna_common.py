@@ -72,6 +72,7 @@ def prepare_continuous_scrna_dataset(
     n_pcs: int,
     seed: int,
     label_columns: tuple[str, ...] = (),
+    artifacts: dict | None = None,
 ) -> PreparedDataset:
     """Reference-only HVG + PCA, splitting on `grouping_column` (a state/time
     metadata column): if `query_groups` is given, those groups are held out
@@ -126,6 +127,10 @@ def prepare_continuous_scrna_dataset(
     pca = fit_pca(x_ref_hvg, n_components=n_pcs_eff, seed=seed)
     x_ref = pca.transform(x_ref_hvg)
     x_query = pca.transform(x_query_hvg)
+    if artifacts is not None:
+        artifacts.update(hvg_genes=np.asarray(hvg_genes, dtype=str), pca_mean=pca.mean,
+                         pca_components=pca.components, reference_indices=np.flatnonzero(reference_mask),
+                         query_indices=np.flatnonzero(query_mask), normalization_target=1e4)
 
     reference_labels = {grouping_column: groups[reference_mask]}
     query_labels = {grouping_column: groups[query_mask]}

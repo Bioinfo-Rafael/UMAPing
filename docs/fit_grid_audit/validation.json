@@ -1,0 +1,12 @@
+{
+  "command": ".venv/bin/python -m pytest -q",
+  "passed": 176,
+  "skipped": 1,
+  "warnings": 41,
+  "seconds": 57.51,
+  "skip_reason": "CUDA unavailable",
+  "focused_tests": 17,
+  "real_data_evaluation": "not run: missing frozen artifacts and raw data",
+  "new_branch": "experiments/fit-grid-end-to-end-temporal-holdout",
+  "base_commit": "7274702"
+}

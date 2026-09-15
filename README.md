@@ -353,3 +353,34 @@ checkpointing/resume logic their own homes.
   matrices for retriever training or the reference dynamics.
 - See `RUNTIME_CHECKS.md` for everything that can only be validated by
   actually running this on a machine with the real dependencies and data.
+
+## FitGridの最終埋め込み比較・可変時間点holdout
+
+保存済みEmbryoid benchmarkでは、Uniform-64→FitGrid-256でteacherの全点和RMSEは
+0.047453→0.007325、学習したB_phiのRMSEは0.012099→0.010193だった。
+これはcomponent評価であり、最終OOS埋め込みの改善はまだ確認していない。
+[検証済みの値](docs/fit_grid_audit/verified_component_metrics.csv)と
+[手順・監査・制約](docs/FIT_GRID_END_TO_END_AND_TEMPORAL_HOLDOUT.md)を参照。
+
+```bash
+# 元mainとbenchmarkのhashを検証し、別runへFitGridモデルを移植（既存出力は拒否）
+.venv/bin/python -m umaping.fit_grid_experiment promote
+# 通常suiteは新規評価用コピーで実行し、元main/FitGridを保護
+.venv/bin/python -u -m umaping.fit_grid_experiment compare --standard-suite --device cuda
+# 全データの時間列・実ラベル・群別細胞数を先に確認
+.venv/bin/python -m umaping.fit_grid_experiment audit --data runs/embryoid_body/main/cache/prepared_dataset.npz
+# RAW_FILEには実在する対象の注釈付きrawを指定（自動downloadなし）
+.venv/bin/python -u -m umaping.fit_grid_experiment temporal --data "$RAW_FILE" --seeds 0 1 2 --device cuda
+```
+
+時間点数T>=5で `m=clip(floor(0.6*T),2,T-2)` とし、referenceは年代順1..m−1とm+1、
+補間holdoutはm、外挿はm+2..Tの各群の全細胞。
+実ラベルを保持し、曖昧な年代順には明示的 `--group-order`、曖昧な列には `--group-column` が必要。
+全データが `0-1,2-3,4-5,6-7,8-9` の5群ならreferenceは `0-1,2-3,6-7`、補間は `4-5`、外挿は `8-9`。
+HVG/PCAから軌道までreferenceだけで一度学習し、両teacherでB_phiの初期値・query列を揃える。
+
+出力は `runs/embryoid_body/fit_grid`、`temporal_holdout_uniform`、`temporal_holdout_fit_grid` と
+`runs/embryoid_body/comparisons/{fit_grid_vs_main,temporal_holdout}/`。
+主評価は最終Recall@15のpaired差とCI。場のexact評価、実時間ラベルごとの補間/外挿・horizon、
+複数seed、図、Japanese reportも保存する。CIが0を含む場合は改善不確定。
+このローカルにはmainの上流バイナリとrawがなく、実データ評価は未実行。必要なファイル一覧は詳細報告に記載した。
