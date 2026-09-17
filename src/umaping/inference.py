@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Callable, Literal
 
 import numpy as np
 import torch
@@ -46,6 +46,32 @@ class InferenceConfig:
     smooth_knn_min_k_dist_scale: float = 1e-3
     eps: float = 1e-8
     grad_clip: float | None = 4.0
+    # Inference-only coefficients; R already includes negative_sample_rate * s_star.
+    balance_w: float = 0.5
+    balance_scale: float = 2.0
+
+    def __post_init__(self):
+        if not np.isfinite(self.balance_w) or not 0 <= self.balance_w <= 1:
+            raise ValueError("balance_w must be finite and in [0, 1]")
+        if not np.isfinite(self.balance_scale) or self.balance_scale <= 0:
+            raise ValueError("balance_scale must be finite and positive")
+
+
+def balanced_force(attraction, repulsion, w=0.5, scale=2.0):
+    """Combine existing forces before total componentwise clipping.
+
+    scale=2 implements 2*((1-w)*A+w*R); scale=1 at w=0/1 gives A/R.
+    Keep the historical addition at the default for exact reproducibility.
+    """
+    if not np.isfinite(w) or not 0 <= w <= 1 or not np.isfinite(scale) or scale <= 0:
+        raise ValueError("invalid force balance")
+    if w == 0.5 and scale == 2:
+        return attraction + repulsion
+    if w == 0:
+        return scale * attraction
+    if w == 1:
+        return scale * repulsion
+    return scale * ((1 - w) * attraction + w * repulsion)
 
 
 @dataclass
@@ -155,7 +181,9 @@ class InferenceEngine:
 
     # -- public contract --------------------------------------------------
 
-    def embed_one(self, x_star: np.ndarray, return_trajectory: bool = False) -> QueryResult:
+    def embed_one(self, x_star: np.ndarray, return_trajectory: bool = False, *,
+                  force_callback: Callable | None = None,
+                  deadline_check: Callable | None = None) -> QueryResult:
         """`x_star` must already be in the fixed preprocessed feature space
         (the same PCA/HVG transform fit on the reference set). Never reads
         any other query point; the reference trajectory is read-only."""
@@ -188,6 +216,8 @@ class InferenceEngine:
         traj_record = [y_star.detach().cpu().numpy().copy()] if return_trajectory else None
 
         for e in range(self.cfg.n_steps):
+            if deadline_check is not None:
+                deadline_check()
             t_e = e / self.cfg.n_steps
             alpha_e = alpha_schedule(e, self.cfg.n_steps, self.cfg.initial_alpha)
 
@@ -196,7 +226,9 @@ class InferenceEngine:
             )
             v_attr = weighted_attraction(y_star, y_neighbors, weights_t, self.cfg.a, self.cfg.b, clip=self.cfg.grad_clip)
             v_rep = self._repulsion(y_star, t_e, s_star, rng)
-            v = v_attr + v_rep
+            v = balanced_force(v_attr, v_rep, self.cfg.balance_w, self.cfg.balance_scale)
+            if force_callback is not None:
+                force_callback(e, t_e, v_attr, v_rep, v, self.cfg)
             # Clipped twice, deliberately -- see the matching comment in
             # dynamics.py::simulate_reference_dynamics (same reasoning,
             # applied identically here for the single query point).
