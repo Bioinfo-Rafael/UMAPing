@@ -1,0 +1,25 @@
+{
+  "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/fit_grid",
+  "checkpoint_sha256": "953ca6cec44ea664fa35aa96adde704893e7120feccb7b334a277c5b0b0580f4",
+  "artifact_hashes": {
+    "config.yaml": "5d470422289bf1632dcc53035f8fd507688239cf24071b8eb3c3d0983327d75c",
+    "memory/reference_features.npy": "7474ecaae6ade787f8250f3ab59af8246961733e13683fb88873b433437c7082",
+    "memory/reference_trajectory.npz": "72edc0376817365c212222376763cb21194e7c34b2343c59f28aa81a202fe3da",
+    "memory/retriever_keys.npy": "ad2da9d96b2fe101ec7385ab1a14618839785d2f81eb5de7e8b82c211f1d0ffa",
+    "checkpoints/retriever.pt": "d539729fadb3d6f3328a11629aa504b38ccdff09d093168f02e7858f3c9192f0",
+    "cache/prepared_dataset.npz": "56edbc2e62a5c79a3a7bbadfae942f25ed241788bbeda0808fb8fdfc14d1f8c3",
+    "memory/graph_directed.npz": "e5749dc10d9c5fcced91e4f3efea12895cc694f7091229ca95d7e98485e640d4",
+    "memory/graph_symmetric.npz": "c5e14b94ea85ffc45b2e9a93f3542a649e41a9722d5f76cd700873366b963e96",
+    "checkpoints/spectral_encoder.pt": "b574a4a751b24a4365195cb4e20c48abbb81fa770ee4cd18d0804b5bb8f76ecb",
+    "memory/spectral_calibration.npz": "2ab043a002e29ccc84777298a46ac76c37bb9052c2927ff978a25dc14c44b207",
+    "cache/reference_spectral_embedding.npy": "9c358578194034ef0f2fa8a1fd91b81ae783e71695e4ac789d23a8cbb7ad02d3"
+  },
+  "stages_completed": [
+    "preprocess",
+    "graph",
+    "retriever",
+    "spectral",
+    "flow_dynamics",
+    "repulsion"
+  ]
+}

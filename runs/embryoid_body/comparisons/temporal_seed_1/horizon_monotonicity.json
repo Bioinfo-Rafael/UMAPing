@@ -1,0 +1,14 @@
+[
+  {
+    "method": "uniform_mc",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "fit_grid",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  }
+]

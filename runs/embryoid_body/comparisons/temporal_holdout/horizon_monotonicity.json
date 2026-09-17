@@ -1,0 +1,50 @@
+[
+  {
+    "method": "uniform_mc",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "fit_grid",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "standard_umap",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "reduced_repulsion_umap",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "weighted_knn",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "fit_grid_oracle_neighbors",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "no_repulsion",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  },
+  {
+    "method": "exact_repulsion_diagnostic",
+    "n_horizons": 1,
+    "mae_monotonic_nondecreasing": null,
+    "reason": "one horizon: monotonicity not assessable"
+  }
+]

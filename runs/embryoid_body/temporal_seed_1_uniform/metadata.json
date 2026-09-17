@@ -1,0 +1,10 @@
+{
+  "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_uniform",
+  "matched_seed": 1,
+  "repulsion_teacher": "uniform_mc",
+  "grid_size": null,
+  "initial_checkpoint_sha256": "c5e010fc39b62254a5be0e6801efbc799b8c46c748d7868eb7baab0dc72e68b1",
+  "query_sequence": "TrainingQueries(seed=matched_seed+2000, step)",
+  "teacher_build_seconds": 0.004472979344427586,
+  "train_seconds": 124.97037907503545
+}

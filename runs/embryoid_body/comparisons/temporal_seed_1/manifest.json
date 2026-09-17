@@ -1,0 +1,30 @@
+{
+  "status": "complete",
+  "source_runs": [
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_uniform",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_fit_grid"
+  ],
+  "upstream_hashes": {
+    "config.yaml": "459f21bf71c5dd7a2a0d8d87dca56b01fea21c252b8bfb8d36497ec22f46809e",
+    "memory/reference_features.npy": "4d1cf7855633290d156160c0c91f27c53becbc5970da4bdafa4605456326ed3f",
+    "memory/reference_trajectory.npz": "27d3025e75b7fa8bbbb7a4d68b39dc4f07ed0abfd809a341f60a73cbf484d07c",
+    "memory/retriever_keys.npy": "f311356f0402a6c0600e8971b8048f68831e8ddf15a3258c1120fe1712d9faa9",
+    "checkpoints/retriever.pt": "aa04bccd362dfb415e5d86174bbd69ce5d56eb2e4e263439b6c7b82e8aac042a",
+    "cache/prepared_dataset.npz": "74e67b33bb28a8b8f72210877bcba82071fc48860bb69c4eb91f91eb721825a3",
+    "memory/graph_directed.npz": "d77fbe1d2da8e6f95405e78b8c59328a18ccc3b94d0abc7dcb1e3183a488ca49",
+    "memory/graph_symmetric.npz": "1c43670713b81ccc9c0d31d6ff4c9d6b681f922b892ec619e1620ad1ad756e75",
+    "checkpoints/spectral_encoder.pt": "872715c37d588f636a0517d0b3a84f6193753e60deaf58447398e0f8368aa5db",
+    "memory/spectral_calibration.npz": "420853983f3f7b8d4b026464a754a551d862465ef039296044550a279047044f",
+    "cache/reference_spectral_embedding.npy": "5ea2cca72289e73d48989e42b487d3efef039459abd5e791219f088cbdeaed8f"
+  },
+  "model_hashes": {
+    "uniform_mc": "8e9037b4252b51118ba2e781d50f7f26b1c6506c2e6c8c5e8d873e011752780e",
+    "fit_grid": "5210dd0b771c93197f32ce19db4985f33df6d7ce50af6f5c3e2ec114ee1b0e99"
+  },
+  "seed": 0,
+  "device": "cuda",
+  "reused_baseline_results": false,
+  "reference_trustworthiness": "identical reference; consistency check only",
+  "standard_field_json": "legacy noisy teacher diagnostic, NOT the primary exact field metric",
+  "source_hashes_unchanged": true
+}

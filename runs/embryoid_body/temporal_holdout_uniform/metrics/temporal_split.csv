@@ -1,0 +1,6 @@
+timepoint,n_cells,ordinal,role,horizon
+0-1,4575,1,reference,0
+2-3,7368,2,reference,0
+4-5,6241,3,interpolation,0
+6-7,6543,4,reference,0
+8-9,6302,5,extrapolation,1

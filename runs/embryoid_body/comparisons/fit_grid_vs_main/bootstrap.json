@@ -1,0 +1,25 @@
+[
+  {
+    "status": "ok",
+    "n_pairs": 6206,
+    "n_dropped": 0,
+    "ours_mean": 0.09104092813406381,
+    "baseline_mean": 0.09058975185304545,
+    "mean_improvement": 0.00045117628101836935,
+    "median_improvement": 0.0,
+    "ci_low": -0.0004941454506391663,
+    "ci_high": 0.001407240305081104,
+    "fraction_ours_better": 0.12423461166612955,
+    "fraction_tied": 0.7537866580728327,
+    "n_bootstrap": 10000,
+    "seed": 0,
+    "direction": "higher",
+    "group": "all",
+    "fraction_worsened": 0.1219787302610377,
+    "paired_effect_size_dz": 0.011927284108478327,
+    "conditional_sign_test_p": 0.7394718901931432,
+    "test_assumption": "conditional iid cells/non-tied signs; donor/time dependence not modeled",
+    "inference_scope": "fixed trained models and reference; cell bootstrap, not biological replication",
+    "conditional_sign_test_p_holm": 0.7394718901931432
+  }
+]

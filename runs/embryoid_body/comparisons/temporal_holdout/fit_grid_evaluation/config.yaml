@@ -1,0 +1,85 @@
+dataset:
+  name: embryoid_body
+  raw_dir: data/raw/embryoid_body
+  input_dim: 50
+  params:
+    n_hvg: 2000
+    n_pcs: 50
+    query_groups:
+    - 4-5
+    - 8-9
+    grouping_column: stage
+    group_order:
+    - 0-1
+    - 2-3
+    - 4-5
+    - 6-7
+    - 8-9
+umap:
+  n_neighbors: 15
+  embedding_dim: 2
+  min_dist: 0.1
+  spread: 1.0
+  negative_sample_rate: 5.0
+  local_connectivity: 1.0
+  set_op_mix_ratio: 1.0
+  smooth_knn_n_iter: 64
+  smooth_knn_bandwidth: 1.0
+  smooth_knn_min_k_dist_scale: 0.001
+  eps: 1.0e-08
+retriever:
+  hidden_dims:
+  - 512
+  - 256
+  retrieval_dim: 128
+  activation: gelu
+  temperature: 0.1
+  candidate_multiplier: 4
+  min_candidates: 64
+  ann_backend: exact
+  batch_size: 256
+  n_random_negatives: 64
+  exclude_known_neighbors_from_negatives: true
+  lr: 0.001
+  weight_decay: 0.0
+  steps: 2000
+  log_every: 50
+spectral:
+  hidden_dims:
+  - 512
+  - 256
+  raw_output_dim: 3
+  activation: gelu
+  orthogonality_weight: 1.0
+  edge_batch_size: 4096
+  lr: 0.001
+  weight_decay: 0.0
+  steps: 2000
+  calibration_target_scale: 10.0
+  log_every: 50
+flow:
+  n_steps: 200
+  initial_alpha: 1.0
+  dynamics_negative_samples: 64
+  grad_clip: 4.0
+  checkpoint_stride: 1
+repulsion:
+  hidden_dim: 256
+  n_residual_blocks: 4
+  time_embed_dim: 32
+  activation: gelu
+  jitter_sigma: 0.1
+  teacher_negative_samples: 64
+  weight_by_row_mass: false
+  lr: 0.001
+  weight_decay: 0.0
+  steps: 4000
+  batch_size: 512
+  log_every: 100
+eval:
+  k: 15
+  oracle_repulsion_samples: 2048
+  repulsion_oracle_query_subset: 50
+  trustworthiness_n_neighbors: 15
+seed: 0
+float_dtype: float32

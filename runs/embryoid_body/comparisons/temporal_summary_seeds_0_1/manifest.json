@@ -1,0 +1,38 @@
+{
+  "status": "complete",
+  "selected_seeds": [
+    0,
+    1
+  ],
+  "excluded_seeds": [
+    {
+      "seed": 2,
+      "stored_status": "running",
+      "disposition": "excluded_by_selection",
+      "note": "stored running is not a live process check; may be stale after termination"
+    }
+  ],
+  "scope": "selected completed seeds only; does not complete the original three-seed execution",
+  "source_hashes": {
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_holdout/manifest.json": "b9557c42b74682bf760f72c8085df634b4c40622ae8258e154901a3224fbb2cf",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_uniform/temporal_split.json": "17e51dc5588dfffc7b42497018808ef9aea629214126888e07a89acdd88fbb9f",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_fit_grid/temporal_split.json": "17e51dc5588dfffc7b42497018808ef9aea629214126888e07a89acdd88fbb9f",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_uniform/metadata.json": "6d03839b0fb19e78779493a31e3b1323498406fc03a58f5694724d01c5c6521c",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_fit_grid/metadata.json": "8db3f5a64b4e19b6321373bbe96cb210df8e531f18e30fc32e605cfee08a6e49",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_holdout/aggregate.csv": "1fd7440c53eccc6db877b6c58833a318c7d6871a7c9ac76ac0b2a14e2b0cd5c9",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_holdout/bootstrap.csv": "08cfc4e026a80ba6020e1a1d9f84d73c2b279aa07956cda73545f098ab241461",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_holdout/report.md": "ab93995508275e005e3667c918f75fb22374cf98f84b157cbfdba4604e23eb7f",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_holdout/paired_per_query.csv": "3cab129db2367b6d87aa0920e41d33e4b030e935523492fb7921530c016dbe7b",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_1/manifest.json": "1842ca9af0a7e7f85cf9b064ad30ff1fd772e93004659ed90688e2a8e7d5e569",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_uniform/temporal_split.json": "17e51dc5588dfffc7b42497018808ef9aea629214126888e07a89acdd88fbb9f",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_fit_grid/temporal_split.json": "17e51dc5588dfffc7b42497018808ef9aea629214126888e07a89acdd88fbb9f",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_uniform/metadata.json": "88091457577be93f660d5d4560339927cb382fa41c1dc866a8d5a6bc831355da",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_fit_grid/metadata.json": "8bded083fa0f1703ad271f10c7e60d4b687249500224722d31a94f66dc90a392",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_1/aggregate.csv": "93cd200a0e5ddb311581fa50b8e8f18840ebbb86557cb1332f3533b0b8cca38a",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_1/bootstrap.csv": "7e18f509d140d74f585d9b1ba929e8bdffa2bd2ce07c90912acd90c23514d585",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_1/report.md": "27168475e971b8ca5cdda91651505ea73769c63d734bdb416dfae85e3a05a0ab",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_1/paired_per_query.csv": "2e8deed597a2943b9c4b5aa420a79f0070404f0a6ee17f10ebc4ac3958ef6ed0",
+    "/home/suzuki/Learn/UMAPing/runs/embryoid_body/comparisons/temporal_seed_2/manifest.json": "01cdc1fbdf9e4ac8509a6e61dacf50e3f6b76f632bb33de226ff4e92a28477ea"
+  },
+  "training_or_inference_executed": false
+}
