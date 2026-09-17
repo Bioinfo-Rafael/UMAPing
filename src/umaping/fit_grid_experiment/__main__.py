@@ -29,6 +29,10 @@ def main(argv=None):
             p.add_argument('--device', default='cpu', choices=['cpu','cuda'])
             p.add_argument('--seeds', type=int, nargs='+', default=[0,1,2])
             p.add_argument('--cell-type-column')
+    p = sub.add_parser('summarize', help='完了済みseedだけを集計。学習・推論なし')
+    p.add_argument('--run-root', type=Path, default=Path('runs/embryoid_body'))
+    p.add_argument('--seeds', type=int, nargs='+', required=True)
+    p.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     if args.command == 'promote':
         from .materialize import materialize
@@ -41,6 +45,9 @@ def main(argv=None):
         report = audit_file(args.data, args.group_column, args.group_order)
         if not report['valid_temporal_split']:
             parser.exit(2, '5点以上の年代順を検証できません。学習は実行しません。\n')
+    elif args.command == 'summarize':
+        from .summary import summarize
+        print(summarize(args.run_root, args.seeds, args.output))
     else:
         from .temporal import run_temporal
         run_temporal(args)

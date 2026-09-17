@@ -210,6 +210,35 @@ def test_temporal_preprocessing_and_matched_training(tmp_path,monkeypatch):
     fitted=np.load(u/'cache/reference_fitted_preprocessing.npz')
     assert fitted['reference_indices'].tolist()==split['reference_indices']
     assert json.loads((u/'temporal_manifest.json').read_text())['status']=='complete'
+    from umaping.fit_grid_experiment.summary import summarize
+    seed2 = args.run_root/'comparisons/temporal_seed_2/manifest.json'
+    state = json.loads(seed2.read_text())
+    state['status'] = 'running'  # interrupted third-seed fixture
+    seed2.write_text(json.dumps(state))
+    original = {str(p): sha(p) for p in args.run_root.rglob('*') if p.is_file()}
+    output = tmp_path/'selected_summary'
+    summarize(args.run_root, [0, 1], output)
+    summary = pd.read_csv(output/'matched_seed_summary.csv')
+    assert (summary.recall_at_15_count == 2).all()
+    assert set(pd.read_csv(output/'matched_seed_results.csv').seed) == {0, 1}
+    assert len(pd.read_csv(output/'matched_training_runtime.csv')) == 4
+    selected = json.loads((output/'manifest.json').read_text())
+    assert selected['status'] == 'complete'
+    assert selected['excluded_seeds'][0]['seed'] == 2
+    assert selected['excluded_seeds'][0]['stored_status'] == 'running'
+    assert original == {str(p): sha(p) for p in args.run_root.rglob('*') if p.is_file()}
+    with pytest.raises(FileExistsError):
+        summarize(args.run_root, [0, 1], output)
+    with pytest.raises(ValueError, match='not verified complete'):
+        summarize(args.run_root, [0, 2], tmp_path/'invalid_summary')
+    assert not (tmp_path/'invalid_summary').exists()
+    metadata_path = f/'metadata.json'
+    metadata = json.loads(metadata_path.read_text())
+    metadata['matched_seed'] = 9
+    metadata_path.write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match='training seed mismatch'):
+        summarize(args.run_root, [0, 1], tmp_path/'invalid_seed')
+    assert not (tmp_path/'invalid_seed').exists()
 
 
 def test_query_only_preprocessing_changes_do_not_change_reference(tmp_path):

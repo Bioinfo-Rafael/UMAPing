@@ -1,5 +1,25 @@
 # FitGridの最終埋め込み比較と可変時間点holdout
 
+## seed 2を中断した場合の最終集計
+
+seed 0・1のcomparison manifestが `complete` なら、学習・推論を再実行せずに集計できる。
+元の結果・manifestは変更せず、新しいsummaryディレクトリに保存する。
+
+```bash
+.venv/bin/python -u -m umaping.fit_grid_experiment summarize \
+  --run-root runs/embryoid_body --seeds 0 1 \
+  --output runs/embryoid_body/comparisons/temporal_summary_seeds_0_1
+```
+
+`matched_seed_results.csv`、`matched_seed_summary.csv`、`matched_training_runtime.csv`、
+`paired_by_seed.csv`、`paired_seed_summary.csv`、`report.md`、`manifest.json` を出力する。
+出力先が既存なら拒否する。完了状態・共通上流hash・同じsplit・matched training seed・同じ初期値を保存記録で検証する。
+comparison manifestの `seed: 0` は評価乱数なので、B_phi学習seedの判定には各モデルのmetadataを使う。
+除外seedの保存状態を記録するが、kill後に残った `running` を現在の生存プロセスとは解釈しない。
+summaryの `complete` は選択したseedの集計完了であり、元の3 seed実行の完了を意味しない。
+標準偏差はddof=1。seedごとのcell bootstrap CIは保持し、CI端点の平均を新しいCIとは呼ばない。
+2 seedによる再現性の評価は限定的であることを日本語レポートにも記載する。
+
 ## 今回の到達点（2026-09-15）
 
 `experiments/embryo-repulsion-estimator-benchmark` の最新保存結果 `7274702` を起点に、

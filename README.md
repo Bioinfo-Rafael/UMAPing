@@ -389,3 +389,13 @@ HVG/PCAから軌道までreferenceだけで一度学習し、両teacherでB_phi�
 `.venv/bin/python` / CUDA / seed 0,1,2を既定とし、既存出力と失敗を検出すると停止する。
 rawは対象ディレクトリ内にh5ad/loomが1個だけなら自動検出し、それ以外は `--raw-file` で指定する。
 [remoteでpull→nohup実行→ログ閲覧するコマンド](docs/FIT_GRID_END_TO_END_AND_TEMPORAL_HOLDOUT.md#remoteで4段階をまとめて実行するsh)を掲載した。
+
+seed 2を中断し、完了したseed 0・1だけを最終集計する場合：
+
+```bash
+.venv/bin/python -u -m umaping.fit_grid_experiment summarize \
+  --run-root runs/embryoid_body --seeds 0 1 \
+  --output runs/embryoid_body/comparisons/temporal_summary_seeds_0_1
+```
+
+再学習・推論なし。元の成果物を変更せず、平均・標準偏差、seed別対応比較、学習時間、日本語報告を新規保存する。
