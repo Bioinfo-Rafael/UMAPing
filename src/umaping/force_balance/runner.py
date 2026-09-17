@@ -29,6 +29,10 @@ RUNS = {'temporal0':('temporal_holdout_uniform','temporal_holdout_fit_grid'),
         'existing':('main','fit_grid')}
 
 
+def log_progress(event, **fields):
+    print(json.dumps(dict(time_utc=utcnow(), event=event, **fields), ensure_ascii=False), flush=True)
+
+
 def sha(path, check=lambda: None):
     h=hashlib.sha256()
     with open(path,'rb') as f:
@@ -40,6 +44,7 @@ def sha(path, check=lambda: None):
 def inspect(root, deadline):
     inventory=[]; contexts={}
     for context,names in RUNS.items():
+        log_progress('audit_context_start', context=context)
         paths=[root/'runs/embryoid_body'/name for name in names]
         ok=True
         for run in paths:
@@ -47,9 +52,11 @@ def inspect(root, deadline):
                 exists=(run/rel).is_file(); ok &= exists
                 inventory.append(dict(context=context,run=str(run),artifact=rel,exists=exists))
         if not ok:
+            log_progress('audit_context_missing_inputs', context=context)
             continue
         hashes=[]
         for run in paths:
+            log_progress('audit_hashes_start', run=str(run))
             hashes.append({p:sha(run/p,deadline.check) for p in REQUIRED})
         if hashes[0]!=hashes[1]:
             raise ValueError(f'{context}: teacher upstream artifacts differ')
@@ -60,6 +67,7 @@ def inspect(root, deadline):
                 raise ValueError(f'{context}: training seed metadata mismatch')
         contexts[context]=dict(paths=paths,hashes=hashes[0],metadata=metadata,
             model_hashes=[sha(p/'checkpoints/repulsion_field.pt',deadline.check) for p in paths])
+        log_progress('audit_context_complete', context=context)
     if 'temporal0' in contexts and 'temporal1' in contexts:
         if contexts['temporal0']['hashes']!=contexts['temporal1']['hashes']:
             raise ValueError('seed 1 upstream differs: shared query confirmation not safe')
@@ -98,6 +106,7 @@ class Experiment:
             capture_output=True,text=True,timeout=10).stdout.strip()
 
     def audit(self):
+        log_progress('audit_start', source_root=str(self.root), device=str(self.device))
         self.deadline.check()
         inventory,self.contexts=inspect(self.root,self.deadline)
         pd.DataFrame(inventory).to_csv(self.report/'99_provenance/input_inventory.csv',index=False)
@@ -142,6 +151,7 @@ class Experiment:
         return prepared,labels,qids,split
 
     def fix_ids(self):
+        log_progress('fix_query_ids_start')
         prepared,labels,qids,split=self.load_context('temporal0')
         self.temporal=(prepared,labels,qids,split)
         rng=np.random.default_rng(self.protocol['sampling_seed'])
@@ -167,6 +177,7 @@ class Experiment:
                        'fixed_before_evaluation_utc':utcnow(),'sampling_seed':self.protocol['sampling_seed']})
 
     def metric_cache(self,context,idx):
+        log_progress('metric_neighbors_start', context=context, n_queries=len(idx))
         data=self.datasets['existing'] if context=='existing' else self.temporal
         prepared=data[0]; path=self.contexts[context]['paths'][0]
         from umaping.dynamics import ReferenceTrajectory
@@ -183,10 +194,13 @@ class Experiment:
             self.reference_metrics[key]=(hr[:,-1],lr[:,-1],reference)
         hr,lr,reference=self.reference_metrics[key]
         self.deadline.check()
+        log_progress('metric_neighbors_complete', context=context, elapsed_seconds=time.perf_counter()-begin)
         return (hi,hd,hr,lr,reference),time.perf_counter()-begin
 
     def condition(self,stage,context,teacher,w,scale,idx,metric_cache, *, pilot=False):
         self.deadline.check(new=True)
+        log_progress('condition_start', stage=stage, context=context, teacher=teacher,
+                     w=w, scale=scale, n_queries=len(idx), pilot=pilot)
         teacher_index=0 if teacher=='Uniform' else 1
         source=self.contexts[context]['paths'][teacher_index]
         name=f'{context}_{teacher}_w{w:.12g}_scale{scale:g}'
@@ -207,6 +221,7 @@ class Experiment:
             with np.load(state) as old:
                 if not np.array_equal(old['query_indices'],idx): raise ValueError('Partial query identity mismatch')
                 y=old['embedding']; elapsed=old['seconds']
+            log_progress('condition_resume', completed_queries=int(np.isfinite(elapsed).sum()), n_queries=n)
         engine=InferenceEngine.load(source,self.device,seed=0)
         engine.cfg.balance_w=w; engine.cfg.balance_scale=scale
         force_path=cache/'force_rows.json'; rows=json.loads(force_path.read_text()) if force_path.exists() else []
@@ -233,11 +248,15 @@ class Experiment:
                 if (j+1)%25==0:
                     atomic_npz(state,embedding=y,seconds=elapsed,query_indices=idx)
                     write_json(force_path,rows)
+                    log_progress('inference_progress', stage=stage, condition=name,
+                                 completed_queries=int(np.isfinite(elapsed).sum()), n_queries=n,
+                                 measured_inference_seconds=float(np.nansum(elapsed)))
         finally:
             atomic_npz(state,embedding=y,seconds=elapsed,query_indices=idx)
             write_json(force_path,rows)
         if not np.isfinite(y).all() or not np.isfinite(elapsed).all(): raise ValueError('Incomplete condition')
         high_ids,high_dist,hr,lr,reference=metric_cache
+        log_progress('condition_evaluation_start', stage=stage, condition=name)
         self.deadline.check(); begin=time.perf_counter()
         low_ids,low_dist=chunked_exact_knn(y,reference,k=15)
         recall,ndcg,density=metrics_from_neighbors(high_ids,high_dist,low_ids,low_dist,hr,lr)
@@ -261,6 +280,8 @@ class Experiment:
             self.force_rows+=rows
             self.status['completed_conditions'].append(f'{stage}/{name}')
             self.save()
+        log_progress('condition_complete', stage=stage, condition=name, n_queries=n,
+                     inference_seconds=float(elapsed.sum()), evaluation_seconds=eval_seconds)
         return frame
 
     def save(self):
@@ -340,6 +361,7 @@ class Experiment:
         chosen_path=self.work/'configs/selection.json'
         if chosen_path.exists() and json.loads(chosen_path.read_text())!=result: raise ValueError('Selection changed on resume')
         write_json(chosen_path,result); write_json(self.report/'01_balance_search/selection.json',result)
+        log_progress('ratio_selected', **result)
         self.status['selected']=result; self.save()
         from .report import render
         render(self)
@@ -374,6 +396,7 @@ def main():
     parser.add_argument('--protocol',required=True); parser.add_argument('--device',default='cpu')
     parser.add_argument('--threads',type=int,default=1)
     args=parser.parse_args(); torch.set_num_threads(args.threads)
+    log_progress('startup', pid=os.getpid(), device=args.device, protocol=args.protocol)
     experiment=Experiment(args)
     lock=experiment.work/'execution.lock'
     try: fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
@@ -385,6 +408,7 @@ def main():
     try:
         experiment.execute()
     except Exception as exc:
+        log_progress('execution_failed', error=str(exc))
         experiment.status.update(status='incomplete',error=str(exc),traceback=traceback.format_exc())
         print(traceback.format_exc(),file=sys.stderr)
     finally:
@@ -401,4 +425,5 @@ def main():
         finally:
             signal.setitimer(signal.ITIMER_REAL,0)
             lock.unlink(missing_ok=True)
+            log_progress('execution_ended', status=experiment.status['status'], report=str(experiment.report/'README_ja.md'))
     return 0 if experiment.status['status']=='complete_A_B_C' else 2
