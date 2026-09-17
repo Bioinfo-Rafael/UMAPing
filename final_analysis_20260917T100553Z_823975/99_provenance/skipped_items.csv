@@ -1,0 +1,5 @@
+item,reason
+temporal_seed_2,"Excluded by explicit selection: incomplete, no checkpoint loading or resumption"
+temporal_seed_1/standard_umap_and_recall_at_k,Not saved for training seed 1; seed-0 results not substituted
+field/temporal1/uniform_mc/spatial_grid,"Saved spatial-grid exact evaluation absent; missing, not imputed"
+field/temporal1/fit_grid/spatial_grid,"Saved spatial-grid exact evaluation absent; missing, not imputed"

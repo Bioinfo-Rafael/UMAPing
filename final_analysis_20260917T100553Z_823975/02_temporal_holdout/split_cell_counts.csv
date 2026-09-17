@@ -1,0 +1,6 @@
+stage,role,count,ordered_position,saved_split_csv_columns,split,training_seed
+0-1,reference,4575,0,"timepoint,n_cells,ordinal,role,horizon",temporal holdout,0
+2-3,reference,7368,1,"timepoint,n_cells,ordinal,role,horizon",temporal holdout,0
+4-5,interpolation,6241,2,"timepoint,n_cells,ordinal,role,horizon",temporal holdout,0
+6-7,reference,6543,3,"timepoint,n_cells,ordinal,role,horizon",temporal holdout,0
+8-9,extrapolation,6302,4,"timepoint,n_cells,ordinal,role,horizon",temporal holdout,0

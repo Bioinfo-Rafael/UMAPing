@@ -1,0 +1,37 @@
+method,group,metric,n_queries,mean,display_mean,median,stage_counts,split,training_seed
+uniform_mc,all,recall_at_15,12543,0.10992585505859839,10.99258550585984,0.0666666666666666,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+uniform_mc,all,ndcg,12543,0.11508837494321236,0.11508837494321236,0.0853046091393023,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+uniform_mc,all,density_log_distortion,12543,0.2802013188983369,0.2802013188983369,0.22240576,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+uniform_mc,interpolation,recall_at_15,6241,0.10466271430860435,10.466271430860436,0.0666666666666666,"{""4-5"": 6241}",temporal holdout,0
+uniform_mc,interpolation,ndcg,6241,0.1098172078134441,0.1098172078134441,0.0734773909038217,"{""4-5"": 6241}",temporal holdout,0
+uniform_mc,interpolation,density_log_distortion,6241,0.27632027381716256,0.27632027381716256,0.21667162,"{""4-5"": 6241}",temporal holdout,0
+uniform_mc,extrapolation,recall_at_15,6302,0.11513805141225006,11.513805141225006,0.0666666666666666,"{""8-9"": 6302}",temporal holdout,0
+uniform_mc,extrapolation,ndcg,6302,0.12030851998556141,0.12030851998556141,0.0909155521298325,"{""8-9"": 6302}",temporal holdout,0
+uniform_mc,extrapolation,density_log_distortion,6302,0.2840447975323593,0.2840447975323593,0.22921688,"{""8-9"": 6302}",temporal holdout,0
+fit_grid,all,recall_at_15,12543,0.11011719684286053,11.011719684286053,0.0666666666666666,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid,all,ndcg,12543,0.11585822485892647,0.11585822485892647,0.0853046091393023,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid,all,density_log_distortion,12543,0.28066025900851915,0.28066025900851915,0.22445473,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid,interpolation,recall_at_15,6241,0.10548523206751052,10.548523206751053,0.0666666666666666,"{""4-5"": 6241}",temporal holdout,0
+fit_grid,interpolation,ndcg,6241,0.11145804882360215,0.11145804882360215,0.0734773909038217,"{""4-5"": 6241}",temporal holdout,0
+fit_grid,interpolation,density_log_distortion,6241,0.27931844056724886,0.27931844056724886,0.22335257,"{""4-5"": 6241}",temporal holdout,0
+fit_grid,extrapolation,recall_at_15,6302,0.11470432666878239,11.470432666878239,0.0666666666666666,"{""8-9"": 6302}",temporal holdout,0
+fit_grid,extrapolation,ndcg,6302,0.12021580953624461,0.12021580953624461,0.0897739188008362,"{""8-9"": 6302}",temporal holdout,0
+fit_grid,extrapolation,density_log_distortion,6302,0.2819890893626874,0.2819890893626874,0.225892735,"{""8-9"": 6302}",temporal holdout,0
+no_repulsion,all,recall_at_15,12543,0.10291530468521616,10.291530468521616,0.0666666666666666,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+no_repulsion,all,ndcg,12543,0.10707894091634712,0.10707894091634712,0.0660006550311689,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+no_repulsion,all,density_log_distortion,12543,0.27426802508845427,0.27426802508845427,0.22268802,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+no_repulsion,interpolation,recall_at_15,6241,0.09982374619452007,9.982374619452008,0.0666666666666666,"{""4-5"": 6241}",temporal holdout,0
+no_repulsion,interpolation,ndcg,6241,0.1046132021043648,0.1046132021043648,0.0660006550311689,"{""4-5"": 6241}",temporal holdout,0
+no_repulsion,interpolation,density_log_distortion,6241,0.2710262081902628,0.2710262081902628,0.21818087,"{""4-5"": 6241}",temporal holdout,0
+no_repulsion,extrapolation,recall_at_15,6302,0.10597693853803024,10.597693853803024,0.0666666666666666,"{""8-9"": 6302}",temporal holdout,0
+no_repulsion,extrapolation,ndcg,6302,0.10952081269127281,0.10952081269127281,0.0697390229674953,"{""8-9"": 6302}",temporal holdout,0
+no_repulsion,extrapolation,density_log_distortion,6302,0.27747846292749156,0.27747846292749156,0.225840345,"{""8-9"": 6302}",temporal holdout,0
+fit_grid_oracle_neighbors,all,recall_at_15,12543,0.10908607722767012,10.908607722767012,0.0666666666666666,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,all,ndcg,12543,0.1148061478010243,0.1148061478010243,0.0853046091393023,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,all,density_log_distortion,12543,0.2796103028434848,0.2796103028434848,0.22562322,"{""8-9"": 6302, ""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,interpolation,recall_at_15,6241,0.10413929391657317,10.413929391657318,0.0666666666666666,"{""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,interpolation,ndcg,6241,0.11061246302044525,0.11061246302044525,0.0734773909038217,"{""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,interpolation,density_log_distortion,6241,0.280452617800298,0.280452617800298,0.22404552,"{""4-5"": 6241}",temporal holdout,0
+fit_grid_oracle_neighbors,extrapolation,recall_at_15,6302,0.1139849783137628,11.398497831376279,0.0666666666666666,"{""8-9"": 6302}",temporal holdout,0
+fit_grid_oracle_neighbors,extrapolation,ndcg,6302,0.1189592399488494,0.1189592399488494,0.0853046091393023,"{""8-9"": 6302}",temporal holdout,0
+fit_grid_oracle_neighbors,extrapolation,density_log_distortion,6302,0.27877614104636145,0.27877614104636145,0.226894855,"{""8-9"": 6302}",temporal holdout,0

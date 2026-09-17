@@ -1,0 +1,13 @@
+method,group,metric,n_queries,mean,display_mean,median,stage_counts,split,training_seed
+uniform_mc,all,recall_at_15,6206,0.09058975185304541,9.05897518530454,0.0666666666666666,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+uniform_mc,all,ndcg,6206,0.09459041494541238,0.09459041494541238,0.0568697394262015,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+uniform_mc,all,density_log_distortion,6206,0.26570029874047696,0.26570029874047696,0.21985577,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid,all,recall_at_15,6206,0.09104092813406377,9.104092813406377,0.0666666666666666,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid,all,ndcg,6206,0.09503149607614308,0.09503149607614308,0.0568697394262015,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid,all,density_log_distortion,6206,0.26573955397182886,0.26573955397182886,0.21543979000000002,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+no_repulsion,all,recall_at_15,6206,0.08673326887957888,8.673326887957888,0.0666666666666666,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+no_repulsion,all,ndcg,6206,0.09036677600828551,0.09036677600828551,0.0538212160227695,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+no_repulsion,all,density_log_distortion,6206,0.2622382856665301,0.2622382856665301,0.216995425,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid_oracle_neighbors,all,recall_at_15,6206,0.09038564829734663,9.038564829734664,0.0666666666666666,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid_oracle_neighbors,all,ndcg,6206,0.09462794569640261,0.09462794569640261,0.0568697394262015,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata
+fit_grid_oracle_neighbors,all,density_log_distortion,6206,0.26042565638756854,0.26042565638756854,0.213130115,"{""2-3"": 1474, ""6-7"": 1309, ""8-9"": 1260, ""4-5"": 1248, ""0-1"": 915}",existing split,not recorded in run metadata

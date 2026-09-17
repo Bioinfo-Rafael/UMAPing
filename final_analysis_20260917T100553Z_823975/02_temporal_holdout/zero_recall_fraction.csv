@@ -1,0 +1,16 @@
+method,group,n_queries,zero_count,zero_fraction,split,training_seed
+standard_umap,all,12543,4488,0.3578091365701985,temporal holdout,0
+reduced_repulsion_umap,all,12543,4571,0.3644263732759308,temporal holdout,0
+weighted_knn,all,12543,6436,0.5131148847963007,temporal holdout,0
+uniform_mc,all,12543,3377,0.269233835605517,temporal holdout,0
+fit_grid,all,12543,3439,0.27417683169895557,temporal holdout,0
+standard_umap,interpolation,6241,2235,0.3581156865886877,temporal holdout,0
+reduced_repulsion_umap,interpolation,6241,2228,0.35699407146290657,temporal holdout,0
+weighted_knn,interpolation,6241,3064,0.4909469636276238,temporal holdout,0
+uniform_mc,interpolation,6241,1731,0.2773593975324467,temporal holdout,0
+fit_grid,interpolation,6241,1759,0.2818458580355712,temporal holdout,0
+standard_umap,extrapolation,6302,2253,0.35750555379244686,temporal holdout,0
+reduced_repulsion_umap,extrapolation,6302,2343,0.3717867343700413,temporal holdout,0
+weighted_knn,extrapolation,6302,3372,0.535068232307204,temporal holdout,0
+uniform_mc,extrapolation,6302,1646,0.2611869247857823,temporal holdout,0
+fit_grid,extrapolation,6302,1680,0.26658203744842907,temporal holdout,0

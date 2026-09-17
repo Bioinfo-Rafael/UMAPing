@@ -1,0 +1,133 @@
+absolute_error,atol,check,context,group,method,metric,n_queries,precision_note,recomputed,rtol,saved,status
+1.3877787807814457e-17,1e-10,aggregate,existing,all,standard_umap,recall_at_15,6206.0,float64,0.07737673219465031,1e-08,0.0773767321946503,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,standard_umap,ndcg,6206.0,float64,0.07986746638929569,1e-08,0.0798674663892957,passed
+1.7669665730579709e-09,1e-10,aggregate,existing,all,standard_umap,density_log_distortion,6206.0,float32 saved reduction,0.24646322605876797,2.384185791015625e-07,0.2464632242918014,passed
+2.7755575615628914e-17,1e-10,aggregate,existing,all,reduced_repulsion_umap,recall_at_15,6206.0,float64,0.07556128477817163,1e-08,0.0755612847781716,passed
+6.938893903907228e-17,1e-10,aggregate,existing,all,reduced_repulsion_umap,ndcg,6206.0,float64,0.07780742477320376,1e-08,0.0778074247732037,passed
+1.7000043872616999e-09,1e-10,aggregate,existing,all,reduced_repulsion_umap,density_log_distortion,6206.0,float32 saved reduction,0.24160942605265018,2.384185791015625e-07,0.2416094243526458,passed
+4.85722573273506e-17,1e-10,aggregate,existing,all,weighted_knn,recall_at_15,6206.0,float64,0.06084434418304865,1e-08,0.0608443441830486,passed
+6.938893903907228e-18,1e-10,aggregate,existing,all,weighted_knn,ndcg,6206.0,float64,0.06164419417144631,1e-08,0.0616441941714463,passed
+1.4217767074775622e-08,1e-10,aggregate,existing,all,weighted_knn,density_log_distortion,6206.0,float32 saved reduction,0.3079926527419955,2.384185791015625e-07,0.3079926669597626,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,uniform_mc,recall_at_15,6206.0,float64,0.09058975185304541,1e-08,0.0905897518530454,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,uniform_mc,ndcg,6206.0,float64,0.09459041494541238,1e-08,0.0945904149454124,passed
+1.1728196747107233e-08,1e-10,aggregate,existing,all,uniform_mc,density_log_distortion,6206.0,float32 saved reduction,0.26570029874047696,2.384185791015625e-07,0.2657003104686737,passed
+2.7755575615628914e-17,1e-10,aggregate,existing,all,fit_grid,recall_at_15,6206.0,float64,0.09104092813406377,1e-08,0.0910409281340638,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,fit_grid,ndcg,6206.0,float64,0.09503149607614308,1e-08,0.0950314960761431,passed
+6.1554294439325474e-09,1e-10,aggregate,existing,all,fit_grid,density_log_distortion,6206.0,float32 saved reduction,0.26573955397182886,2.384185791015625e-07,0.2657395601272583,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,no_repulsion,recall_at_15,6206.0,float64,0.08673326887957888,1e-08,0.0867332688795789,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,no_repulsion,ndcg,6206.0,float64,0.09036677600828551,1e-08,0.0903667760082855,passed
+8.219654568097923e-09,1e-10,aggregate,existing,all,no_repulsion,density_log_distortion,6206.0,float32 saved reduction,0.2622382856665301,2.384185791015625e-07,0.2622382938861847,passed
+2.7755575615628914e-17,1e-10,aggregate,existing,all,fit_grid_oracle_neighbors,recall_at_15,6206.0,float64,0.09038564829734663,1e-08,0.0903856482973466,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,fit_grid_oracle_neighbors,ndcg,6206.0,float64,0.09462794569640261,1e-08,0.0946279456964026,passed
+6.463517499000204e-10,1e-10,aggregate,existing,all,fit_grid_oracle_neighbors,density_log_distortion,6206.0,float32 saved reduction,0.26042565638756854,2.384185791015625e-07,0.2604256570339203,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,exact_repulsion_diagnostic,recall_at_15,50.0,float64,0.10133333333333329,1e-08,0.1013333333333333,passed
+1.3877787807814457e-17,1e-10,aggregate,existing,all,exact_repulsion_diagnostic,ndcg,50.0,float64,0.10856818838739439,1e-08,0.1085681883873944,passed
+6.8972263456146266e-09,1e-10,aggregate,existing,all,exact_repulsion_diagnostic,density_log_distortion,50.0,float32 saved reduction,0.17875070180199995,2.384185791015625e-07,0.1787507086992263,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,all,standard_umap,recall_at_15,12543.0,float64,0.09103085386271224,1e-08,0.0910308538627122,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,all,standard_umap,ndcg,12543.0,float64,0.09279207756432362,1e-08,0.0927920775643236,passed
+1.062120058570315e-08,1e-10,aggregate,temporal0,all,standard_umap,density_log_distortion,12543.0,float32 saved reduction,0.30997193921769717,2.384185791015625e-07,0.3099719285964966,passed
+0.0,1e-10,aggregate,temporal0,interpolation,standard_umap,recall_at_15,6241.0,float64,0.0892271537680927,1e-08,0.0892271537680927,passed
+8.326672684688674e-17,1e-10,aggregate,temporal0,interpolation,standard_umap,ndcg,6241.0,float64,0.09126548305388038,1e-08,0.0912654830538803,passed
+3.6677647585747764e-09,1e-10,aggregate,temporal0,interpolation,standard_umap,density_log_distortion,6241.0,float32 saved reduction,0.31908247241585735,2.384185791015625e-07,0.3190824687480926,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,extrapolation,standard_umap,recall_at_15,6302.0,float64,0.09281709510208397,1e-08,0.092817095102084,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,extrapolation,standard_umap,ndcg,6302.0,float64,0.09430389545383112,1e-08,0.0943038954538311,passed
+1.2195681908799827e-08,1e-10,aggregate,temporal0,extrapolation,standard_umap,density_log_distortion,6302.0,float32 saved reduction,0.3009495911234862,2.384185791015625e-07,0.3009496033191681,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,all,reduced_repulsion_umap,recall_at_15,12543.0,float64,0.08853278056817876,1e-08,0.0885327805681788,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,all,reduced_repulsion_umap,ndcg,12543.0,float64,0.09086925510721744,1e-08,0.0908692551072174,passed
+4.952469934149661e-09,1e-10,aggregate,temporal0,all,reduced_repulsion_umap,density_log_distortion,12543.0,float32 saved reduction,0.27750375371642955,2.384185791015625e-07,0.2775037586688995,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,interpolation,reduced_repulsion_umap,recall_at_15,6241.0,float64,0.08921647171927573,1e-08,0.0892164717192757,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,interpolation,reduced_repulsion_umap,ndcg,6241.0,float64,0.09149306414858223,1e-08,0.0914930641485822,passed
+7.816808644811601e-09,1e-10,aggregate,temporal0,interpolation,reduced_repulsion_umap,density_log_distortion,6241.0,float32 saved reduction,0.27981445974971575,2.384185791015625e-07,0.2798144519329071,passed
+8.326672684688674e-17,1e-10,aggregate,temporal0,extrapolation,reduced_repulsion_umap,recall_at_15,6302.0,float64,0.08785570718290488,1e-08,0.0878557071829048,passed
+8.326672684688674e-17,1e-10,aggregate,temporal0,extrapolation,reduced_repulsion_umap,ndcg,6302.0,float64,0.09025148420478048,1e-08,0.0902514842047804,passed
+3.061122577641129e-09,1e-10,aggregate,temporal0,extrapolation,reduced_repulsion_umap,density_log_distortion,6302.0,float32 saved reduction,0.2752154140855601,2.384185791015625e-07,0.2752154171466827,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,all,weighted_knn,recall_at_15,12543.0,float64,0.06536447952377153,1e-08,0.0653644795237715,passed
+8.326672684688674e-17,1e-10,aggregate,temporal0,all,weighted_knn,ndcg,12543.0,float64,0.06674678718565058,1e-08,0.0667467871856505,passed
+3.4304773743887296e-08,1e-10,aggregate,temporal0,all,weighted_knn,density_log_distortion,12543.0,float32 saved reduction,0.36897706535228497,2.384185791015625e-07,0.3689770996570587,passed
+5.551115123125783e-17,1e-10,aggregate,temporal0,interpolation,weighted_knn,recall_at_15,6241.0,float64,0.06964695828659935,1e-08,0.0696469582865993,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,interpolation,weighted_knn,ndcg,6241.0,float64,0.07128157532439398,1e-08,0.071281575324394,passed
+1.691077666787777e-09,1e-10,aggregate,temporal0,interpolation,weighted_knn,density_log_distortion,6241.0,float32 saved reduction,0.3895748870594248,2.384185791015625e-07,0.3895748853683471,passed
+6.938893903907228e-17,1e-10,aggregate,temporal0,extrapolation,weighted_knn,recall_at_15,6302.0,float64,0.06112345287210407,1e-08,0.061123452872104,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,extrapolation,weighted_knn,ndcg,6302.0,float64,0.06225589337830409,1e-08,0.0622558933783041,passed
+1.750167483161036e-08,1e-10,aggregate,temporal0,extrapolation,weighted_knn,density_log_distortion,6302.0,float32 saved reduction,0.3485786195772516,2.384185791015625e-07,0.3485786020755768,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,all,uniform_mc,recall_at_15,12543.0,float64,0.10992585505859839,1e-08,0.1099258550585984,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,all,uniform_mc,ndcg,12543.0,float64,0.11508837494321236,1e-08,0.1150883749432124,passed
+3.0185151045358793e-09,1e-10,aggregate,temporal0,all,uniform_mc,density_log_distortion,12543.0,float32 saved reduction,0.2802013188983369,2.384185791015625e-07,0.2802013158798218,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,interpolation,uniform_mc,recall_at_15,6241.0,float64,0.10466271430860435,1e-08,0.1046627143086044,passed
+0.0,1e-10,aggregate,temporal0,interpolation,uniform_mc,ndcg,6241.0,float64,0.1098172078134441,1e-08,0.1098172078134441,passed
+4.827399147089295e-09,1e-10,aggregate,temporal0,interpolation,uniform_mc,density_log_distortion,6241.0,float32 saved reduction,0.27632027381716256,2.384185791015625e-07,0.2763202786445617,passed
+5.551115123125783e-17,1e-10,aggregate,temporal0,extrapolation,uniform_mc,recall_at_15,6302.0,float64,0.11513805141225006,1e-08,0.11513805141225,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,extrapolation,uniform_mc,ndcg,6302.0,float64,0.12030851998556141,1e-08,0.1203085199855614,passed
+4.65651400771705e-09,1e-10,aggregate,temporal0,extrapolation,uniform_mc,density_log_distortion,6302.0,float32 saved reduction,0.2840447975323593,2.384185791015625e-07,0.2840448021888733,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,all,fit_grid,recall_at_15,12543.0,float64,0.11011719684286053,1e-08,0.1101171968428605,passed
+6.938893903907228e-17,1e-10,aggregate,temporal0,all,fit_grid,ndcg,12543.0,float64,0.11585822485892647,1e-08,0.1158582248589264,passed
+1.7166249255406996e-08,1e-10,aggregate,temporal0,all,fit_grid,density_log_distortion,12543.0,float32 saved reduction,0.28066025900851915,2.384185791015625e-07,0.2806602418422699,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,interpolation,fit_grid,recall_at_15,6241.0,float64,0.10548523206751052,1e-08,0.1054852320675105,passed
+5.551115123125783e-17,1e-10,aggregate,temporal0,interpolation,fit_grid,ndcg,6241.0,float64,0.11145804882360215,1e-08,0.1114580488236021,passed
+1.848816255645147e-08,1e-10,aggregate,temporal0,interpolation,fit_grid,density_log_distortion,6241.0,float32 saved reduction,0.27931844056724886,2.384185791015625e-07,0.2793184220790863,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,extrapolation,fit_grid,recall_at_15,6302.0,float64,0.11470432666878239,1e-08,0.1147043266687824,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,extrapolation,fit_grid,ndcg,6302.0,float64,0.12021580953624461,1e-08,0.1202158095362446,passed
+8.232527382023846e-09,1e-10,aggregate,temporal0,extrapolation,fit_grid,density_log_distortion,6302.0,float32 saved reduction,0.2819890893626874,2.384185791015625e-07,0.2819890975952148,passed
+5.551115123125783e-17,1e-10,aggregate,temporal0,all,no_repulsion,recall_at_15,12543.0,float64,0.10291530468521616,1e-08,0.1029153046852161,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,all,no_repulsion,ndcg,12543.0,float64,0.10707894091634712,1e-08,0.1070789409163471,passed
+6.0318460226582715e-09,1e-10,aggregate,temporal0,all,no_repulsion,density_log_distortion,12543.0,float32 saved reduction,0.27426802508845427,2.384185791015625e-07,0.2742680311203003,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,interpolation,no_repulsion,recall_at_15,6241.0,float64,0.09982374619452007,1e-08,0.0998237461945201,passed
+0.0,1e-10,aggregate,temporal0,interpolation,no_repulsion,ndcg,6241.0,float64,0.1046132021043648,1e-08,0.1046132021043648,passed
+1.5707671108255994e-08,1e-10,aggregate,temporal0,interpolation,no_repulsion,density_log_distortion,6241.0,float32 saved reduction,0.2710262081902628,2.384185791015625e-07,0.2710262238979339,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,extrapolation,no_repulsion,recall_at_15,6302.0,float64,0.10597693853803024,1e-08,0.1059769385380302,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,extrapolation,no_repulsion,ndcg,6302.0,float64,0.10952081269127281,1e-08,0.1095208126912728,passed
+6.43029918201421e-09,1e-10,aggregate,temporal0,extrapolation,no_repulsion,density_log_distortion,6302.0,float32 saved reduction,0.27747846292749156,2.384185791015625e-07,0.2774784564971924,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,all,fit_grid_oracle_neighbors,recall_at_15,12543.0,float64,0.10908607722767012,1e-08,0.1090860772276701,passed
+0.0,1e-10,aggregate,temporal0,all,fit_grid_oracle_neighbors,ndcg,12543.0,float64,0.1148061478010243,1e-08,0.1148061478010243,passed
+2.662125581087693e-08,1e-10,aggregate,temporal0,all,fit_grid_oracle_neighbors,density_log_distortion,12543.0,float32 saved reduction,0.2796103028434848,2.384185791015625e-07,0.279610276222229,passed
+6.938893903907228e-17,1e-10,aggregate,temporal0,interpolation,fit_grid_oracle_neighbors,recall_at_15,6241.0,float64,0.10413929391657317,1e-08,0.1041392939165731,passed
+5.551115123125783e-17,1e-10,aggregate,temporal0,interpolation,fit_grid_oracle_neighbors,ndcg,6241.0,float64,0.11061246302044525,1e-08,0.1106124630204452,passed
+2.1064219202227008e-08,1e-10,aggregate,temporal0,interpolation,fit_grid_oracle_neighbors,density_log_distortion,6241.0,float32 saved reduction,0.280452617800298,2.384185791015625e-07,0.2804526388645172,passed
+0.0,1e-10,aggregate,temporal0,extrapolation,fit_grid_oracle_neighbors,recall_at_15,6302.0,float64,0.1139849783137628,1e-08,0.1139849783137628,passed
+0.0,1e-10,aggregate,temporal0,extrapolation,fit_grid_oracle_neighbors,ndcg,6302.0,float64,0.1189592399488494,1e-08,0.1189592399488494,passed
+2.0254416477349935e-09,1e-10,aggregate,temporal0,extrapolation,fit_grid_oracle_neighbors,density_log_distortion,6302.0,float32 saved reduction,0.27877614104636145,2.384185791015625e-07,0.2787761390209198,passed
+6.938893903907228e-17,1e-10,aggregate,temporal0,all,exact_repulsion_diagnostic,recall_at_15,50.0,float64,0.11199999999999997,1e-08,0.1119999999999999,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,all,exact_repulsion_diagnostic,ndcg,50.0,float64,0.11685796906565141,1e-08,0.1168579690656514,passed
+5.142558490156546e-09,1e-10,aggregate,temporal0,all,exact_repulsion_diagnostic,density_log_distortion,50.0,float32 saved reduction,0.32546094574199996,2.384185791015625e-07,0.3254609405994415,passed
+4.163336342344337e-17,1e-10,aggregate,temporal0,interpolation,exact_repulsion_diagnostic,recall_at_15,23.0,float64,0.08115942028985504,1e-08,0.081159420289855,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal0,interpolation,exact_repulsion_diagnostic,ndcg,23.0,float64,0.08431324932199791,1e-08,0.0843132493219979,passed
+4.237817791130638e-08,1e-10,aggregate,temporal0,interpolation,exact_repulsion_diagnostic,density_log_distortion,23.0,float32 saved reduction,0.3657440966956522,2.384185791015625e-07,0.3657440543174743,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,extrapolation,exact_repulsion_diagnostic,recall_at_15,27.0,float64,0.13827160493827156,1e-08,0.1382716049382716,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal0,extrapolation,exact_repulsion_diagnostic,ndcg,27.0,float64,0.14458124884728218,1e-08,0.1445812488472822,passed
+1.3331196146992852e-08,1e-10,aggregate,temporal0,extrapolation,exact_repulsion_diagnostic,density_log_distortion,27.0,float32 saved reduction,0.29114566900370376,2.384185791015625e-07,0.2911456823348999,passed
+5.551115123125783e-17,1e-10,aggregate,temporal1,all,uniform_mc,recall_at_15,12543.0,float64,0.10843232613144116,1e-08,0.1084323261314411,passed
+0.0,1e-10,aggregate,temporal1,all,uniform_mc,ndcg,12543.0,float64,0.1131833707108734,1e-08,0.1131833707108734,passed
+1.0231765323887032e-08,1e-10,aggregate,temporal1,all,uniform_mc,density_log_distortion,12543.0,float32 saved reduction,0.2798621160781703,2.384185791015625e-07,0.279862105846405,passed
+4.163336342344337e-17,1e-10,aggregate,temporal1,interpolation,uniform_mc,recall_at_15,6241.0,float64,0.10379746835443034,1e-08,0.1037974683544303,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal1,interpolation,uniform_mc,ndcg,6241.0,float64,0.10888516011490902,1e-08,0.108885160114909,passed
+6.037708666362107e-09,1e-10,aggregate,temporal1,interpolation,uniform_mc,density_log_distortion,6241.0,float32 saved reduction,0.27575522057438234,2.384185791015625e-07,0.275755226612091,passed
+5.551115123125783e-17,1e-10,aggregate,temporal1,extrapolation,uniform_mc,recall_at_15,6302.0,float64,0.11302232095631015,1e-08,0.1130223209563101,passed
+2.7755575615628914e-17,1e-10,aggregate,temporal1,extrapolation,uniform_mc,ndcg,6302.0,float64,0.11743997691992032,1e-08,0.1174399769199203,passed
+4.3815456818308007e-10,1e-10,aggregate,temporal1,extrapolation,uniform_mc,density_log_distortion,6302.0,float32 saved reduction,0.28392925902313076,2.384185791015625e-07,0.2839292585849762,passed
+4.163336342344337e-17,1e-10,aggregate,temporal1,all,fit_grid,recall_at_15,12543.0,float64,0.10966541763001936,1e-08,0.1096654176300194,passed
+0.0,1e-10,aggregate,temporal1,all,fit_grid,ndcg,12543.0,float64,0.1155157464771528,1e-08,0.1155157464771528,passed
+1.1991953319245852e-08,1e-10,aggregate,temporal1,all,fit_grid,density_log_distortion,12543.0,float32 saved reduction,0.2779778660053963,2.384185791015625e-07,0.277977854013443,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal1,interpolation,fit_grid,recall_at_15,6241.0,float64,0.10459862201570258,1e-08,0.1045986220157026,passed
+6.938893903907228e-17,1e-10,aggregate,temporal1,interpolation,fit_grid,ndcg,6241.0,float64,0.11089780708559487,1e-08,0.1108978070855948,passed
+3.210427812483374e-09,1e-10,aggregate,temporal1,interpolation,fit_grid,density_log_distortion,6241.0,float32 saved reduction,0.276673379770639,2.384185791015625e-07,0.2766733765602112,passed
+4.163336342344337e-17,1e-10,aggregate,temporal1,extrapolation,fit_grid,recall_at_15,6302.0,float64,0.11468316936422296,1e-08,0.114683169364223,passed
+1.3877787807814457e-17,1e-10,aggregate,temporal1,extrapolation,fit_grid,ndcg,6302.0,float64,0.12008898667751981,1e-08,0.1200889866775198,passed
+4.246015206099685e-10,1e-10,aggregate,temporal1,extrapolation,fit_grid,density_log_distortion,6302.0,float32 saved reduction,0.27926972550890633,2.384185791015625e-07,0.2792697250843048,passed
+,,teacher_mse_decomposition,,,uniform_mc,,,,0.0022517857238580612,,0.0022517857238581,passed
+,,teacher_mse_decomposition,,,dual_raw_is,,,,0.011161878734102211,,0.0111618787341022,passed
+,,teacher_mse_decomposition,,,dual_hub_is,,,,0.010499364314527736,,0.0104993643145278,passed
+,,teacher_mse_decomposition,,,dual_topl,,,,0.0043448697106925425,,0.0043448697106926,passed
+,,teacher_mse_decomposition,,,barnes_hut_0.2,,,,5.2671810475728316e-05,,5.2671810475728445e-05,passed
+,,teacher_mse_decomposition,,,barnes_hut_0.5,,,,5.322927712691064e-05,,5.322927712691208e-05,passed
+,,teacher_mse_decomposition,,,barnes_hut_0.8,,,,5.423910861743589e-05,,5.4239108617436734e-05,passed
+,,teacher_mse_decomposition,,,fit_grid_64,,,,8.711851429988342e-05,,8.711851429988414e-05,passed
+,,teacher_mse_decomposition,,,fit_grid_128,,,,6.0156371275286324e-05,,6.0156371275286656e-05,passed
+,,teacher_mse_decomposition,,,fit_grid_256,,,,5.3654013715693855e-05,,5.365401371569514e-05,passed
+,,teacher_ess,,,dual_raw_is,,,,7.197679954493236,,7.197679954493236,passed
+,,teacher_ess,,,dual_hub_is,,,,7.133952887954814,,7.133952887954814,passed
+,,field_metrics,existing,,uniform_mc,,,,0.01203665066214636,,0.0120366506621463,passed
+,,field_metrics,existing,,fit_grid,,,,0.010679223255208363,,0.0106792232552083,passed
+,,field_metrics,temporal0,,uniform_mc,,,,0.012886988645718842,,0.0128869886457188,passed
+,,field_metrics,temporal0,,fit_grid,,,,0.010214068503498052,,0.010214068503498,passed
+,,field_metrics,temporal1,,uniform_mc,,,,0.012292810712018818,,0.0122928107120188,passed
+,,field_metrics,temporal1,,fit_grid,,,,0.00973440766472886,,0.0097344076647288,passed

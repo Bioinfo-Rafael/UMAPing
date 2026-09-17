@@ -1,0 +1,28 @@
+method,group,metric,n_queries,mean,display_mean,median,stage_counts,split,training_seed
+uniform_mc,all,recall_at_15,50,0.11066666666666661,11.066666666666661,0.0666666666666666,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+uniform_mc,all,ndcg,50,0.11210009419161579,0.11210009419161579,0.0734773909038217,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+uniform_mc,all,density_log_distortion,50,0.34083941129600004,0.34083941129600004,0.26501365,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+uniform_mc,interpolation,recall_at_15,23,0.07826086956521736,7.826086956521736,0.0666666666666666,"{""4-5"": 23}",temporal holdout,0
+uniform_mc,interpolation,ndcg,23,0.08739180123984042,0.08739180123984042,0.0734773909038217,"{""4-5"": 23}",temporal holdout,0
+uniform_mc,interpolation,density_log_distortion,23,0.35613634902608693,0.35613634902608693,0.2581417,"{""4-5"": 23}",temporal holdout,0
+uniform_mc,extrapolation,recall_at_15,27,0.13827160493827156,13.827160493827156,0.0666666666666666,"{""8-9"": 27}",temporal holdout,0
+uniform_mc,extrapolation,ndcg,27,0.1331478992986837,0.1331478992986837,0.0734773909038217,"{""8-9"": 27}",temporal holdout,0
+uniform_mc,extrapolation,density_log_distortion,27,0.32780868656296297,0.32780868656296297,0.2718856,"{""8-9"": 27}",temporal holdout,0
+fit_grid,all,recall_at_15,50,0.11999999999999997,11.999999999999996,0.0666666666666666,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+fit_grid,all,ndcg,50,0.11813176670531332,0.11813176670531332,0.0942847969241917,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+fit_grid,all,density_log_distortion,50,0.34718520042,0.34718520042,0.28859526999999996,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+fit_grid,interpolation,recall_at_15,23,0.08985507246376807,8.985507246376807,0.0666666666666666,"{""4-5"": 23}",temporal holdout,0
+fit_grid,interpolation,ndcg,23,0.0899797731911606,0.0899797731911606,0.0909155521298325,"{""4-5"": 23}",temporal holdout,0
+fit_grid,interpolation,density_log_distortion,23,0.3723305580869565,0.3723305580869565,0.28971714,"{""4-5"": 23}",temporal holdout,0
+fit_grid,extrapolation,recall_at_15,27,0.14567901234567898,14.567901234567898,0.0666666666666666,"{""8-9"": 27}",temporal holdout,0
+fit_grid,extrapolation,ndcg,27,0.1421130945136657,0.1421130945136657,0.0964735205924207,"{""8-9"": 27}",temporal holdout,0
+fit_grid,extrapolation,density_log_distortion,27,0.32576508092592604,0.32576508092592604,0.2874734,"{""8-9"": 27}",temporal holdout,0
+exact_repulsion_diagnostic,all,recall_at_15,50,0.11199999999999997,11.199999999999998,0.0666666666666666,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,all,ndcg,50,0.11685796906565141,0.11685796906565141,0.0926932961653395,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,all,density_log_distortion,50,0.32546094574199996,0.32546094574199996,0.24970025,"{""8-9"": 27, ""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,interpolation,recall_at_15,23,0.08115942028985504,8.115942028985504,0.0666666666666666,"{""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,interpolation,ndcg,23,0.08431324932199791,0.08431324932199791,0.0607722297377203,"{""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,interpolation,density_log_distortion,23,0.3657440966956522,0.3657440966956522,0.28143066,"{""4-5"": 23}",temporal holdout,0
+exact_repulsion_diagnostic,extrapolation,recall_at_15,27,0.13827160493827156,13.827160493827156,0.0666666666666666,"{""8-9"": 27}",temporal holdout,0
+exact_repulsion_diagnostic,extrapolation,ndcg,27,0.14458124884728218,0.14458124884728218,0.1006756162885791,"{""8-9"": 27}",temporal holdout,0
+exact_repulsion_diagnostic,extrapolation,density_log_distortion,27,0.29114566900370376,0.29114566900370376,0.24130926,"{""8-9"": 27}",temporal holdout,0

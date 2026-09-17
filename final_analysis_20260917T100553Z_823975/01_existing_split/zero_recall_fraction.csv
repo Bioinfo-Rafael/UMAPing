@@ -1,0 +1,6 @@
+method,group,n_queries,zero_count,zero_fraction,split,training_seed
+standard_umap,all,6206,2516,0.40541411537222044,existing split,not recorded in run metadata
+reduced_repulsion_umap,all,6206,2532,0.40799226554946827,existing split,not recorded in run metadata
+weighted_knn,all,6206,3141,0.5061231066709636,existing split,not recorded in run metadata
+uniform_mc,all,6206,2106,0.3393490170802449,existing split,not recorded in run metadata
+fit_grid,all,6206,2115,0.3407992265549468,existing split,not recorded in run metadata

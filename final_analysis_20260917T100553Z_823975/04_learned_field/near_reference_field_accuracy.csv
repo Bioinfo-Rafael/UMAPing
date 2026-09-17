@@ -1,0 +1,7 @@
+context,split,training_seed,method,region,n_points,rmse,cosine,cosine_valid_count,error_median,error_p05,error_p95,rmse_definition
+existing,existing split,not recorded in run metadata,uniform_mc,near reference trajectory,1000,0.01203665066214636,0.7298544684433689,1000,0.007261194867517914,0.0017464526512362645,0.02412954794490751,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"
+existing,existing split,not recorded in run metadata,fit_grid,near reference trajectory,1000,0.010679223255208363,0.7781554499593936,1000,0.006138375263589271,0.001433422648889271,0.021010084203761,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"
+temporal0,temporal holdout,0,uniform_mc,near reference trajectory,1000,0.012886988645718842,0.7478673238856144,1000,0.0077489774072114406,0.0018773675725492168,0.026031394242439103,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"
+temporal0,temporal holdout,0,fit_grid,near reference trajectory,1000,0.010214068503498052,0.8220534187220055,1000,0.006432547349475697,0.0012190284608834816,0.01955640780963452,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"
+temporal1,temporal holdout,1,uniform_mc,near reference trajectory,1000,0.012292810712018818,0.7380094484365033,1000,0.007786040791565531,0.0018965304221139638,0.024456810351505803,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"
+temporal1,temporal holdout,1,fit_grid,near reference trajectory,1000,0.00973440766472886,0.8272366314065455,1000,0.005999119307419396,0.0011512269121880128,0.01879784284352549,"sqrt(mean(sum((pred-exact)^2,axis=2D)))"

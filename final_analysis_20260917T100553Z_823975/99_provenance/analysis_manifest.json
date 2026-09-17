@@ -1,0 +1,353 @@
+{
+  "status": "complete_with_skips",
+  "created_utc": "2026-09-17T10:06:21.708885+00:00",
+  "root": "/home/suzuki/Learn/UMAPing",
+  "output": "/home/suzuki/Learn/UMAPing/final_analysis_20260917T100553Z_823975",
+  "command": [
+    "scripts/final_saved_analysis.py",
+    "--root",
+    "/home/suzuki/Learn/UMAPing",
+    "--output",
+    "/home/suzuki/Learn/UMAPing/final_analysis_20260917T100553Z_823975",
+    "--max-seconds",
+    "600",
+    "--bootstrap",
+    "2000",
+    "--bootstrap-memory-mb",
+    "32",
+    "--seed",
+    "20260917",
+    "--inventory-hint",
+    "/home/suzuki/Learn/UMAPing/remote_inventory_20260917T083622Z.txt"
+  ],
+  "script_sha256": "103773c13113accbbc400c5a2ccdf86c843f5e2cac29b4cea88f35bd7d09430d",
+  "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+  "platform": "Linux-6.8.0-52-generic-x86_64-with-glibc2.31",
+  "package_versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.2"
+  },
+  "device": "CPU",
+  "threads": 1,
+  "time_limit_seconds": 600.0,
+  "analysis_seconds": 27.89173758495599,
+  "elapsed_seconds": 28.019873113371432,
+  "bootstrap_iterations": 2000,
+  "bootstrap_seed": 20260917,
+  "bootstrap_memory_mb": 32.0,
+  "bootstrap_method": "paired percentile; fixed time-stratum counts for temporal",
+  "existing_bootstrap_reused": false,
+  "ci_scope": "Paired cell bootstrap; fixed models and reference; not biological replication.",
+  "training_seeds": [
+    0,
+    1
+  ],
+  "excluded_training_seeds": [
+    2
+  ],
+  "temporal_seed_evidence": {
+    "existing": {
+      "evaluation_seed": 0,
+      "training_seed": "not recorded in run metadata",
+      "runs": [
+        {
+          "run": "main",
+          "matched_seed": null,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "dataset": "embryoid_body",
+            "created": "2026-09-13T14:33:37.103318+00:00",
+            "package_versions": {
+              "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "pandas": "3.0.5",
+              "scikit-learn": "1.9.1",
+              "torch": "2.6.0+cu124",
+              "umap-learn": "0.5.12",
+              "pynndescent": "0.6.0",
+              "matplotlib": "3.11.2",
+              "pyyaml": "6.0.3",
+              "tqdm": "4.70.1",
+              "pillow": "12.3.0",
+              "requests": "2.34.2",
+              "anndata": "0.13.3.post0",
+              "scanpy": "1.12.4",
+              "umaping": "0.1.0"
+            },
+            "stages_completed": [
+              "preprocess",
+              "graph",
+              "retriever",
+              "spectral",
+              "flow_dynamics",
+              "repulsion"
+            ],
+            "last_updated": "2026-09-13T14:35:14.918281+00:00"
+          }
+        },
+        {
+          "run": "fit_grid",
+          "matched_seed": null,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "repulsion_teacher": "fit_grid",
+            "grid_size": 256,
+            "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/main",
+            "source_benchmark": "/home/suzuki/Learn/UMAPing/results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100",
+            "source_commit": "f1ab3515a4dba6bd3a628e1186d0899270bf010b",
+            "checkpoint_source": "/home/suzuki/Learn/UMAPing/results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100/repulsion_training/fit_grid/repulsion_field.pt",
+            "checkpoint_sha256": "953ca6cec44ea664fa35aa96adde704893e7120feccb7b334a277c5b0b0580f4",
+            "losses_source": "/home/suzuki/Learn/UMAPing/results/embryo_repulsion_estimators/recovery_20260915T104741Z_406100/repulsion_training/fit_grid/losses.csv",
+            "losses_sha256": "cedc7c315ff5f3e9f2b08a2ee12dbdd6ec3eeaddd48457af19511d766dc63c9f",
+            "reused_artifacts": [
+              "config.yaml",
+              "memory/reference_features.npy",
+              "memory/reference_trajectory.npz",
+              "memory/retriever_keys.npy",
+              "checkpoints/retriever.pt",
+              "cache/prepared_dataset.npz",
+              "memory/graph_directed.npz",
+              "memory/graph_symmetric.npz",
+              "checkpoints/spectral_encoder.pt",
+              "memory/spectral_calibration.npz",
+              "cache/reference_spectral_embedding.npy"
+            ],
+            "replaced_artifact": "checkpoints/repulsion_field.pt",
+            "artifact_hashes": {
+              "config.yaml": "5d470422289bf1632dcc53035f8fd507688239cf24071b8eb3c3d0983327d75c",
+              "memory/reference_features.npy": "7474ecaae6ade787f8250f3ab59af8246961733e13683fb88873b433437c7082",
+              "memory/reference_trajectory.npz": "72edc0376817365c212222376763cb21194e7c34b2343c59f28aa81a202fe3da",
+              "memory/retriever_keys.npy": "ad2da9d96b2fe101ec7385ab1a14618839785d2f81eb5de7e8b82c211f1d0ffa",
+              "checkpoints/retriever.pt": "d539729fadb3d6f3328a11629aa504b38ccdff09d093168f02e7858f3c9192f0",
+              "cache/prepared_dataset.npz": "56edbc2e62a5c79a3a7bbadfae942f25ed241788bbeda0808fb8fdfc14d1f8c3",
+              "memory/graph_directed.npz": "e5749dc10d9c5fcced91e4f3efea12895cc694f7091229ca95d7e98485e640d4",
+              "memory/graph_symmetric.npz": "c5e14b94ea85ffc45b2e9a93f3542a649e41a9722d5f76cd700873366b963e96",
+              "checkpoints/spectral_encoder.pt": "b574a4a751b24a4365195cb4e20c48abbb81fa770ee4cd18d0804b5bb8f76ecb",
+              "memory/spectral_calibration.npz": "2ab043a002e29ccc84777298a46ac76c37bb9052c2927ff978a25dc14c44b207",
+              "cache/reference_spectral_embedding.npy": "9c358578194034ef0f2fa8a1fd91b81ae783e71695e4ac789d23a8cbb7ad02d3"
+            },
+            "stages_completed": [
+              "preprocess",
+              "graph",
+              "retriever",
+              "spectral",
+              "flow_dynamics",
+              "repulsion"
+            ]
+          }
+        }
+      ]
+    },
+    "temporal0": {
+      "evaluation_seed": 0,
+      "training_seed": 0,
+      "runs": [
+        {
+          "run": "temporal_holdout_uniform",
+          "matched_seed": 0,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "dataset": "embryoid_body",
+            "created": "2026-09-16T01:22:16.997789+00:00",
+            "package_versions": {
+              "python": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+              "numpy": "2.5.3",
+              "scipy": "1.18.1",
+              "pandas": "3.0.5",
+              "scikit-learn": "1.9.1",
+              "torch": "2.6.0+cu124",
+              "umap-learn": "0.5.12",
+              "pynndescent": "0.6.0",
+              "matplotlib": "3.11.2",
+              "pyyaml": "6.0.3",
+              "tqdm": "4.70.1",
+              "pillow": "12.3.0",
+              "requests": "2.34.2",
+              "anndata": "0.13.3.post0",
+              "scanpy": "1.12.4",
+              "umaping": "0.1.0"
+            },
+            "stages_completed": [],
+            "repulsion_teacher": "uniform_mc",
+            "grid_size": null,
+            "matched_seed": 0,
+            "initial_checkpoint_sha256": "d734d7ad9c5f9cb9b42e7223a33d3d44d25eccc7d62992228a4dd8836d2ad67b",
+            "query_sequence": "TrainingQueries(seed=matched_seed+2000, step)",
+            "teacher_build_seconds": 0.0030791964381933212,
+            "train_seconds": 35.98657320719212
+          }
+        },
+        {
+          "run": "temporal_holdout_fit_grid",
+          "matched_seed": 0,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "repulsion_teacher": "fit_grid",
+            "grid_size": 256,
+            "matched_seed": 0,
+            "initial_checkpoint_sha256": "d734d7ad9c5f9cb9b42e7223a33d3d44d25eccc7d62992228a4dd8836d2ad67b",
+            "query_sequence": "TrainingQueries(seed=matched_seed+2000, step)",
+            "teacher_build_seconds": 3.8808933896943927,
+            "train_seconds": 36.46134324744344,
+            "checkpoint_sha256": "153393b232dd2bc0c1f685f2852af9866c6177343d2c061646bf0c572ec9c4f6",
+            "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_uniform",
+            "artifact_hashes": {
+              "config.yaml": "459f21bf71c5dd7a2a0d8d87dca56b01fea21c252b8bfb8d36497ec22f46809e",
+              "memory/reference_features.npy": "4d1cf7855633290d156160c0c91f27c53becbc5970da4bdafa4605456326ed3f",
+              "memory/reference_trajectory.npz": "27d3025e75b7fa8bbbb7a4d68b39dc4f07ed0abfd809a341f60a73cbf484d07c",
+              "memory/retriever_keys.npy": "f311356f0402a6c0600e8971b8048f68831e8ddf15a3258c1120fe1712d9faa9",
+              "checkpoints/retriever.pt": "aa04bccd362dfb415e5d86174bbd69ce5d56eb2e4e263439b6c7b82e8aac042a",
+              "cache/prepared_dataset.npz": "74e67b33bb28a8b8f72210877bcba82071fc48860bb69c4eb91f91eb721825a3",
+              "memory/graph_directed.npz": "d77fbe1d2da8e6f95405e78b8c59328a18ccc3b94d0abc7dcb1e3183a488ca49",
+              "memory/graph_symmetric.npz": "1c43670713b81ccc9c0d31d6ff4c9d6b681f922b892ec619e1620ad1ad756e75",
+              "checkpoints/spectral_encoder.pt": "872715c37d588f636a0517d0b3a84f6193753e60deaf58447398e0f8368aa5db",
+              "memory/spectral_calibration.npz": "420853983f3f7b8d4b026464a754a551d862465ef039296044550a279047044f",
+              "cache/reference_spectral_embedding.npy": "5ea2cca72289e73d48989e42b487d3efef039459abd5e791219f088cbdeaed8f",
+              "cache/reference_fitted_preprocessing.npz": "1426118f410c5e752f7c7664bd18cbc78f5c018e5800bc8cad075a1a49a266cb"
+            },
+            "stages_completed": [
+              "preprocess",
+              "graph",
+              "retriever",
+              "spectral",
+              "flow_dynamics",
+              "repulsion"
+            ]
+          }
+        }
+      ]
+    },
+    "temporal1": {
+      "evaluation_seed": 0,
+      "training_seed": 1,
+      "runs": [
+        {
+          "run": "temporal_seed_1_uniform",
+          "matched_seed": 1,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_holdout_uniform",
+            "matched_seed": 1,
+            "repulsion_teacher": "uniform_mc",
+            "grid_size": null,
+            "initial_checkpoint_sha256": "c5e010fc39b62254a5be0e6801efbc799b8c46c748d7868eb7baab0dc72e68b1",
+            "query_sequence": "TrainingQueries(seed=matched_seed+2000, step)",
+            "teacher_build_seconds": 0.004472979344427586,
+            "train_seconds": 124.97037907503545
+          }
+        },
+        {
+          "run": "temporal_seed_1_fit_grid",
+          "matched_seed": 1,
+          "seed": null,
+          "checkpoint_source": null,
+          "provenance": {
+            "repulsion_teacher": "fit_grid",
+            "grid_size": 256,
+            "matched_seed": 1,
+            "initial_checkpoint_sha256": "c5e010fc39b62254a5be0e6801efbc799b8c46c748d7868eb7baab0dc72e68b1",
+            "query_sequence": "TrainingQueries(seed=matched_seed+2000, step)",
+            "teacher_build_seconds": 3.614142765291035,
+            "train_seconds": 133.9461448006332,
+            "checkpoint_sha256": "5210dd0b771c93197f32ce19db4985f33df6d7ce50af6f5c3e2ec114ee1b0e99",
+            "source_run": "/home/suzuki/Learn/UMAPing/runs/embryoid_body/temporal_seed_1_uniform",
+            "artifact_hashes": {
+              "config.yaml": "459f21bf71c5dd7a2a0d8d87dca56b01fea21c252b8bfb8d36497ec22f46809e",
+              "memory/reference_features.npy": "4d1cf7855633290d156160c0c91f27c53becbc5970da4bdafa4605456326ed3f",
+              "memory/reference_trajectory.npz": "27d3025e75b7fa8bbbb7a4d68b39dc4f07ed0abfd809a341f60a73cbf484d07c",
+              "memory/retriever_keys.npy": "f311356f0402a6c0600e8971b8048f68831e8ddf15a3258c1120fe1712d9faa9",
+              "checkpoints/retriever.pt": "aa04bccd362dfb415e5d86174bbd69ce5d56eb2e4e263439b6c7b82e8aac042a",
+              "cache/prepared_dataset.npz": "74e67b33bb28a8b8f72210877bcba82071fc48860bb69c4eb91f91eb721825a3",
+              "memory/graph_directed.npz": "d77fbe1d2da8e6f95405e78b8c59328a18ccc3b94d0abc7dcb1e3183a488ca49",
+              "memory/graph_symmetric.npz": "1c43670713b81ccc9c0d31d6ff4c9d6b681f922b892ec619e1620ad1ad756e75",
+              "checkpoints/spectral_encoder.pt": "872715c37d588f636a0517d0b3a84f6193753e60deaf58447398e0f8368aa5db",
+              "memory/spectral_calibration.npz": "420853983f3f7b8d4b026464a754a551d862465ef039296044550a279047044f",
+              "cache/reference_spectral_embedding.npy": "5ea2cca72289e73d48989e42b487d3efef039459abd5e791219f088cbdeaed8f",
+              "cache/reference_fitted_preprocessing.npz": "1426118f410c5e752f7c7664bd18cbc78f5c018e5800bc8cad075a1a49a266cb"
+            },
+            "stages_completed": [
+              "preprocess",
+              "graph",
+              "retriever",
+              "spectral",
+              "flow_dynamics",
+              "repulsion"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "verified_temporal_training_seeds": [
+    0,
+    1
+  ],
+  "missing_comparison_contexts": [],
+  "n_figures": 48,
+  "n_generated": 40,
+  "n_copies": 8,
+  "n_png": 48,
+  "n_pdf": 48,
+  "n_csv": 52,
+  "n_skipped": 4,
+  "used_sources_unchanged": true,
+  "html_links_checked": 196,
+  "html_missing_links": [],
+  "completed_tasks": [
+    "inventory_hint",
+    "load/existing",
+    "load/temporal0",
+    "load/temporal1",
+    "existing/performance",
+    "existing/paired",
+    "existing/recall_distribution",
+    "existing/zero_recall_fraction",
+    "existing/recall_at_k",
+    "existing/embedding_by_stage",
+    "temporal0/performance",
+    "temporal0/paired",
+    "temporal0/recall_distribution",
+    "temporal0/zero_recall_fraction",
+    "temporal0/recall_at_k",
+    "temporal0/embedding_by_stage",
+    "temporal1/paired",
+    "temporal0/embedding_holdout",
+    "temporal1/embedding_holdout",
+    "temporal/split_counts",
+    "temporal/recall_by_timepoint",
+    "temporal/density_by_timepoint",
+    "temporal/neighbor_diagnostics",
+    "temporal/seed_comparison",
+    "teacher/rmse",
+    "teacher/bias",
+    "teacher/runtime",
+    "teacher/ess",
+    "teacher/importance_weights",
+    "benchmark_training/validation",
+    "benchmark_training/loss",
+    "benchmark_training/std",
+    "field/load",
+    "field/near",
+    "field/near_time",
+    "field/grid_time",
+    "field/region",
+    "field/distribution",
+    "training/current_runs",
+    "ablation/existing/full",
+    "ablation/existing/exact50",
+    "ablation/existing/recall_map",
+    "ablation/temporal0/full",
+    "ablation/temporal0/exact50",
+    "ablation/temporal0/recall_map"
+  ],
+  "prohibited_operations_executed": false,
+  "allowed_inputs": "CSV/JSON, saved labels and 2D coordinates, saved predictions/exact/weights only; no trajectory or model reads",
+  "visual_review": "pending external inspection of representative PNGs"
+}

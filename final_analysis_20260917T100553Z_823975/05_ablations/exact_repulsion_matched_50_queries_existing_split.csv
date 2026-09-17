@@ -1,0 +1,10 @@
+method,group,metric,n_queries,mean,display_mean,median,stage_counts,split,training_seed
+uniform_mc,all,recall_at_15,50,0.10399999999999997,10.399999999999997,0.0666666666666666,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+uniform_mc,all,ndcg,50,0.110050128778437,0.110050128778437,0.1004440734109565,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+uniform_mc,all,density_log_distortion,50,0.20638037848999996,0.20638037848999996,0.174099345,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+fit_grid,all,recall_at_15,50,0.09733333333333329,9.733333333333329,0.0666666666666666,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+fit_grid,all,ndcg,50,0.10368696406698773,0.10368696406698773,0.0911059855455542,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+fit_grid,all,density_log_distortion,50,0.20303927810400002,0.20303927810400002,0.192614595,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+exact_repulsion_diagnostic,all,recall_at_15,50,0.10133333333333329,10.13333333333333,0.0666666666666666,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+exact_repulsion_diagnostic,all,ndcg,50,0.10856818838739439,0.10856818838739439,0.0853046091393023,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata
+exact_repulsion_diagnostic,all,density_log_distortion,50,0.17875070180199995,0.17875070180199995,0.12702555,"{""0-1"": 12, ""4-5"": 11, ""6-7"": 11, ""8-9"": 9, ""2-3"": 7}",existing split,not recorded in run metadata

@@ -1,0 +1,13 @@
+method,group,k,n_queries,recall,recall_percent,split,training_seed
+uniform_mc,all,5,6206,0.0543989687399291,5.43989687399291,existing split,not recorded in run metadata
+uniform_mc,all,10,6206,0.07447631324524655,7.447631324524655,existing split,not recorded in run metadata
+uniform_mc,all,15,6206,0.09058975185304541,9.05897518530454,existing split,not recorded in run metadata
+uniform_mc,all,30,6206,0.12479321087119988,12.479321087119988,existing split,not recorded in run metadata
+standard_umap,all,5,6206,0.03364485981308411,3.364485981308411,existing split,not recorded in run metadata
+standard_umap,all,10,6206,0.057605543022881095,5.760554302288109,existing split,not recorded in run metadata
+standard_umap,all,15,6206,0.07737673219465031,7.737673219465031,existing split,not recorded in run metadata
+standard_umap,all,30,6206,0.11319153507358468,11.319153507358468,existing split,not recorded in run metadata
+fit_grid,all,5,6206,0.053496616177892364,5.349661617789236,existing split,not recorded in run metadata
+fit_grid,all,10,6206,0.07465356106993232,7.465356106993232,existing split,not recorded in run metadata
+fit_grid,all,15,6206,0.09104092813406377,9.104092813406377,existing split,not recorded in run metadata
+fit_grid,all,30,6206,0.12527124288323124,12.527124288323124,existing split,not recorded in run metadata
