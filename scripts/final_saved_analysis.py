@@ -277,10 +277,19 @@ class Analysis:
                 require(int(stored.iloc[0].n_queries) == int(mask.sum()), "Aggregate query count mismatch")
                 for metric in METRICS:
                     actual, saved = float(frame.loc[mask, metric].mean()), float(stored.iloc[0][metric])
-                    require(np.isclose(actual, saved, rtol=1e-8, atol=1e-10), f"Aggregate mismatch: {method}/{group}/{metric}")
+                    # Density was aggregated in float32 before CSV serialization.
+                    # Reading the per-query CSV promotes values to float64; allow
+                    # two float32 epsilons for that reduction/serialization error.
+                    rtol = 2 * np.finfo(np.float32).eps if metric == "density_log_distortion" else 1e-8
+                    atol = 1e-10
+                    require(np.isclose(actual, saved, rtol=rtol, atol=atol),
+                            f"Aggregate mismatch: {method}/{group}/{metric}; "
+                            f"recomputed={actual:.17g}, saved={saved:.17g}, rtol={rtol}, atol={atol}")
                     self.checks.append(dict(check="aggregate", context=key, method=method, group=group,
                                             metric=metric, n_queries=int(mask.sum()), saved=saved, recomputed=actual,
-                                            absolute_error=abs(actual-saved), status="passed"))
+                                            absolute_error=abs(actual-saved), rtol=rtol, atol=atol,
+                                            precision_note="float32 saved reduction" if metric == "density_log_distortion" else "float64",
+                                            status="passed"))
         ctx["sources"] = sorted(self.current_inputs)
         self.contexts[key] = ctx
 

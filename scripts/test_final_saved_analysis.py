@@ -109,6 +109,20 @@ class SavedAnalysisTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Aggregate mismatch"):
             self.load()
 
+    def test_float32_density_roundoff_accepted_but_real_difference_rejected(self):
+        path=self.comp/"aggregate.csv"
+        f=pd.read_csv(path)
+        f["density_log_distortion"]=f["density_log_distortion"].astype(np.float32).astype(float)
+        f.to_csv(path,index=False)
+        self.load()
+        density=[r for r in self.app.checks if r["metric"]=="density_log_distortion"]
+        self.assertTrue(any(r["absolute_error"]>1e-8 for r in density))
+        self.assertTrue(all(r["rtol"]==2*np.finfo(np.float32).eps for r in density))
+        f.loc[0,"density_log_distortion"]+=1e-4
+        f.to_csv(path,index=False)
+        with self.assertRaisesRegex(ValueError,"Aggregate mismatch"):
+            self.load()
+
     def test_paired_signs_and_finalization_after_deadline(self):
         ctx=self.load()
         self.app.paired(ctx)
