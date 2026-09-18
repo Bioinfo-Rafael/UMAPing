@@ -1,0 +1,33 @@
+{
+  "raw_dim": 2,
+  "components": 2,
+  "raw_gram_eigenvalues": [
+    0.9970695754331319,
+    0.9995730472402803
+  ],
+  "covariance_eigenvalues": [
+    0.9999478738866721,
+    0.9974326146589455
+  ],
+  "explained_variance_ratio": [
+    0.5006296394808478,
+    0.4993703605191523
+  ],
+  "top_relative_gaps": [
+    0.002515390345248752
+  ],
+  "H_eigenvalues": [
+    0.0033169743573953137,
+    0.0034036889598485797
+  ],
+  "raw_trivial_leakage": 5.579819251936698e-06,
+  "corrected_trivial_leakage": 2.3503541626536113e-31,
+  "orthogonality_error": 4.384838400568083e-06,
+  "centered_2d_eigenvalues": [
+    0.9974326146589455,
+    0.9999478738866721
+  ],
+  "scale": 3.1413454891446015,
+  "post_pca_whitening": false,
+  "H_definition": "corrected.T @ L_sym @ corrected / N (not used for projection)"
+}

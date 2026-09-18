@@ -1,0 +1,8 @@
+{"stage": "disconnected/direct_2/spectral", "seconds": 11.468351042130962, "finished": "2026-09-18T05:03:44.728321+00:00"}
+{"stage": "disconnected/direct_2/dynamics", "seconds": 0.5128110409714282, "finished": "2026-09-18T05:03:45.241365+00:00"}
+{"stage": "disconnected/spectral_100_pca_2/spectral", "seconds": 14.43383670784533, "finished": "2026-09-18T05:04:51.266058+00:00"}
+{"stage": "disconnected/spectral_100_pca_2/dynamics", "seconds": 0.5574988750740886, "finished": "2026-09-18T05:04:51.823873+00:00"}
+{"stage": "sparse_bridge/direct_2/spectral", "seconds": 11.784766792086884, "finished": "2026-09-18T05:06:27.575261+00:00"}
+{"stage": "sparse_bridge/direct_2/dynamics", "seconds": 0.5441614999435842, "finished": "2026-09-18T05:06:28.119772+00:00"}
+{"stage": "sparse_bridge/spectral_100_pca_2/spectral", "seconds": 15.657668791012838, "finished": "2026-09-18T05:07:38.011677+00:00"}
+{"stage": "sparse_bridge/spectral_100_pca_2/dynamics", "seconds": 0.5541376669425517, "finished": "2026-09-18T05:07:38.566186+00:00"}

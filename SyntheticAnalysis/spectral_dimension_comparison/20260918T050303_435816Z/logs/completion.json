@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "conditions": 2,
+  "new_methods": 2,
+  "seed": 0,
+  "png_count": 35,
+  "audit_passed": true,
+  "total_wall_seconds": 488.2794699668884,
+  "unfinished_required_items": [],
+  "not_run": [
+    "additional seeds"
+  ]
+}

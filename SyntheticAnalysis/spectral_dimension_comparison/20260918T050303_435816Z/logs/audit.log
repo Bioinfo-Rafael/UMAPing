@@ -1,0 +1,52 @@
+[
+  {
+    "condition": "disconnected",
+    "method": "baseline_3_to_2",
+    "baseline_query_max_error": 0.0
+  },
+  {
+    "condition": "disconnected",
+    "method": "direct_2",
+    "query_batch_max_error": 6.085260414456783e-07,
+    "trivial_laplacian_max_error": 4.740523862875701e-07,
+    "trajectory_sha256": "fe3265627ae479e22a90f0c6ce7f1d01448f157d5aed933b839258799038b34d",
+    "shared_retriever_sha256": "78cc3353dc5dd721799e0bb34995a100fa451487d25f3c3d0d9408adf3dd8484",
+    "shared_graph_sha256": "9543dc43e51e801fae7a9585f7fa1409024ee76cb517eeccd7bac88e7cbf15f5",
+    "teacher_matches_trajectory": true
+  },
+  {
+    "condition": "disconnected",
+    "method": "spectral_100_pca_2",
+    "query_batch_max_error": 2.993283280794401e-06,
+    "trivial_laplacian_max_error": 4.740523862875701e-07,
+    "trajectory_sha256": "428f164a28eb95238824e266a4c64a3c0b143c24fae8e3a5659eb940345ad918",
+    "shared_retriever_sha256": "78cc3353dc5dd721799e0bb34995a100fa451487d25f3c3d0d9408adf3dd8484",
+    "shared_graph_sha256": "9543dc43e51e801fae7a9585f7fa1409024ee76cb517eeccd7bac88e7cbf15f5",
+    "teacher_matches_trajectory": true
+  },
+  {
+    "condition": "sparse_bridge",
+    "method": "baseline_3_to_2",
+    "baseline_query_max_error": 0.0
+  },
+  {
+    "condition": "sparse_bridge",
+    "method": "direct_2",
+    "query_batch_max_error": 1.8199380567018864e-06,
+    "trivial_laplacian_max_error": 3.348711750639144e-07,
+    "trajectory_sha256": "4b64d5709ae689b9f3e0896d1ab5de76d8e2d45180546ae1a5f40495430211f4",
+    "shared_retriever_sha256": "cc17e512006f5c3f6307118e938ad847740461454892fce354d79da0e1506e41",
+    "shared_graph_sha256": "6705e45159397900501557a631ec733f6f18a8282c9b97120f624a4ca82ce208",
+    "teacher_matches_trajectory": true
+  },
+  {
+    "condition": "sparse_bridge",
+    "method": "spectral_100_pca_2",
+    "query_batch_max_error": 2.349002615309459e-06,
+    "trivial_laplacian_max_error": 3.348711750639144e-07,
+    "trajectory_sha256": "1f9ece3991db994a7e7a144b3836a410736c525fc6c0a9e446095fd65b38b2c5",
+    "shared_retriever_sha256": "cc17e512006f5c3f6307118e938ad847740461454892fce354d79da0e1506e41",
+    "shared_graph_sha256": "6705e45159397900501557a631ec733f6f18a8282c9b97120f624a4ca82ce208",
+    "teacher_matches_trajectory": true
+  }
+]

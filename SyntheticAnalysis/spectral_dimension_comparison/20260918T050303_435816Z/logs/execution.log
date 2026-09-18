@@ -1,0 +1,159 @@
+2026-09-18T05:03:03.476097+00:00 RUN_DIR=/Users/cls-lab/Git/PersonalDev/UMAPing/SyntheticAnalysis/spectral_dimension_comparison/20260918T050303_435816Z
+2026-09-18T05:03:03.523495+00:00 START disconnected/baseline_3_to_2
+2026-09-18T05:03:12.421707+00:00 disconnected/baseline_3_to_2 query 400/1333
+2026-09-18T05:03:21.390223+00:00 disconnected/baseline_3_to_2 query 800/1333
+2026-09-18T05:03:30.299738+00:00 disconnected/baseline_3_to_2 query 1200/1333
+2026-09-18T05:03:33.242865+00:00 DONE disconnected/baseline_3_to_2 29.7s
+2026-09-18T05:03:33.242898+00:00 START disconnected/direct_2
+2026-09-18T05:03:33.259771+00:00 START disconnected/direct_2/spectral
+2026-09-18T05:03:35.360674+00:00 direct_2 spectral 250/2000 loss 0.0004199
+2026-09-18T05:03:36.673563+00:00 direct_2 spectral 500/2000 loss 0.00038613
+2026-09-18T05:03:38.002494+00:00 direct_2 spectral 750/2000 loss 0.00040922
+2026-09-18T05:03:39.290956+00:00 direct_2 spectral 1000/2000 loss 0.00039959
+2026-09-18T05:03:40.639937+00:00 direct_2 spectral 1250/2000 loss 0.00041545
+2026-09-18T05:03:42.010332+00:00 direct_2 spectral 1500/2000 loss 0.00042412
+2026-09-18T05:03:43.313897+00:00 direct_2 spectral 1750/2000 loss 0.00041507
+2026-09-18T05:03:44.653275+00:00 direct_2 spectral 2000/2000 loss 0.00039933
+2026-09-18T05:03:44.728394+00:00 DONE disconnected/direct_2/spectral: 11.5 seconds
+2026-09-18T05:03:44.728409+00:00 START disconnected/direct_2/dynamics
+2026-09-18T05:03:45.241403+00:00 DONE disconnected/direct_2/dynamics: 0.5 seconds
+2026-09-18T05:03:45.244494+00:00 START disconnected/0/fitgrid/teacher_build
+2026-09-18T05:03:47.016771+00:00 DONE disconnected/0/fitgrid/teacher_build: 1.8 seconds
+2026-09-18T05:03:47.018056+00:00 START disconnected/0/fitgrid/training
+2026-09-18T05:03:48.312707+00:00 disconnected seed 0 fitgrid: step 250/4000, loss 3.04811e-05
+2026-09-18T05:03:49.555929+00:00 disconnected seed 0 fitgrid: step 500/4000, loss 1.91592e-05
+2026-09-18T05:03:50.756228+00:00 disconnected seed 0 fitgrid: step 750/4000, loss 2.17347e-05
+2026-09-18T05:03:51.959356+00:00 disconnected seed 0 fitgrid: step 1000/4000, loss 2.04568e-05
+2026-09-18T05:03:53.194484+00:00 disconnected seed 0 fitgrid: step 1250/4000, loss 1.93713e-05
+2026-09-18T05:03:54.435714+00:00 disconnected seed 0 fitgrid: step 1500/4000, loss 2.02688e-05
+2026-09-18T05:03:55.660171+00:00 disconnected seed 0 fitgrid: step 1750/4000, loss 2.0214e-05
+2026-09-18T05:03:56.922833+00:00 disconnected seed 0 fitgrid: step 2000/4000, loss 2.13952e-05
+2026-09-18T05:03:58.136109+00:00 disconnected seed 0 fitgrid: step 2250/4000, loss 2.07184e-05
+2026-09-18T05:03:59.346636+00:00 disconnected seed 0 fitgrid: step 2500/4000, loss 1.9662e-05
+2026-09-18T05:04:00.554448+00:00 disconnected seed 0 fitgrid: step 2750/4000, loss 1.91982e-05
+2026-09-18T05:04:01.763918+00:00 disconnected seed 0 fitgrid: step 3000/4000, loss 1.71874e-05
+2026-09-18T05:04:02.964784+00:00 disconnected seed 0 fitgrid: step 3250/4000, loss 1.88925e-05
+2026-09-18T05:04:04.156658+00:00 disconnected seed 0 fitgrid: step 3500/4000, loss 1.53981e-05
+2026-09-18T05:04:05.340302+00:00 disconnected seed 0 fitgrid: step 3750/4000, loss 1.91936e-05
+2026-09-18T05:04:06.533867+00:00 disconnected seed 0 fitgrid: step 4000/4000, loss 2.2792e-05
+2026-09-18T05:04:06.534170+00:00 DONE disconnected/0/fitgrid/training: 19.5 seconds
+2026-09-18T05:04:15.350076+00:00 disconnected/direct_2 query 400/1333
+2026-09-18T05:04:25.033478+00:00 disconnected/direct_2 query 800/1333
+2026-09-18T05:04:33.936295+00:00 disconnected/direct_2 query 1200/1333
+2026-09-18T05:04:36.816237+00:00 DONE disconnected/direct_2 63.6s
+2026-09-18T05:04:36.816268+00:00 START disconnected/spectral_100_pca_2
+2026-09-18T05:04:36.832065+00:00 START disconnected/spectral_100_pca_2/spectral
+2026-09-18T05:04:38.564237+00:00 spectral_100_pca_2 spectral 250/2000 loss 0.82848
+2026-09-18T05:04:40.403951+00:00 spectral_100_pca_2 spectral 500/2000 loss 0.88109
+2026-09-18T05:04:42.140487+00:00 spectral_100_pca_2 spectral 750/2000 loss 0.80987
+2026-09-18T05:04:43.868917+00:00 spectral_100_pca_2 spectral 1000/2000 loss 0.7684
+2026-09-18T05:04:45.624950+00:00 spectral_100_pca_2 spectral 1250/2000 loss 0.73473
+2026-09-18T05:04:47.427293+00:00 spectral_100_pca_2 spectral 1500/2000 loss 0.70667
+2026-09-18T05:04:49.212469+00:00 spectral_100_pca_2 spectral 1750/2000 loss 0.67507
+2026-09-18T05:04:51.047207+00:00 spectral_100_pca_2 spectral 2000/2000 loss 0.64888
+2026-09-18T05:04:51.266198+00:00 DONE disconnected/spectral_100_pca_2/spectral: 14.4 seconds
+2026-09-18T05:04:51.266233+00:00 START disconnected/spectral_100_pca_2/dynamics
+2026-09-18T05:04:51.823915+00:00 DONE disconnected/spectral_100_pca_2/dynamics: 0.6 seconds
+2026-09-18T05:04:51.827802+00:00 START disconnected/0/fitgrid/teacher_build
+2026-09-18T05:04:53.639072+00:00 DONE disconnected/0/fitgrid/teacher_build: 1.8 seconds
+2026-09-18T05:04:53.639516+00:00 START disconnected/0/fitgrid/training
+2026-09-18T05:04:54.985443+00:00 disconnected seed 0 fitgrid: step 250/4000, loss 2.55409e-05
+2026-09-18T05:04:56.221695+00:00 disconnected seed 0 fitgrid: step 500/4000, loss 2.57094e-05
+2026-09-18T05:04:57.480018+00:00 disconnected seed 0 fitgrid: step 750/4000, loss 2.60747e-05
+2026-09-18T05:04:58.728557+00:00 disconnected seed 0 fitgrid: step 1000/4000, loss 1.96689e-05
+2026-09-18T05:04:59.986177+00:00 disconnected seed 0 fitgrid: step 1250/4000, loss 2.43739e-05
+2026-09-18T05:05:01.240121+00:00 disconnected seed 0 fitgrid: step 1500/4000, loss 2.19943e-05
+2026-09-18T05:05:02.493227+00:00 disconnected seed 0 fitgrid: step 1750/4000, loss 2.57907e-05
+2026-09-18T05:05:03.752614+00:00 disconnected seed 0 fitgrid: step 2000/4000, loss 2.56092e-05
+2026-09-18T05:05:05.010988+00:00 disconnected seed 0 fitgrid: step 2250/4000, loss 2.49839e-05
+2026-09-18T05:05:06.250588+00:00 disconnected seed 0 fitgrid: step 2500/4000, loss 2.0995e-05
+2026-09-18T05:05:07.493300+00:00 disconnected seed 0 fitgrid: step 2750/4000, loss 1.86718e-05
+2026-09-18T05:05:08.740800+00:00 disconnected seed 0 fitgrid: step 3000/4000, loss 2.11334e-05
+2026-09-18T05:05:10.027810+00:00 disconnected seed 0 fitgrid: step 3250/4000, loss 2.04074e-05
+2026-09-18T05:05:11.282304+00:00 disconnected seed 0 fitgrid: step 3500/4000, loss 1.81743e-05
+2026-09-18T05:05:12.513560+00:00 disconnected seed 0 fitgrid: step 3750/4000, loss 1.58017e-05
+2026-09-18T05:05:13.723590+00:00 disconnected seed 0 fitgrid: step 4000/4000, loss 1.84926e-05
+2026-09-18T05:05:13.723831+00:00 DONE disconnected/0/fitgrid/training: 20.1 seconds
+2026-09-18T05:05:22.629787+00:00 disconnected/spectral_100_pca_2 query 400/1333
+2026-09-18T05:05:31.629960+00:00 disconnected/spectral_100_pca_2 query 800/1333
+2026-09-18T05:05:41.333020+00:00 disconnected/spectral_100_pca_2 query 1200/1333
+2026-09-18T05:05:44.331337+00:00 DONE disconnected/spectral_100_pca_2 67.5s
+2026-09-18T05:05:44.362774+00:00 START sparse_bridge/baseline_3_to_2
+2026-09-18T05:05:53.176419+00:00 sparse_bridge/baseline_3_to_2 query 400/1413
+2026-09-18T05:06:02.074100+00:00 sparse_bridge/baseline_3_to_2 query 800/1413
+2026-09-18T05:06:11.003284+00:00 sparse_bridge/baseline_3_to_2 query 1200/1413
+2026-09-18T05:06:15.776401+00:00 DONE sparse_bridge/baseline_3_to_2 31.4s
+2026-09-18T05:06:15.776431+00:00 START sparse_bridge/direct_2
+2026-09-18T05:06:15.790312+00:00 START sparse_bridge/direct_2/spectral
+2026-09-18T05:06:17.242115+00:00 direct_2 spectral 250/2000 loss 0.00033095
+2026-09-18T05:06:18.664409+00:00 direct_2 spectral 500/2000 loss 0.00035057
+2026-09-18T05:06:20.096726+00:00 direct_2 spectral 750/2000 loss 0.00034367
+2026-09-18T05:06:21.538316+00:00 direct_2 spectral 1000/2000 loss 0.00035006
+2026-09-18T05:06:23.026143+00:00 direct_2 spectral 1250/2000 loss 0.00034684
+2026-09-18T05:06:24.460192+00:00 direct_2 spectral 1500/2000 loss 0.00036087
+2026-09-18T05:06:25.959294+00:00 direct_2 spectral 1750/2000 loss 0.00035693
+2026-09-18T05:06:27.537024+00:00 direct_2 spectral 2000/2000 loss 0.00036159
+2026-09-18T05:06:27.575344+00:00 DONE sparse_bridge/direct_2/spectral: 11.8 seconds
+2026-09-18T05:06:27.575361+00:00 START sparse_bridge/direct_2/dynamics
+2026-09-18T05:06:28.119818+00:00 DONE sparse_bridge/direct_2/dynamics: 0.5 seconds
+2026-09-18T05:06:28.123438+00:00 START sparse_bridge/0/fitgrid/teacher_build
+2026-09-18T05:06:29.841973+00:00 DONE sparse_bridge/0/fitgrid/teacher_build: 1.7 seconds
+2026-09-18T05:06:29.842339+00:00 START sparse_bridge/0/fitgrid/training
+2026-09-18T05:06:31.022379+00:00 sparse_bridge seed 0 fitgrid: step 250/4000, loss 2.68785e-05
+2026-09-18T05:06:32.193016+00:00 sparse_bridge seed 0 fitgrid: step 500/4000, loss 2.15249e-05
+2026-09-18T05:06:33.358375+00:00 sparse_bridge seed 0 fitgrid: step 750/4000, loss 3.2852e-05
+2026-09-18T05:06:34.527816+00:00 sparse_bridge seed 0 fitgrid: step 1000/4000, loss 2.87518e-05
+2026-09-18T05:06:35.734655+00:00 sparse_bridge seed 0 fitgrid: step 1250/4000, loss 2.18924e-05
+2026-09-18T05:06:36.950058+00:00 sparse_bridge seed 0 fitgrid: step 1500/4000, loss 1.95199e-05
+2026-09-18T05:06:38.107386+00:00 sparse_bridge seed 0 fitgrid: step 1750/4000, loss 4.17523e-05
+2026-09-18T05:06:39.281272+00:00 sparse_bridge seed 0 fitgrid: step 2000/4000, loss 2.25267e-05
+2026-09-18T05:06:40.437845+00:00 sparse_bridge seed 0 fitgrid: step 2250/4000, loss 2.36787e-05
+2026-09-18T05:06:41.614340+00:00 sparse_bridge seed 0 fitgrid: step 2500/4000, loss 2.04643e-05
+2026-09-18T05:06:42.773126+00:00 sparse_bridge seed 0 fitgrid: step 2750/4000, loss 2.00157e-05
+2026-09-18T05:06:43.941463+00:00 sparse_bridge seed 0 fitgrid: step 3000/4000, loss 1.89102e-05
+2026-09-18T05:06:45.133425+00:00 sparse_bridge seed 0 fitgrid: step 3250/4000, loss 1.86532e-05
+2026-09-18T05:06:46.332330+00:00 sparse_bridge seed 0 fitgrid: step 3500/4000, loss 1.82008e-05
+2026-09-18T05:06:47.510409+00:00 sparse_bridge seed 0 fitgrid: step 3750/4000, loss 1.60763e-05
+2026-09-18T05:06:48.713848+00:00 sparse_bridge seed 0 fitgrid: step 4000/4000, loss 1.72918e-05
+2026-09-18T05:06:48.714207+00:00 DONE sparse_bridge/0/fitgrid/training: 18.9 seconds
+2026-09-18T05:06:57.983904+00:00 sparse_bridge/direct_2 query 400/1413
+2026-09-18T05:07:07.083380+00:00 sparse_bridge/direct_2 query 800/1413
+2026-09-18T05:07:16.343331+00:00 sparse_bridge/direct_2 query 1200/1413
+2026-09-18T05:07:22.339876+00:00 DONE sparse_bridge/direct_2 66.6s
+2026-09-18T05:07:22.339932+00:00 START sparse_bridge/spectral_100_pca_2
+2026-09-18T05:07:22.353835+00:00 START sparse_bridge/spectral_100_pca_2/spectral
+2026-09-18T05:07:24.474868+00:00 spectral_100_pca_2 spectral 250/2000 loss 0.80553
+2026-09-18T05:07:26.417869+00:00 spectral_100_pca_2 spectral 500/2000 loss 0.75951
+2026-09-18T05:07:28.317732+00:00 spectral_100_pca_2 spectral 750/2000 loss 0.66798
+2026-09-18T05:07:30.272826+00:00 spectral_100_pca_2 spectral 1000/2000 loss 0.57156
+2026-09-18T05:07:32.187029+00:00 spectral_100_pca_2 spectral 1250/2000 loss 0.82254
+2026-09-18T05:07:34.074247+00:00 spectral_100_pca_2 spectral 1500/2000 loss 0.80229
+2026-09-18T05:07:35.950658+00:00 spectral_100_pca_2 spectral 1750/2000 loss 0.78516
+2026-09-18T05:07:37.797699+00:00 spectral_100_pca_2 spectral 2000/2000 loss 0.76769
+2026-09-18T05:07:38.011775+00:00 DONE sparse_bridge/spectral_100_pca_2/spectral: 15.7 seconds
+2026-09-18T05:07:38.011793+00:00 START sparse_bridge/spectral_100_pca_2/dynamics
+2026-09-18T05:07:38.566226+00:00 DONE sparse_bridge/spectral_100_pca_2/dynamics: 0.6 seconds
+2026-09-18T05:07:38.569891+00:00 START sparse_bridge/0/fitgrid/teacher_build
+2026-09-18T05:07:40.372566+00:00 DONE sparse_bridge/0/fitgrid/teacher_build: 1.8 seconds
+2026-09-18T05:07:40.372938+00:00 START sparse_bridge/0/fitgrid/training
+2026-09-18T05:07:41.570249+00:00 sparse_bridge seed 0 fitgrid: step 250/4000, loss 2.43794e-05
+2026-09-18T05:07:42.774101+00:00 sparse_bridge seed 0 fitgrid: step 500/4000, loss 1.94275e-05
+2026-09-18T05:07:44.002965+00:00 sparse_bridge seed 0 fitgrid: step 750/4000, loss 2.23161e-05
+2026-09-18T05:07:45.258333+00:00 sparse_bridge seed 0 fitgrid: step 1000/4000, loss 1.9642e-05
+2026-09-18T05:07:46.457864+00:00 sparse_bridge seed 0 fitgrid: step 1250/4000, loss 2.17629e-05
+2026-09-18T05:07:47.671013+00:00 sparse_bridge seed 0 fitgrid: step 1500/4000, loss 2.05201e-05
+2026-09-18T05:07:48.909043+00:00 sparse_bridge seed 0 fitgrid: step 1750/4000, loss 2.50098e-05
+2026-09-18T05:07:50.139599+00:00 sparse_bridge seed 0 fitgrid: step 2000/4000, loss 1.95253e-05
+2026-09-18T05:07:51.436388+00:00 sparse_bridge seed 0 fitgrid: step 2250/4000, loss 2.00699e-05
+2026-09-18T05:07:52.748350+00:00 sparse_bridge seed 0 fitgrid: step 2500/4000, loss 2.66954e-05
+2026-09-18T05:07:54.117917+00:00 sparse_bridge seed 0 fitgrid: step 2750/4000, loss 1.87101e-05
+2026-09-18T05:07:55.469277+00:00 sparse_bridge seed 0 fitgrid: step 3000/4000, loss 1.58929e-05
+2026-09-18T05:07:56.708453+00:00 sparse_bridge seed 0 fitgrid: step 3250/4000, loss 1.58038e-05
+2026-09-18T05:07:57.923700+00:00 sparse_bridge seed 0 fitgrid: step 3500/4000, loss 1.59145e-05
+2026-09-18T05:07:59.221490+00:00 sparse_bridge seed 0 fitgrid: step 3750/4000, loss 1.52203e-05
+2026-09-18T05:08:00.590210+00:00 sparse_bridge seed 0 fitgrid: step 4000/4000, loss 1.46097e-05
+2026-09-18T05:08:00.590629+00:00 DONE sparse_bridge/0/fitgrid/training: 20.2 seconds
+2026-09-18T05:08:10.728659+00:00 sparse_bridge/spectral_100_pca_2 query 400/1413
+2026-09-18T05:08:20.356252+00:00 sparse_bridge/spectral_100_pca_2 query 800/1413
+2026-09-18T05:08:29.677308+00:00 sparse_bridge/spectral_100_pca_2 query 1200/1413
+2026-09-18T05:08:34.587177+00:00 DONE sparse_bridge/spectral_100_pca_2 72.2s

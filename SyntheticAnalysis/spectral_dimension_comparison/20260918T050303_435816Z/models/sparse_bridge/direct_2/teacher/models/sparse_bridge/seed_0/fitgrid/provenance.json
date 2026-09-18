@@ -1,0 +1,16 @@
+{
+  "initial_sha256": "a4b05ff47a544a4fae7f66fefd1d37136634ecc1e4a1b36b414dca147b97fe09",
+  "trajectory_sha256": "4b64d5709ae689b9f3e0896d1ab5de76d8e2d45180546ae1a5f40495430211f4",
+  "retriever_sha256": "cc17e512006f5c3f6307118e938ad847740461454892fce354d79da0e1506e41",
+  "spectral_sha256": "37a8019009622e7d910fa8ba2acfea1b6411a7b6d2f3c447352f3688c300aab0",
+  "query_sequence_seed": 2000,
+  "teacher_rng_seed": 3000,
+  "teacher": "fitgrid",
+  "teacher_diagnostics": {
+    "force_interactions": 8,
+    "grid_cells": 65536,
+    "grid_bytes": 105381888,
+    "outside_count": 0,
+    "score_seconds": 0.0
+  }
+}

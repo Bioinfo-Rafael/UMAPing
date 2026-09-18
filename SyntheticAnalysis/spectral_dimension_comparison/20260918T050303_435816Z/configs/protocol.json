@@ -1,0 +1,26 @@
+{
+  "seed": 0,
+  "baseline": "/Users/cls-lab/Git/PersonalDev/UMAPing/SyntheticAnalysis/runs/20260918T043524_656398Z",
+  "methods": [
+    "baseline_3_to_2",
+    "direct_2",
+    "spectral_100_pca_2"
+  ],
+  "new_methods": [
+    "direct_2",
+    "spectral_100_pca_2"
+  ],
+  "data_conditions": [
+    "disconnected",
+    "sparse_bridge"
+  ],
+  "steps": 2000,
+  "loss": "(edge_energy + gram_error + trivial_projection_error)/raw_dim",
+  "orthogonality_sampling": "exact full reference",
+  "trivial_extension": "fixed reference inverse-distance 15-neighbor interpolation in input space",
+  "pca": "centered covariance, no whitening, top variance 2",
+  "bootstrap_seed": 987,
+  "pair_seed": 12345,
+  "pair_count": 20000,
+  "started": 1789707783.462343
+}

@@ -1,0 +1,16 @@
+{
+  "png_count": 35,
+  "reviewed": [
+    "disconnected/202_final_progress_all.png",
+    "sparse_bridge/30_dynamics_reference_branch.png",
+    "disconnected/102_initial_progress_all.png",
+    "40_spiral_recall_curves.png"
+  ],
+  "checks": [
+    "Legends and colorbars visible",
+    "Branch colors shared between conditions",
+    "Reference/query fixed axes within comparison",
+    "Dynamics axes fixed across all stages",
+    "Overlaps and fragmented shapes retained as observed"
+  ]
+}
