@@ -1,0 +1,25 @@
+{
+  "training_runner_snapshot_matches_pretraining_hash": true,
+  "unchanged_through_all_training": [
+    "geometry.py",
+    "evaluate.py",
+    "all src/umaping modules",
+    "model.yaml",
+    "protocol.json",
+    "data arrays and splits"
+  ],
+  "post_training_runner_improvements": [
+    "automatic protocol freeze and input hash verification",
+    "runtime-only seed expansion guard",
+    "separate PCA model export"
+  ],
+  "reporting_changes": [
+    "legend placement correction",
+    "report generation and all-seed descriptive differences",
+    "read-only artifact/actual graph audit",
+    "connectivity summary figure"
+  ],
+  "hyperparameters_changed": false,
+  "data_changed": false,
+  "test_based_selection": false
+}

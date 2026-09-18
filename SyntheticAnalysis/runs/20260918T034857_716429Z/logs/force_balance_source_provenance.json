@@ -1,0 +1,11 @@
+{
+  "path": "/Users/cls-lab/Git/PersonalDev/UMAPing-pancreas-review/Final_analysis/force_balance_20260917T124700Z/01_balance_search/selection.json",
+  "sha256": "1cda0b8e52680a7986b4d7c4d3ccea075d8ab13ad4ab056a8a7e0bef9cd1049a",
+  "used_w": 0.5,
+  "used_scale": 2,
+  "used_attraction_coefficient": 1,
+  "used_repulsion_coefficient": 1,
+  "fitgrid_implementation": "src/umaping/repulsion_estimators/grid_field.py",
+  "teacher_pair_source": "src/umaping/fit_grid_experiment/temporal.py:train_pair",
+  "model_config_source": "experiments/configs/embryoid_body.yaml"
+}

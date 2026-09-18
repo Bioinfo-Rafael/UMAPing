@@ -1,0 +1,13 @@
+small_data_exact_distance_backend,condition,seed,method,components,components_without_bridge,wrong_turn_edges,wrong_branch_edges,unexpected_cross_structure_edges
+,disconnected,0,UMAPing,3,3,0,0,0
+True,disconnected,0,standard_umap,3,3,0,0,0
+,disconnected,1,UMAPing,3,3,0,0,0
+True,disconnected,1,standard_umap,3,3,0,0,0
+,disconnected,2,UMAPing,3,3,0,0,0
+True,disconnected,2,standard_umap,3,3,0,0,0
+,sparse_bridge,0,UMAPing,1,3,0,0,0
+False,sparse_bridge,0,standard_umap,1,3,0,0,0
+,sparse_bridge,1,UMAPing,1,3,0,0,0
+False,sparse_bridge,1,standard_umap,1,3,0,0,0
+,sparse_bridge,2,UMAPing,1,3,0,0,0
+False,sparse_bridge,2,standard_umap,1,3,0,0,0

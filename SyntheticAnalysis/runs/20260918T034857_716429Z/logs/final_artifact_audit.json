@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "n_completed_pairs": 6,
+  "checks": [
+    {
+      "condition": "disconnected",
+      "seed": 0,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    },
+    {
+      "condition": "disconnected",
+      "seed": 1,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    },
+    {
+      "condition": "disconnected",
+      "seed": 2,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    },
+    {
+      "condition": "sparse_bridge",
+      "seed": 0,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    },
+    {
+      "condition": "sparse_bridge",
+      "seed": 1,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    },
+    {
+      "condition": "sparse_bridge",
+      "seed": 2,
+      "matched_reference": true,
+      "matched_neighbors": true,
+      "matched_upstream": true,
+      "all_finite": true
+    }
+  ]
+}

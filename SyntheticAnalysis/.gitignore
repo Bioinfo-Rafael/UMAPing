@@ -1,0 +1,2 @@
+# Generated experiment artifacts remain on disk; keep code/configs reviewable.
+runs/

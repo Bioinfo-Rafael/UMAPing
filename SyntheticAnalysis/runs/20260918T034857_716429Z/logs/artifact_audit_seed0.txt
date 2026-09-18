@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "n_completed_pairs": 2,
+  "graphs": [
+    {
+      "condition": "disconnected",
+      "seed": 0,
+      "method": "UMAPing",
+      "components": 3,
+      "components_without_bridge": 3,
+      "wrong_turn_edges": 0,
+      "wrong_branch_edges": 0,
+      "unexpected_cross_structure_edges": 0
+    },
+    {
+      "condition": "disconnected",
+      "seed": 0,
+      "method": "standard_umap",
+      "components": 3,
+      "components_without_bridge": 3,
+      "wrong_turn_edges": 0,
+      "wrong_branch_edges": 0,
+      "unexpected_cross_structure_edges": 0
+    },
+    {
+      "condition": "sparse_bridge",
+      "seed": 0,
+      "method": "UMAPing",
+      "components": 1,
+      "components_without_bridge": 3,
+      "wrong_turn_edges": 0,
+      "wrong_branch_edges": 0,
+      "unexpected_cross_structure_edges": 0
+    },
+    {
+      "condition": "sparse_bridge",
+      "seed": 0,
+      "method": "standard_umap",
+      "components": 1,
+      "components_without_bridge": 3,
+      "wrong_turn_edges": 0,
+      "wrong_branch_edges": 0,
+      "unexpected_cross_structure_edges": 0
+    }
+  ]
+}

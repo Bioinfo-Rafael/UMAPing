@@ -1,0 +1,42 @@
+{
+  "created_utc": "2026-09-18T03:43:53.510454+00:00",
+  "data_seed": 20260918,
+  "learning_seeds": [
+    0,
+    1,
+    2
+  ],
+  "conditions": [
+    "disconnected",
+    "sparse_bridge"
+  ],
+  "threads": 2,
+  "device": "cpu",
+  "max_hours": 11.5,
+  "internal_n": 6000,
+  "bridge_n": 480,
+  "split": "local spatial triplets: 2 reference / 1 query; fixed across learning seeds",
+  "preprocessing": "none",
+  "noise": 0,
+  "force_balance": {
+    "w": 0.5,
+    "scale": 2,
+    "attraction_coefficient": 1,
+    "repulsion_coefficient": 1
+  },
+  "fit_grid_size": 256,
+  "uniform_samples": 64,
+  "standard_umap_epochs": 500,
+  "recall_k": [
+    5,
+    15
+  ],
+  "radius_k": [
+    5,
+    15
+  ],
+  "scale": "single exp(median_reference(log(r_z15/r_y15))); same factor for both k and all groups/splits",
+  "shortcut": "distance_z > 2 * source true r15 and abs(theta difference)>pi (A) or distinct branch (B); shared-junction endpoint distances <=0.6 exempt",
+  "bridge_neighborhood": "source is bridge OR source/target true z kNN15 contains bridge; cross-bridge true edges also evaluated separately",
+  "expansion_rule": "complete two seed-0 conditions, metrics, figures, report; then extend to seeds1,2 only if 2.0*estimated_remaining_compute + 30min < deadline remaining; no performance-dependent selection"
+}

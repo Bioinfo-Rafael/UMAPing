@@ -1,0 +1,13 @@
+{
+  "initial_sha256": "a4b05ff47a544a4fae7f66fefd1d37136634ecc1e4a1b36b414dca147b97fe09",
+  "trajectory_sha256": "e0cc01bcb7a21879d3fda8ef4d8cc5bf98e76bedc77a846683d2c4fb77d5bfcb",
+  "retriever_sha256": "c87db6fd23192205dd7e7a1c7b7315544ce3fadcc201eae2d69ae22f7ce7c1e5",
+  "spectral_sha256": "c5ae9abd585d6a33d838456c6fb6f0b767a6744e756b7e6f70344e6f0a9e3bb3",
+  "query_sequence_seed": 2000,
+  "teacher_rng_seed": 3000,
+  "teacher": "uniform",
+  "teacher_diagnostics": {
+    "force_interactions": 64,
+    "score_seconds": 0.0
+  }
+}

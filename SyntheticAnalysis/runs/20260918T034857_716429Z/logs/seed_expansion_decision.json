@@ -1,0 +1,23 @@
+{
+  "decided_utc": "2026-09-18T03:58:01.817210+00:00",
+  "completed_first": [
+    "disconnected/seed_0",
+    "sparse_bridge/seed_0"
+  ],
+  "seed0_pair_compute_seconds": 340.55015337327495,
+  "estimated_remaining_compute_seconds": 681.1003067465499,
+  "safety_factor": 2,
+  "report_reserve_seconds": 1800,
+  "conservative_remaining_seconds": 3162.2006134931,
+  "deadline_remaining_seconds": 40855.90255999565,
+  "decision": "extend to matched seeds 1,2 in fixed order",
+  "selection_basis": "runtime only; all executed seeds retained",
+  "mandatory_report_completed": true,
+  "representative_figures_reviewed": [
+    "01_ground_truth_geometry",
+    "02_input_reference_graph",
+    "disconnected/seed_0/11_branch",
+    "sparse_bridge/seed_0/14_error",
+    "sparse_bridge/seed_0/22_progress_bridge_zoom"
+  ]
+}

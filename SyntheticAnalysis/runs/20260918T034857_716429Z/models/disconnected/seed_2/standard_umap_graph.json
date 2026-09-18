@@ -1,0 +1,11 @@
+{
+  "components": 3,
+  "sizes": [
+    1334,
+    1332,
+    1334
+  ],
+  "n_neighbors_including_self": 15,
+  "epochs": 500,
+  "transform_epochs": 166
+}

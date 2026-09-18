@@ -1,0 +1,7 @@
+{
+  "tests_passed": 3,
+  "geometry_png_reviewed": true,
+  "legend_overlap_fixed": true,
+  "input_expected_components_passed": true,
+  "PCA_recovery_passed": true
+}

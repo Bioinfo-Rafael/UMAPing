@@ -1,0 +1,21 @@
+{
+  "reviewed_utc": "2026-09-18T04:11:50.122997+00:00",
+  "directly_viewed_pngs": [
+    "01_ground_truth_geometry",
+    "02_input_reference_graph",
+    "disconnected/seed_0/11_branch",
+    "sparse_bridge/seed_0/14_error",
+    "sparse_bridge/seed_0/22_progress_bridge_zoom",
+    "disconnected/seed_0/13_density",
+    "sparse_bridge/seed_0/15_recall",
+    "disconnected/seed_0/20_progress_spiral_zoom",
+    "sparse_bridge/seed_0/21_progress_branch_zoom",
+    "sparse_bridge/seed_2/11_branch",
+    "disconnected/seed_1/14_error",
+    "30_sparse_bridge_structure_metrics",
+    "31_bridge_connectivity_metrics"
+  ],
+  "findings": "No cropped legends/colorbars or overlapping labels in final representative layouts; initial truth legend overlap corrected.",
+  "common_layout_for_all_seeds": true,
+  "all_png_pdf_pairs_present": true
+}

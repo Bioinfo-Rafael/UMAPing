@@ -1,0 +1,148 @@
+{
+  "disconnected_all": {
+    "k": 15,
+    "n": 6000,
+    "components": 3,
+    "component_sizes": [
+      2001,
+      1998,
+      2001
+    ],
+    "components_without_bridge": 3,
+    "cross_structure_edges": [],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.9019564597064398,
+    "bridge_knn_radius_max": null
+  },
+  "disconnected_reference": {
+    "k": 15,
+    "n": 4000,
+    "components": 3,
+    "component_sizes": [
+      1334,
+      1332,
+      1334
+    ],
+    "components_without_bridge": 3,
+    "cross_structure_edges": [],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 1.0044115063101045,
+    "bridge_knn_radius_max": null
+  },
+  "sparse_bridge_all": {
+    "k": 15,
+    "n": 6480,
+    "components": 1,
+    "component_sizes": [
+      6480
+    ],
+    "components_without_bridge": 3,
+    "cross_structure_edges": [
+      {
+        "source": "A_spiral",
+        "target": "bridge_AB",
+        "directed_edges": 34
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_AB",
+        "directed_edges": 31
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_BC",
+        "directed_edges": 20
+      },
+      {
+        "source": "C_ellipse",
+        "target": "bridge_BC",
+        "directed_edges": 38
+      },
+      {
+        "source": "bridge_AB",
+        "target": "A_spiral",
+        "directed_edges": 33
+      },
+      {
+        "source": "bridge_AB",
+        "target": "B_tree",
+        "directed_edges": 44
+      },
+      {
+        "source": "bridge_BC",
+        "target": "B_tree",
+        "directed_edges": 50
+      },
+      {
+        "source": "bridge_BC",
+        "target": "C_ellipse",
+        "directed_edges": 21
+      }
+    ],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.7339002428558052,
+    "bridge_knn_radius_max": 0.5234965324582072
+  },
+  "sparse_bridge_reference": {
+    "k": 15,
+    "n": 4320,
+    "components": 1,
+    "component_sizes": [
+      4320
+    ],
+    "components_without_bridge": 3,
+    "cross_structure_edges": [
+      {
+        "source": "A_spiral",
+        "target": "bridge_AB",
+        "directed_edges": 30
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_AB",
+        "directed_edges": 29
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_BC",
+        "directed_edges": 17
+      },
+      {
+        "source": "C_ellipse",
+        "target": "bridge_BC",
+        "directed_edges": 34
+      },
+      {
+        "source": "bridge_AB",
+        "target": "A_spiral",
+        "directed_edges": 36
+      },
+      {
+        "source": "bridge_AB",
+        "target": "B_tree",
+        "directed_edges": 48
+      },
+      {
+        "source": "bridge_BC",
+        "target": "B_tree",
+        "directed_edges": 50
+      },
+      {
+        "source": "bridge_BC",
+        "target": "C_ellipse",
+        "directed_edges": 26
+      }
+    ],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.9465209474427378,
+    "bridge_knn_radius_max": 0.6698861171377206
+  }
+}
