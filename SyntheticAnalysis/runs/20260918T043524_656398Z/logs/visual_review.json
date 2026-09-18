@@ -1,0 +1,19 @@
+{
+  "reviewed": [
+    "01_ground_truth_geometry.png",
+    "disconnected/seed_0/11_branch.png",
+    "disconnected/seed_0/23_branch_tree_full.png",
+    "sparse_bridge/seed_0/11_branch.png",
+    "sparse_bridge/seed_0/14_error.png",
+    "sparse_bridge/seed_0/22_progress_bridge_zoom.png",
+    "sparse_bridge/seed_0/20_progress_spiral_zoom.png"
+  ],
+  "checks": [
+    "No C or B-C bridge",
+    "Reference/query rows aligned with fixed per-method limits",
+    "Shared legends and colorbars visible",
+    "Full tree legend contains only B branches"
+  ],
+  "png_count": 24,
+  "pdf_count": 0
+}

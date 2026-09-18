@@ -1,0 +1,25 @@
+{
+  "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "versions": {
+    "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.9.1",
+    "torch": "2.14.0",
+    "umap-learn": "0.5.12",
+    "pynndescent": "0.6.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "tqdm": "4.70.1",
+    "pillow": "12.3.0",
+    "requests": "2.34.2",
+    "anndata": "0.13.3.post0",
+    "scanpy": "1.12.4",
+    "umaping": "0.1.0"
+  },
+  "threads": 2,
+  "device": "cpu",
+  "base_commit": "18c637ee2939f20e40b85385d71f740104787e54"
+}

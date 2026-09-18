@@ -107,3 +107,22 @@ from plots import all_figures
 all_figures(Path("SyntheticAnalysis/runs/20260918T034857_716429Z"))
 PY
 ```
+
+## A+Bのみの追加実験（Cなし、seed 0）
+
+[追加runの報告](runs/20260918T043524_656398Z/report.md)。CとB–C橋を学習データから除外して全手法を再学習します。A/BとA–B橋の元座標・ID・split・50D等長写像はそのまま維持。内部3,999点（reference2,666／query1,333）、橋240点（reference160／query80）。橋なし／A–B橋ありの両条件、seed 0のみ、PNGのみです。既存runは変更しません。
+
+```sh
+# 別の新規runを作成し、学習前のデータ・正解図・入力グラフ検査
+.venv/bin/python SyntheticAnalysis/scripts/run_ab.py --phase prepare
+
+# 表示されたrunを指定して両条件を実行
+.venv/bin/python SyntheticAnalysis/scripts/run_ab.py --run SyntheticAnalysis/runs/<new_timestamp> --phase train
+
+# 今回の保存済みモデル・埋め込みから作図・監査・報告
+.venv/bin/python SyntheticAnalysis/scripts/run_ab.py --run SyntheticAnalysis/runs/20260918T043524_656398Z --phase plot
+```
+
+各条件の図は`figures/<condition>/seed_0/`へ保存。前回と同じ5列・reference/queryの2行で、構造、枝、進行位置、正解密度、半径誤差、Recallを比較します。A全体は`20_progress_spiral_zoom.png`、B全体は`23_branch_tree_full.png`、分岐点周辺は`21_progress_branch_zoom.png`、A–B橋周辺は`22_progress_bridge_zoom.png`です。
+
+追加runも同じpush範囲とし、PNG24枚・データ・最終埋め込み・評価・設定・ログ・報告を含めます。学習済みモデルbinaryと中間チェックポイントはローカルに保持します。

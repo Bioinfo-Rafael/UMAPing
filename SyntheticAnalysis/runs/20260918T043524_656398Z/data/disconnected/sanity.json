@@ -1,0 +1,9 @@
+{
+  "n_internal": 3999,
+  "n_bridge": 0,
+  "n_reference": 2666,
+  "n_query": 1333,
+  "orthonormal_error": 2.220446049250313e-16,
+  "pca_recovery_max_error": 2.4868995751603507e-14,
+  "pca_explained_variance": 1.0
+}

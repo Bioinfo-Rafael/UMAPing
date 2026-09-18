@@ -1,0 +1,12 @@
+{
+  "started": "2026-09-18T04:35:24.659986+00:00",
+  "started_epoch": 1789706124.659991,
+  "completed": [
+    "disconnected/seed_0",
+    "sparse_bridge/seed_0"
+  ],
+  "status": "complete",
+  "updated": "2026-09-18T04:40:19.676124+00:00",
+  "wall_seconds": 335.02083110809326,
+  "report_updated": "2026-09-18T04:40:59.682382+00:00"
+}

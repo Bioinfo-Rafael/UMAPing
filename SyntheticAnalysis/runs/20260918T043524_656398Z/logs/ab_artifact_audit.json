@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "shared_internal_count": 3999,
+  "excluded_structure_ids": [
+    2,
+    4
+  ],
+  "matched_seed": 0,
+  "graphs": [
+    {
+      "condition": "disconnected",
+      "method": "umaping",
+      "components": 2
+    },
+    {
+      "condition": "disconnected",
+      "method": "umap",
+      "components": 2
+    },
+    {
+      "condition": "sparse_bridge",
+      "method": "umaping",
+      "components": 1
+    },
+    {
+      "condition": "sparse_bridge",
+      "method": "umap",
+      "components": 1
+    }
+  ]
+}

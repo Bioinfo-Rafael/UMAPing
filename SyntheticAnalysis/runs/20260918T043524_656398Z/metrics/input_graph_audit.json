@@ -1,0 +1,106 @@
+{
+  "disconnected_all": {
+    "k": 15,
+    "n": 3999,
+    "components": 2,
+    "component_sizes": [
+      2001,
+      1998
+    ],
+    "components_without_bridge": 2,
+    "cross_structure_edges": [],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.467420092091255,
+    "bridge_knn_radius_max": null
+  },
+  "disconnected_reference": {
+    "k": 15,
+    "n": 2666,
+    "components": 2,
+    "component_sizes": [
+      1334,
+      1332
+    ],
+    "components_without_bridge": 2,
+    "cross_structure_edges": [],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.6228365334054426,
+    "bridge_knn_radius_max": null
+  },
+  "sparse_bridge_all": {
+    "k": 15,
+    "n": 4239,
+    "components": 1,
+    "component_sizes": [
+      4239
+    ],
+    "components_without_bridge": 2,
+    "cross_structure_edges": [
+      {
+        "source": "A_spiral",
+        "target": "bridge_AB",
+        "directed_edges": 34
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_AB",
+        "directed_edges": 31
+      },
+      {
+        "source": "bridge_AB",
+        "target": "A_spiral",
+        "directed_edges": 33
+      },
+      {
+        "source": "bridge_AB",
+        "target": "B_tree",
+        "directed_edges": 44
+      }
+    ],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.42547812433201154,
+    "bridge_knn_radius_max": 0.3041263791103089
+  },
+  "sparse_bridge_reference": {
+    "k": 15,
+    "n": 2826,
+    "components": 1,
+    "component_sizes": [
+      2826
+    ],
+    "components_without_bridge": 2,
+    "cross_structure_edges": [
+      {
+        "source": "A_spiral",
+        "target": "bridge_AB",
+        "directed_edges": 30
+      },
+      {
+        "source": "B_tree",
+        "target": "bridge_AB",
+        "directed_edges": 29
+      },
+      {
+        "source": "bridge_AB",
+        "target": "A_spiral",
+        "directed_edges": 36
+      },
+      {
+        "source": "bridge_AB",
+        "target": "B_tree",
+        "directed_edges": 48
+      }
+    ],
+    "unexpected_cross_structure_edges": 0,
+    "wrong_turn_edges": 0,
+    "wrong_branch_edges": 0,
+    "maximum_knn_radius": 0.5750482896770174,
+    "bridge_knn_radius_max": 0.44634951101157144
+  }
+}

@@ -73,7 +73,7 @@ def panels(run,condition,seed,kind,number,subset=None,suffix=''):
         colors=np.array([COLORS[s] for s in df.structure]);legend=[Line2D([],[],marker='o',ls='',color=COLORS[s],label=name,markersize=5) for s,name in STRUCTURES.items() if (df.structure==s).any()]
     elif kind=='branch':
         labels=np.array(['A turn '+str(b) if s==0 else 'B branch '+str(b) if s==1 else STRUCTURES[s] for s,b in zip(df.structure,df.branch)])
-        unique=sorted(set(labels));mapping={v:BRANCH_COLORS[i] for i,v in enumerate(unique)};colors=np.array([mapping[l] for l in labels]);legend=[Line2D([],[],marker='o',ls='',color=mapping[l],label=l,markersize=5) for l in unique if l in set(labels[selected])]
+        unique=sorted(set(labels));mapping={v:BRANCH_COLORS[i] for i,v in enumerate(unique)};colors=np.array([mapping[l] for l in labels]);legend=[Line2D([],[],marker='o',ls='',color=mapping[l],label=l,markersize=5) for l in unique]
     elif kind=='progress':norm=Normalize(0,1);cmap='viridis';clabel='A: arclength; B: within branch; '+('C: normalized x; ' if (df.structure==2).any() else '')+'bridges: arclength'
     elif kind=='density':
         density=np.log10(15/(np.pi*true.rz15.to_numpy()**2));norm=Normalize(-1,3.5);cmap='viridis';clabel='Ground-truth log10(15 / pi r15^2); same colors across methods'
