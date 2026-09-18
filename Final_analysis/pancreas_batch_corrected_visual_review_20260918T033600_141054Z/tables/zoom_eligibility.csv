@@ -1,0 +1,14 @@
+celltype,n_query,included
+alpha,1851,True
+beta,753,True
+ductal,702,True
+acinar,462,True
+delta,330,True
+gamma,323,True
+activated_stellate,145,True
+endothelial,42,False
+macrophage,22,False
+quiescent_stellate,18,False
+mast,13,False
+epsilon,12,False
+schwann,6,False

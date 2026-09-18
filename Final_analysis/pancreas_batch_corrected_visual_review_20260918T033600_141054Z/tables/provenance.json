@@ -1,0 +1,227 @@
+{
+  "status": "complete_regenerated_required_plots",
+  "started_utc": "2026-09-18T03:36:00.141684+00:00",
+  "ended_utc": "2026-09-18T03:42:18.263435+00:00",
+  "script_sha256": "30e19cd246a1bc7d6f1fc1753f4c49dc267de07d0039781a85343d354fb83f4d",
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.2"
+  },
+  "run": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main",
+  "teacher": "unrecorded",
+  "teacher_evidence": "Run metadata does not record teacher; legacy pipeline default is Uniform MC, but not asserted as verified.",
+  "inputs": {
+    "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/config.yaml": {
+      "bytes": 1618,
+      "sha256": "e3a92f021f6a28d41f1f86071f9fc10d6c80b9340b56caefe5b94794f24d112e"
+    },
+    "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/metadata.json": {
+      "bytes": 823,
+      "sha256": "8f8d109e4a653eaa8c6ba257362d7fa0a458d0254efb96300046fa01326286c3"
+    },
+    "/home/suzuki/Learn/UMAPing/Final_analysis/pancreas_batch_corrected_visual_review_20260918T033600_141054Z/tables/regenerated/regeneration.json": {
+      "bytes": 2680,
+      "sha256": "939eed1d52c0789e6ec64ecfd69e8611b3499fed42fc5ec63206b60ffd5514af"
+    },
+    "/home/suzuki/Learn/UMAPing/Final_analysis/pancreas_batch_corrected_visual_review_20260918T033600_141054Z/tables/regenerated/advanced_per_query.csv": {
+      "bytes": 715256,
+      "sha256": "01055b8312f00fc430b77332f2958cff0ff4f5ffd1f1db642cc6b0941059ce92"
+    },
+    "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main/cache/prepared_dataset.npz": {
+      "bytes": 5094372,
+      "sha256": "cf5cadac5b148e94fd414163098366c2b4fe1ba19894710571376dca4be859de"
+    },
+    "/home/suzuki/Learn/UMAPing/Final_analysis/pancreas_batch_corrected_visual_review_20260918T033600_141054Z/tables/regenerated/embeddings/standard_umap.npz": {
+      "bytes": 159713,
+      "sha256": "64049c99e48d5f7c3a0c289c014377c6d6c80cb03c50b09497cd89ef0d222faf"
+    },
+    "/home/suzuki/Learn/UMAPing/Final_analysis/pancreas_batch_corrected_visual_review_20260918T033600_141054Z/tables/regenerated/embeddings/ours_full.npz": {
+      "bytes": 161770,
+      "sha256": "78f376c683257f6498ec79db0c152a14f3617e9f3854ae199d079500c61494b8"
+    }
+  },
+  "identity_checks": [
+    {
+      "scope": "paired metrics",
+      "query_ids_equal": true,
+      "unique_ids": true,
+      "celltype_equal": true,
+      "n_queries": 4679
+    },
+    {
+      "scope": "annotations/metrics",
+      "explicit_query_ids": true,
+      "celltype_verified": true
+    },
+    {
+      "method": "standard_umap",
+      "explicit_reference_ids": true,
+      "explicit_query_ids": true,
+      "prepared_hash_embedded": true,
+      "alignment": "explicit PreparedDataset row IDs; never embedding row order"
+    },
+    {
+      "method": "ours_full",
+      "explicit_reference_ids": true,
+      "explicit_query_ids": true,
+      "prepared_hash_embedded": true,
+      "alignment": "explicit PreparedDataset row IDs; never embedding row order"
+    }
+  ],
+  "skipped": [
+    {
+      "item": "07 marker expression",
+      "reason": "省略: 対応IDと発現処理を確認できるマーカー発現表が指定されていない。PCA/scVI特徴量やcelltypeから発現量は復元しない。"
+    }
+  ],
+  "error": null,
+  "figures": [
+    {
+      "stem": "01_overview_by_celltype",
+      "description": "3行×2列、celltype色。同じ手法の座標範囲は全行固定。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "02_overview_by_tech",
+      "description": "3行×2列、tech色。同じ手法の座標範囲は全行固定。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_01_celltype_zoom_acinar",
+      "description": "acinar: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_02_celltype_zoom_activated_stellate",
+      "description": "activated_stellate: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_03_celltype_zoom_alpha",
+      "description": "alpha: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_04_celltype_zoom_beta",
+      "description": "beta: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_05_celltype_zoom_delta",
+      "description": "delta: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_06_celltype_zoom_ductal",
+      "description": "ductal: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "03_07_celltype_zoom_gamma",
+      "description": "gamma: query>=100の事前規則で対象。両手法の表示幅を統一。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "04_query_recall_at_5_and_15",
+      "description": "保存済みRecall@5/15を共通0–1色域で表示。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "05_celltype_recall_dotplot",
+      "description": "全細胞型の平均Recall@5/15。IDで対応付けた同じquery。",
+      "legend_bounds_checked": true
+    },
+    {
+      "stem": "06_paired_recall_difference_on_both_embeddings",
+      "description": "同一queryの差を両座標へ表示。共通発散色域。",
+      "legend_bounds_checked": true
+    }
+  ],
+  "no_training": false,
+  "no_inference": false,
+  "no_metric_recomputation": false,
+  "neural_network_training": false,
+  "regeneration": {
+    "status": "complete",
+    "source_run": "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main",
+    "started_utc": "2026-09-18T03:36:12.493984+00:00",
+    "neural_network_training": false,
+    "preprocessing_refit": false,
+    "reference_trajectory_recomputed": false,
+    "standard_umap_refit": true,
+    "umaping_query_reinference": true,
+    "old_metrics_used_for_new_coordinates": false,
+    "device": "cpu",
+    "threads": 1,
+    "max_seconds": 7200.0,
+    "sources": {
+      "config.yaml": "e3a92f021f6a28d41f1f86071f9fc10d6c80b9340b56caefe5b94794f24d112e",
+      "cache/prepared_dataset.npz": "cf5cadac5b148e94fd414163098366c2b4fe1ba19894710571376dca4be859de",
+      "memory/reference_features.npy": "01e56e211387a1cc2ae31648fffa5bc0bc96b532f2867b94b4e6d778ed395ad0",
+      "memory/reference_trajectory.npz": "3269447d19edda91690573c1fc032274f3ff2248bb52b1522207b2308328df41",
+      "memory/retriever_keys.npy": "6288b5dd05c420321108fee7edd3705b06b6f3c53753bce45752dbc81d21a0af",
+      "memory/spectral_calibration.npz": "be11df4089bc35171db75ac6ef5af10027ff712078fcf543d82c2f215d650244",
+      "checkpoints/retriever.pt": "75d4ce0afce0885e8f0a42fe06e3226cc6279e71c718f2c3b8cfd6fb02f6e86a",
+      "checkpoints/spectral_encoder.pt": "59d8a66d6541b42edc808943137d5e37d47511e98245f07f736d2ba88580bc12",
+      "checkpoints/repulsion_field.pt": "3cdd949b165d538c51a82c0ac9c9a29c3da793a8d1880cbf4a17e428c6164fdd",
+      "metrics/advanced_per_query.csv": "83a5f0fa18d0d671da715ab67eec45d9e76c91bcad14bed1485d7d85fef1cdb4"
+    },
+    "steps_completed": [
+      "input_and_id_audit",
+      "umaping_inference",
+      "standard_umap_fit_transform",
+      "fresh_metrics"
+    ],
+    "versions": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "torch": "2.6.0+cu124",
+      "umap-learn": "0.5.12",
+      "pandas": "3.0.5"
+    },
+    "source_metric_identity_verified": true,
+    "n_reference": 11703,
+    "n_query": 4679,
+    "seed": 0,
+    "umap_config": {
+      "n_neighbors": 15,
+      "min_dist": 0.1,
+      "spread": 1.0,
+      "embedding_dim": 2,
+      "seed": 0
+    },
+    "umap_baseline": "Existing umaping.baselines.run_standard_umap: fit(reference), transform(query); library defaults retained",
+    "umaping_config": {
+      "n_steps": 200,
+      "initial_alpha": 1.0,
+      "grad_clip": 4.0,
+      "negative_sample_rate": 5.0,
+      "balance_w": 0.5,
+      "balance_scale": 2
+    },
+    "id_contract": "IDs assigned from PreparedDataset before computation; exact query loop IDs; standard UMAP preserves input-row order",
+    "umaping_seconds": 327.460864527151,
+    "standard_umap_seconds": 28.722777924500406,
+    "source_artifacts_unchanged": true,
+    "ended_utc": "2026-09-18T03:42:11.330837+00:00",
+    "elapsed_seconds": 358.8368828315288
+  },
+  "visual_review": "Legend bounds checked; contact sheets provided. Actual image inspection must be recorded separately.",
+  "command": [
+    "python",
+    "/home/suzuki/Learn/UMAPing-pancreas-review/scripts/pancreas_visual_review.py",
+    "--run",
+    "/home/suzuki/Learn/UMAPing/runs/pancreas_batch_corrected/main",
+    "--repo-root",
+    "/home/suzuki/Learn/UMAPing",
+    "--regenerate",
+    "--device",
+    "cpu",
+    "--threads",
+    "1",
+    "--max-seconds",
+    "7200"
+  ]
+}

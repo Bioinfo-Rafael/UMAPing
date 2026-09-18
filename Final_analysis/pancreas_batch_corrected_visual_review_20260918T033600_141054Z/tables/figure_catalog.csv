@@ -1,0 +1,13 @@
+stem,description,legend_bounds_checked
+01_overview_by_celltype,3行×2列、celltype色。同じ手法の座標範囲は全行固定。,True
+02_overview_by_tech,3行×2列、tech色。同じ手法の座標範囲は全行固定。,True
+03_01_celltype_zoom_acinar,acinar: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_02_celltype_zoom_activated_stellate,activated_stellate: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_03_celltype_zoom_alpha,alpha: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_04_celltype_zoom_beta,beta: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_05_celltype_zoom_delta,delta: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_06_celltype_zoom_ductal,ductal: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+03_07_celltype_zoom_gamma,gamma: query>=100の事前規則で対象。両手法の表示幅を統一。,True
+04_query_recall_at_5_and_15,保存済みRecall@5/15を共通0–1色域で表示。,True
+05_celltype_recall_dotplot,全細胞型の平均Recall@5/15。IDで対応付けた同じquery。,True
+06_paired_recall_difference_on_both_embeddings,同一queryの差を両座標へ表示。共通発散色域。,True

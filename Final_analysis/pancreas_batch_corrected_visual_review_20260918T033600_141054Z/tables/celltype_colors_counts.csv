@@ -1,0 +1,15 @@
+label,color,n_reference,n_query
+acinar,#1f77b4,1207,462
+activated_stellate,#aec7e8,319,145
+alpha,#ff7f0e,3642,1851
+beta,#ffbb78,3416,753
+delta,#2ca02c,725,330
+ductal,#98df8a,1440,702
+endothelial,#d62728,271,42
+epsilon,#ff9896,20,12
+gamma,#9467bd,376,323
+macrophage,#c5b0d5,57,22
+mast,#8c564b,29,13
+quiescent_stellate,#c49c94,175,18
+schwann,#e377c2,19,6
+t_cell,#f7b6d2,7,0
