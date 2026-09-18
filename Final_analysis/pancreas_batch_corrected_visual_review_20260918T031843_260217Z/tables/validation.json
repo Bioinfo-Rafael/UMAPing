@@ -1,0 +1,36 @@
+{
+  "identity_unit_tests": 6,
+  "unit_test_result": "passed",
+  "real_data_visual_review": {
+    "images": [
+      "figures/05_celltype_recall_dotplot.png"
+    ],
+    "status": "inspected",
+    "checks": [
+      "all 13 celltypes and query counts visible",
+      "legend not clipped",
+      "common method colors",
+      "coincident means use hollow/filled markers",
+      "axis labels readable"
+    ]
+  },
+  "synthetic_layout_review": {
+    "figures_generated": 16,
+    "status": "inspected contact sheets and representative full-size images",
+    "scope": "all requested formats including marker panels; synthetic data are NOT pancreas results",
+    "checks": [
+      "complete 13-celltype legend",
+      "actual fixture tech names",
+      "three-row fixed axes within each method",
+      "equal-aspect panels",
+      "seven eligible celltype pages",
+      "shared Recall and delta colorbars",
+      "shared per-gene color scales"
+    ]
+  },
+  "real_coordinate_panels": "not generated: unavailable inputs",
+  "supplied_inventory": {
+    "sha256": "676c133627ae58b6922e4e94323b5f68f94083f24fa451cbaf3af78e276f1ab2",
+    "scope": "embryoid_body only; zero pancreas mentions; not used as pancreas identity evidence"
+  }
+}

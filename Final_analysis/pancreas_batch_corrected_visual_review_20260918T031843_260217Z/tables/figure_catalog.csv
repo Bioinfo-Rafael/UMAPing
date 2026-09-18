@@ -1,0 +1,2 @@
+stem,description,legend_bounds_checked
+05_celltype_recall_dotplot,全細胞型の平均Recall@5/15。IDで対応付けた同じquery。,True

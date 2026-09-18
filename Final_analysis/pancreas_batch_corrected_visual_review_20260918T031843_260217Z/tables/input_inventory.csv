@@ -1,0 +1,13 @@
+path,bytes,keys
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/config.yaml,1618,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metadata.json,823,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/advanced_analysis.json,29571,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/advanced_per_query.csv,3975466,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/embedding.json,2228,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/field.json,235,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/per_query.csv,446965,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/repulsion_training.json,106808,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/retriever.json,264,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/retriever_training.json,77623,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/spectral.json,432,
+/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/spectral_training.json,155631,

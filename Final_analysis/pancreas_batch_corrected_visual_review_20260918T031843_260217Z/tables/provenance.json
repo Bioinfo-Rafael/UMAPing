@@ -1,0 +1,68 @@
+{
+  "status": "partial_missing_or_unverified_coordinates",
+  "started_utc": "2026-09-18T03:18:43.261327+00:00",
+  "ended_utc": "2026-09-18T03:18:43.549589+00:00",
+  "script_sha256": "855c1b0f60bda93c12705e79cf58dbe3cf62d9cb1cd768b3b3a5da2666cdcb4d",
+  "versions": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.2"
+  },
+  "run": "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main",
+  "teacher": "unrecorded",
+  "teacher_evidence": "Run metadata does not record teacher; legacy pipeline default is Uniform MC, but not asserted as verified.",
+  "inputs": {
+    "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/config.yaml": {
+      "bytes": 1618,
+      "sha256": "e3a92f021f6a28d41f1f86071f9fc10d6c80b9340b56caefe5b94794f24d112e"
+    },
+    "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metadata.json": {
+      "bytes": 823,
+      "sha256": "8f8d109e4a653eaa8c6ba257362d7fa0a458d0254efb96300046fa01326286c3"
+    },
+    "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/metrics/advanced_per_query.csv": {
+      "bytes": 3975466,
+      "sha256": "83a5f0fa18d0d671da715ab67eec45d9e76c91bcad14bed1485d7d85fef1cdb4"
+    }
+  },
+  "identity_checks": [
+    {
+      "scope": "paired metrics",
+      "query_ids_equal": true,
+      "unique_ids": true,
+      "celltype_equal": true,
+      "n_queries": 4679
+    }
+  ],
+  "skipped": [
+    {
+      "item": "01/02/03/04/06 coordinate panels",
+      "reason": "Missing saved inputs",
+      "paths": [
+        "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/cache/prepared_dataset.npz",
+        "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/embeddings/standard_umap.npz",
+        "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main/embeddings/ours_full.npz"
+      ]
+    }
+  ],
+  "error": null,
+  "figures": [
+    {
+      "stem": "05_celltype_recall_dotplot",
+      "description": "全細胞型の平均Recall@5/15。IDで対応付けた同じquery。",
+      "legend_bounds_checked": true
+    }
+  ],
+  "no_training": true,
+  "no_inference": true,
+  "no_metric_recomputation": true,
+  "visual_review": "Legend bounds checked; contact sheets provided. Actual image inspection must be recorded separately.",
+  "command": [
+    "python",
+    "/Users/cls-lab/Git/PersonalDev/UMAPing-pancreas-review/scripts/pancreas_visual_review.py",
+    "--run",
+    "/Users/cls-lab/Git/PersonalDev/UMAPing/runs/pancreas_batch_corrected/main",
+    "--repo-root",
+    "/Users/cls-lab/Git/PersonalDev/UMAPing-pancreas-review"
+  ]
+}
