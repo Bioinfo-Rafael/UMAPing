@@ -1,0 +1,4 @@
+stage,context,comparison,group,delta,low,high,n
+confirmation,temporal1,Uniform selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal1,FitGrid selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal1,FitGrid minus Uniform selected,macro,0.0011166666666666668,-8.375000000000017e-05,0.002383749999999998,4000

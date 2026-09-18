@@ -1,0 +1,7 @@
+{
+  "n": 100,
+  "inference_seconds": 7.41862627863884,
+  "evaluation_seconds": 0.01101162564009428,
+  "metric_preparation_seconds": 5.93024727050215,
+  "seconds_per_query": 0.0741862627863884
+}

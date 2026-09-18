@@ -1,0 +1,4 @@
+stage,context,comparison,group,delta,low,high,n
+transfer,existing,Uniform selected minus current,macro,0.0,0.0,0.0,2000
+transfer,existing,FitGrid selected minus current,macro,0.0,0.0,0.0,2000
+transfer,existing,FitGrid minus Uniform selected,macro,0.00046666666666666715,-0.0011341666666666666,0.002033333333333334,2000

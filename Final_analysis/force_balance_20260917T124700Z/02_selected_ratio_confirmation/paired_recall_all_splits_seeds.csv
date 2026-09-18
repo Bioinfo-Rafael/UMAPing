@@ -1,0 +1,78 @@
+stage,context,comparison,group,delta,low,high,n
+confirmation,temporal0,Uniform selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal0,Uniform selected minus current,micro,0.0,0.0,0.0,4000
+confirmation,temporal0,Uniform selected minus current,4-5,0.0,0.0,0.0,2000
+confirmation,temporal0,Uniform selected minus current,8-9,0.0,0.0,0.0,2000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=1,macro,0.0077,0.005932916666666666,0.00945,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=1,micro,0.0077,0.005932916666666666,0.009450000000000002,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=1,4-5,0.0044666666666666665,0.0021325000000000003,0.006767499999999996,2000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=1,8-9,0.010933333333333333,0.008265833333333332,0.013533333333333333,2000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=2,macro,0.00595,0.003966666666666667,0.007967499999999995,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=2,micro,0.00595,0.003966666666666667,0.007967499999999995,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=2,4-5,0.002033333333333333,-0.0006333333333333335,0.004733333333333333,2000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=2,8-9,0.009866666666666668,0.007066666666666666,0.012633333333333333,2000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=1,macro,0.10718333333333332,0.10388333333333333,0.1106,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=1,micro,0.10718333333333334,0.10388333333333333,0.11059999999999999,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=1,4-5,0.0967,0.0923,0.10116749999999998,2000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=1,8-9,0.11766666666666667,0.11286666666666666,0.12286749999999998,2000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=2,macro,0.10774999999999998,0.10445,0.11115041666666667,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=2,micro,0.10774999999999998,0.10445,0.11115041666666665,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=2,4-5,0.09779999999999998,0.09339916666666667,0.10216749999999998,2000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=2,8-9,0.11769999999999999,0.11279916666666666,0.12290166666666667,2000
+confirmation,temporal0,FitGrid selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal0,FitGrid selected minus current,micro,0.0,0.0,0.0,4000
+confirmation,temporal0,FitGrid selected minus current,4-5,0.0,0.0,0.0,2000
+confirmation,temporal0,FitGrid selected minus current,8-9,0.0,0.0,0.0,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=1,macro,0.00745,0.005715833333333333,0.0092,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=1,micro,0.00745,0.005715833333333333,0.0092,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=1,4-5,0.0050999999999999995,0.0027666666666666664,0.0075,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=1,8-9,0.009800000000000001,0.007199166666666666,0.012367499999999995,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=2,macro,0.0057,0.0038166666666666666,0.007650416666666665,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=2,micro,0.0057,0.0038166666666666666,0.007650416666666665,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=2,4-5,0.0026666666666666666,9.916666666666648e-05,0.0052,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=2,8-9,0.008733333333333334,0.0059991666666666665,0.0115,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=1,macro,0.10803333333333331,0.10489916666666665,0.11138375,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=1,micro,0.10803333333333333,0.10489916666666667,0.11138374999999999,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=1,4-5,0.09989999999999999,0.09583249999999997,0.10416833333333332,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=1,8-9,0.11616666666666665,0.11126666666666665,0.12156749999999998,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=2,macro,0.1083,0.10511666666666666,0.11174999999999999,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=2,micro,0.10829999999999998,0.10511666666666666,0.11175,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=2,4-5,0.10026666666666666,0.09603333333333333,0.10460166666666666,2000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=2,8-9,0.11633333333333333,0.11133249999999999,0.12153333333333333,2000
+confirmation,temporal0,FitGrid minus Uniform selected,macro,-0.00025000000000000006,-0.001533333333333333,0.0010504166666666646,4000
+confirmation,temporal0,FitGrid minus Uniform selected,micro,-0.0002500000000000001,-0.001533333333333333,0.0010504166666666648,4000
+confirmation,temporal0,FitGrid minus Uniform selected,4-5,0.0006333333333333331,-0.0012008333333333335,0.0024666666666666665,2000
+confirmation,temporal0,FitGrid minus Uniform selected,8-9,-0.0011333333333333332,-0.002933333333333333,0.0007333333333333334,2000
+confirmation,temporal1,Uniform selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal1,Uniform selected minus current,micro,0.0,0.0,0.0,4000
+confirmation,temporal1,Uniform selected minus current,4-5,0.0,0.0,0.0,2000
+confirmation,temporal1,Uniform selected minus current,8-9,0.0,0.0,0.0,2000
+confirmation,temporal1,FitGrid selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal1,FitGrid selected minus current,micro,0.0,0.0,0.0,4000
+confirmation,temporal1,FitGrid selected minus current,4-5,0.0,0.0,0.0,2000
+confirmation,temporal1,FitGrid selected minus current,8-9,0.0,0.0,0.0,2000
+confirmation,temporal1,FitGrid minus Uniform selected,macro,0.0011166666666666668,-8.375000000000017e-05,0.002383749999999998,4000
+confirmation,temporal1,FitGrid minus Uniform selected,micro,0.0011166666666666666,-8.375000000000017e-05,0.002383749999999998,4000
+confirmation,temporal1,FitGrid minus Uniform selected,4-5,0.0013666666666666666,-0.00036749999999999993,0.003133333333333333,2000
+confirmation,temporal1,FitGrid minus Uniform selected,8-9,0.0008666666666666668,-0.0009333333333333332,0.0026666666666666666,2000
+transfer,existing,Uniform selected minus current,macro,0.0,0.0,0.0,2000
+transfer,existing,Uniform selected minus current,micro,0.0,0.0,0.0,2000
+transfer,existing,Uniform selected minus current,0-1,0.0,0.0,0.0,400
+transfer,existing,Uniform selected minus current,2-3,0.0,0.0,0.0,400
+transfer,existing,Uniform selected minus current,4-5,0.0,0.0,0.0,400
+transfer,existing,Uniform selected minus current,6-7,0.0,0.0,0.0,400
+transfer,existing,Uniform selected minus current,8-9,0.0,0.0,0.0,400
+transfer,existing,FitGrid selected minus current,macro,0.0,0.0,0.0,2000
+transfer,existing,FitGrid selected minus current,micro,0.0,0.0,0.0,2000
+transfer,existing,FitGrid selected minus current,0-1,0.0,0.0,0.0,400
+transfer,existing,FitGrid selected minus current,2-3,0.0,0.0,0.0,400
+transfer,existing,FitGrid selected minus current,4-5,0.0,0.0,0.0,400
+transfer,existing,FitGrid selected minus current,6-7,0.0,0.0,0.0,400
+transfer,existing,FitGrid selected minus current,8-9,0.0,0.0,0.0,400
+transfer,existing,FitGrid minus Uniform selected,macro,0.00046666666666666715,-0.0011341666666666666,0.002033333333333334,2000
+transfer,existing,FitGrid minus Uniform selected,micro,0.0004666666666666671,-0.0011341666666666666,0.0020333333333333336,2000
+transfer,existing,FitGrid minus Uniform selected,0-1,0.0011666666666666668,-0.0028333333333333327,0.0051666666666666675,400
+transfer,existing,FitGrid minus Uniform selected,2-3,-0.003166666666666666,-0.006337499999999999,2.7755575615628914e-19,400
+transfer,existing,FitGrid minus Uniform selected,4-5,0.0003333333333333338,-0.003,0.003666666666666667,400
+transfer,existing,FitGrid minus Uniform selected,6-7,0.0005000000000000004,-0.0030000000000000005,0.004,400
+transfer,existing,FitGrid minus Uniform selected,8-9,0.0035000000000000005,-0.00016666666666666693,0.007166666666666667,400

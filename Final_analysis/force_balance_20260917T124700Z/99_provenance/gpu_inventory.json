@@ -1,0 +1,4 @@
+{
+  "memory": "index, name, memory.total [MiB], memory.used [MiB], utilization.gpu [%]\n0, NVIDIA RTX 6000 Ada Generation, 49140 MiB, 18 MiB, 0 %\n",
+  "processes": "pid, process_name, used_gpu_memory [MiB]\n"
+}

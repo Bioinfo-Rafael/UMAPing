@@ -1,0 +1,12 @@
+stage,context,comparison,group,delta,low,high,n
+confirmation,temporal0,Uniform selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=1,macro,0.0077,0.005932916666666666,0.00945,4000
+confirmation,temporal0,Uniform selected minus endpoint w=0.0 scale=2,macro,0.00595,0.003966666666666667,0.007967499999999995,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=1,macro,0.10718333333333332,0.10388333333333333,0.1106,4000
+confirmation,temporal0,Uniform selected minus endpoint w=1.0 scale=2,macro,0.10774999999999998,0.10445,0.11115041666666667,4000
+confirmation,temporal0,FitGrid selected minus current,macro,0.0,0.0,0.0,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=1,macro,0.00745,0.005715833333333333,0.0092,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=0.0 scale=2,macro,0.0057,0.0038166666666666666,0.007650416666666665,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=1,macro,0.10803333333333331,0.10489916666666665,0.11138375,4000
+confirmation,temporal0,FitGrid selected minus endpoint w=1.0 scale=2,macro,0.1083,0.10511666666666666,0.11174999999999999,4000
+confirmation,temporal0,FitGrid minus Uniform selected,macro,-0.00025000000000000006,-0.001533333333333333,0.0010504166666666646,4000

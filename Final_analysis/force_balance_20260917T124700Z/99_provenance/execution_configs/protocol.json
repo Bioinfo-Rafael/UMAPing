@@ -1,0 +1,25 @@
+{
+  "run_id": "20260917T124700Z",
+  "started_utc": "2026-09-17T12:47:00Z",
+  "stop_new_experiments_utc": "2026-09-17T21:47:00Z",
+  "stop_compute_utc": "2026-09-17T23:17:00Z",
+  "hard_deadline_utc": "2026-09-18T00:47:00Z",
+  "base_commit": "c4dc3fb926eee5d2038771e3aef5b27f8f20ff42",
+  "branch": "experiments/force-balance-rescue",
+  "sampling_seed": 20260917,
+  "selection_n": 512,
+  "confirmation_n": 4000,
+  "transfer_n": 2000,
+  "bootstrap_iterations": 2000,
+  "weights": [
+    0,
+    0.2,
+    0.3333333333333333,
+    0.5,
+    0.6666666666666666,
+    0.8,
+    1
+  ],
+  "selection_rule": "maximize mean of Uniform/FitGrid macro Recall@15; exact tie: nearest 0.5 then smaller w",
+  "deadline_policy": "Never reset on resume. No experiments after compute deadline. No new experiments after 9 hours."
+}

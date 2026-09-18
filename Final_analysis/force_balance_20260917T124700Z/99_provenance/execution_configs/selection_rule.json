@@ -1,0 +1,14 @@
+{
+  "rule": "maximize mean of Uniform/FitGrid macro Recall@15; exact tie: nearest 0.5 then smaller w",
+  "weights": [
+    0.0,
+    0.2,
+    0.3333333333333333,
+    0.5,
+    0.6666666666666666,
+    0.8,
+    1.0
+  ],
+  "fixed_before_evaluation_utc": "2026-09-17T14:56:29.612275+00:00",
+  "sampling_seed": 20260917
+}
