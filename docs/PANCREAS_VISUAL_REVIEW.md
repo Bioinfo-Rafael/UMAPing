@@ -1,6 +1,29 @@
 # 保存済みpancreas結果の再作図
 
-`scripts/pancreas_visual_review.py` は保存ファイルだけを読みます。学習、推論、通常UMAPのfit/transform、近傍の再計算、ダウンロードは行いません。
+`scripts/pancreas_visual_review.py` は既定では保存ファイルだけを読みます。
+ユーザーが追加承認した `--regenerate` モードでは、凍結UMAPingのquery再推論・通常UMAPのfit/transform・今回の座標のRecall再評価を行います。
+どちらのモードもニューラルネットワーク・前処理の再学習やダウンロードは行いません。
+
+## 座標が未保存の場合の再生成（承認済み）
+
+```bash
+SOURCE=/home/suzuki/Learn/UMAPing
+CODE=/home/suzuki/Learn/UMAPing-pancreas-review
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 NUMBA_NUM_THREADS=1 \
+  "$SOURCE/.venv/bin/python" -u "$CODE/scripts/pancreas_visual_review.py" \
+  --run "$SOURCE/runs/pancreas_batch_corrected/main" --repo-root "$SOURCE" \
+  --regenerate --device cpu --threads 1 --max-seconds 7200
+```
+
+- source runは読み取り専用。新しい出力の `tables/regenerated/` に座標・ID・新しいmetrics・実行記録を保存。
+- PreparedDatasetをそのまま使い、scVI/scArches、retriever、Spectral、反発ネット、reference trajectoryは再学習・再計算しない。
+- 通常UMAPは既存の `run_standard_umap` と同じ設定・seedでreferenceにfit、queryをtransform。ライブラリ版も記録。
+- IDは再生成前に固定し、既知の入力行との対応から保存する。以前の座標に行番号を推測で付け足す処理ではない。
+- 保存済み旧metricsはID・細胞型照合のみに使い、今回の座標図には再計算したRecall@5/15を使う。旧数値との一致は保証しない。
+- 再生成中は30秒ごとのheartbeat、50queryごとの進捗と途中保存。既定2時間の上限を超えたら失敗として停止。
+- 成功時は `complete_regenerated_required_plots`。マーカー発現は対応表が無ければ理由付き省略。
+- 今回のモードは新しい時刻名で出力するため、前回の部分結果・旧runは上書きしない。
+- `--regenerate` と外部embedding/metrics/prepared指定は併用禁止。異なる評価を混ぜないため。
 
 ## 実行
 

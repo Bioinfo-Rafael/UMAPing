@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Plot saved pancreas results only. No inference, fitting, downloads, or training.
+"""Plot pancreas results; saved-only by default. --regenerate explicitly opts
+into frozen UMAPing inference, standard UMAP fit/transform, and fresh metrics.
+No neural-network training, preprocessing refit, or downloads.
 
 Embedding NPZ contract: reference (Nr,2), query (Nq,2), reference_index
 (Nr,), query_index (Nq,). Indices explicitly refer to rows of the specified
@@ -159,6 +161,7 @@ class Review:
         self.output.mkdir(parents=True); (self.output/'figures').mkdir(); (self.output/'tables').mkdir()
         self.inputs={}; self.catalog=[]; self.skipped=[]; self.checks=[]; self.data={}; self.annotations=None
         self.status='started'; self.teacher='unrecorded'; self.teacher_evidence=''; self.expression_info=''
+        self.regeneration=None
         self.started=datetime.now(timezone.utc).isoformat(); self.names={'standard_umap':'Standard UMAP','ours_full':'UMAPing (teacher unrecorded)'}
         print(f'Output: {self.output}',flush=True)
 
@@ -399,7 +402,9 @@ class Review:
                   script_sha256=sha(Path(__file__)),versions={'numpy':np.__version__,'pandas':pd.__version__,'matplotlib':matplotlib.__version__},
                   run=str(self.run),teacher=self.teacher,teacher_evidence=self.teacher_evidence,inputs=self.inputs,
                   identity_checks=self.checks,skipped=self.skipped,error=error,figures=self.catalog,
-                  no_training=True,no_inference=True,no_metric_recomputation=True,
+                  no_training=self.regeneration is None,no_inference=self.regeneration is None,
+                  no_metric_recomputation=self.regeneration is None,neural_network_training=False,
+                  regeneration=self.regeneration,
                   visual_review='Legend bounds checked; contact sheets provided. Actual image inspection must be recorded separately.',
                   command=['python',str(Path(__file__).resolve()),*sys.argv[1:]])
         json_write(self.output/'tables/provenance.json',meta)
@@ -424,10 +429,14 @@ class Review:
                'indexはそのPreparedDataset内の行IDです。元の生物学的cell barcodeとは区別します。座標ファイルまたはsidecarに保存されたPreparedDatasetのSHA256も必須として照合します。IDの無い旧形式座標からIDを生成しません。',
                'teacherが未記録なら未確認と表記します。旧pipelineの既定はUniform MCですが、この情報だけで既存runをFitGridまたは検証済みUniformとは表記しません。','',
                '## 図一覧']
+        if self.regeneration is not None:
+            lines[3:3]=['**座標の再生成モードです。** 通常UMAPは保存済みreference特徴でfitしてqueryをtransformし、UMAPingは既存の凍結チェックポイントからqueryのみを再推論する構成です。reference軌道は変更しません。完了段階と成否は `tables/regenerated/regeneration.json` を参照してください。',
+                        '前処理・scVI/scArches・retriever・Spectral・反発ネットの再学習はありません。Recallは今回の座標に対して再評価し、以前のmetricsを今回の座標図に流用していません。',
+                        'IDは再計算前にPreparedDatasetの各行へ割り当て、推論ループまたはfit/transformの入力出力対応から保存しました。旧座標の行順を推測して付与したIDではありません。','']
         for fig in self.catalog:
             s=fig['stem']; lines.append(f'- [{s} PNG](figures/{s}.png) / [PDF](figures/{s}.pdf): {fig["description"]}')
         lines+=['','## 観察できる差',observed,'','## 数値で裏付けられる差',*numeric,
-                '平均値は保存済み評価の記述統計です。新しい統計検定や密度指標は追加していません。','',
+                ('平均値は今回再生成した座標の再評価です。旧実行との数値的一致は保証せず、ライブラリ版とseedを記録します。' if self.regeneration is not None else '平均値は保存済み評価の記述統計です。')+'新しい統計検定や密度指標は追加していません。','',
                 '## まだ言えないこと',
                 'クラスターの位置、回転、コンパクトさだけから生物学的優劣・密度改善は判断できません。拡大図はquery>=100の全細胞型を選び、良い結果の細胞型だけを選択しません。表示幅を左右で一致させても、手法間の座標スケールが生物学的に等しいことを保証しません。',
                 'batch-corrected特徴空間での近傍保持と、生物学的なbatch除去・celltype保存は別の評価です。celltypeやtechの混ざり方だけから因果的な改善は主張しません。',
@@ -446,7 +455,18 @@ class Review:
 
     def execute(self):
         self.inventory(); self.teacher_label()
-        self.metrics=load_metrics(self.track(self.run/'metrics/advanced_per_query.csv'))
+        if self.args.regenerate:
+            require(not any((self.args.metrics,self.args.prepared,self.args.embedding_dir,self.args.standard_embedding,self.args.umaping_embedding)),
+                    '--regenerate cannot mix explicit external metrics/embedding/prepared overrides')
+            from pancreas_regenerate import regenerate
+            self.regeneration={'status':'started','path':str(self.output/'tables/regenerated')}
+            generated=regenerate(self.run,self.output/'tables/regenerated',device=self.args.device,
+                                  threads=self.args.threads,max_seconds=self.args.max_seconds)
+            self.regeneration=json.loads(self.track(generated/'regeneration.json').read_text())
+            self.args.metrics=str(generated/'advanced_per_query.csv')
+            self.args.embedding_dir=str(generated/'embeddings')
+        metrics_path=Path(self.args.metrics) if self.args.metrics else self.run/'metrics/advanced_per_query.csv'
+        self.metrics=load_metrics(self.track(metrics_path))
         self.checks.append(dict(scope='paired metrics',query_ids_equal=True,unique_ids=True,celltype_equal=True,n_queries=len(self.metrics['ours_full'])))
         have_coordinates=False
         try: have_coordinates=self.load_coordinates()
@@ -461,7 +481,7 @@ class Review:
             try: self.expression()
             except (ValueError,KeyError) as e:
                 self.expression_info='省略: '+str(e); self.skipped.append(dict(item='07 marker expression',reason=str(e)))
-        self.status='complete_required_plots' if have_coordinates else 'partial_missing_or_unverified_coordinates'
+        self.status=('complete_regenerated_required_plots' if self.regeneration is not None else 'complete_required_plots') if have_coordinates else 'partial_missing_or_unverified_coordinates'
         self.finish()
         print(f'Status: {self.status}\nREADME: {self.output / "README.md"}',flush=True)
         return 0 if have_coordinates else 2
@@ -471,6 +491,10 @@ def parser():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run',required=True); p.add_argument('--repo-root'); p.add_argument('--output')
     p.add_argument('--prepared'); p.add_argument('--embedding-dir')
+    p.add_argument('--metrics',help='Explicit matching per-query metrics; never use old metrics for regenerated coordinates')
+    p.add_argument('--regenerate',action='store_true',help='Authorize standard UMAP refit, frozen UMAPing inference and fresh metrics')
+    p.add_argument('--device',choices=['cpu','cuda'],default='cpu'); p.add_argument('--threads',type=int,default=1)
+    p.add_argument('--max-seconds',type=float,default=7200,help='Regeneration time limit; default 2 hours')
     p.add_argument('--standard-embedding'); p.add_argument('--umaping-embedding')
     p.add_argument('--teacher',choices=['uniform_mc','fit_grid']); p.add_argument('--teacher-evidence')
     p.add_argument('--expression-csv'); p.add_argument('--expression-kind',choices=['counts','log1p_cptt'])
@@ -482,6 +506,9 @@ def main():
     args=parser().parse_args(); app=Review(args)
     try: return app.execute()
     except Exception as e:
+        regeneration_manifest=app.output/'tables/regenerated/regeneration.json'
+        if args.regenerate and regeneration_manifest.exists():
+            app.regeneration=json.loads(app.track(regeneration_manifest).read_text())
         app.status='failed'; app.finish(error=str(e)); traceback.print_exc(); return 1
 
 if __name__=='__main__': raise SystemExit(main())
